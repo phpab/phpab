@@ -1,0 +1,23 @@
+{
+    "name": "phpab/phpab",
+    "description": "A PHP library to create A/B tests.",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "google/apiclient": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpAb\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpAbTest\\": "tests/PhpAbTest",
+            "PhpAbTestAsset\\": "tests/PhpAbTestAsset"
+        }
+    }
+}
