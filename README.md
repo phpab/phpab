@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/phpab/phpab.svg?branch=master)](https://travis-ci.org/phpab/phpab)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/phpab/phpab/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/phpab/phpab/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/phpab/phpab/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/phpab/phpab/?branch=master)
-[![Coverage Status](https://coveralls.io/repos/phpab/phpab/badge.svg)](https://coveralls.io/r/phpab/phpab)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/601290d3-b870-46f8-bceb-bdaaa3e808e3/mini.png)](https://insight.sensiolabs.com/projects/601290d3-b870-46f8-bceb-bdaaa3e808e3)
 
 This is a PHP library to implement A/B testing.
 
