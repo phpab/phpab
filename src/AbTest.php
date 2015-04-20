@@ -2,6 +2,7 @@
 
 namespace PhpAb;
 
+use InvalidArgumentException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 /**
@@ -45,12 +46,16 @@ class AbTest
      * @param callable $callbackB The B-case callback.
      * @param StrategyInterface $participationStrategy The strategy that decides the case to execute.
      */
-    public function __construct(
-        $name,
-        callable $callbackA,
-        callable $callbackB,
-        StrategyInterface $participationStrategy = null
-    ) {
+    public function __construct($name, $callbackA, $callbackB, StrategyInterface $participationStrategy = null)
+    {
+        if (!is_callable($callbackA)) {
+            throw new InvalidArgumentException('Callback A is not callable.');
+        }
+
+        if (!is_callable($callbackB)) {
+            throw new InvalidArgumentException('Callback B is not callable.');
+        }
+
         $this->name = $name;
         $this->callbackA = $callbackA;
         $this->callbackB = $callbackB;

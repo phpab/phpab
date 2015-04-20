@@ -22,6 +22,34 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         $this->callbackB = array($this->handler, 'methodB');
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidCallbackA()
+    {
+        // Arrange
+
+        // Act
+        $abTest = new AbTest('test', null, $this->callbackB, $this->strategy);
+
+        // Assert
+        // ...
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testInvalidCallbackB()
+    {
+        // Arrange
+
+        // Act
+        $abTest = new AbTest('test', $this->callbackA, null, $this->strategy);
+
+        // Assert
+        // ...
+    }
+
     public function testGetName()
     {
         // Arrange
