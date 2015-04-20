@@ -1,5 +1,4 @@
 <?php
-
 require '../vendor/autoload.php';
 
 use PhpAb\AbRunner;
@@ -51,8 +50,13 @@ class PercentageStrategy implements StrategyInterface
     }
 }
 
-$callbackA = function(AbRunner $phpab, AbTest $test, $choice) { echo __FUNCTION__; };
-$callbackB = function(AbRunner $phpab, AbTest $test, $choice) { echo __FUNCTION__; };
+$callbackA = function(AbRunner $phpab, AbTest $test, $choice) {
+    echo __FUNCTION__;
+};
+
+$callbackB = function(AbRunner $phpab, AbTest $test, $choice) {
+    echo __FUNCTION__;
+};
 
 $phpab = new AbRunner(new \PercentageStrategy(0.1));
 $phpab->setAnalytics(new Analytics());
