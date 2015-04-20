@@ -1,0 +1,17 @@
+build:
+    tests:
+        override:
+            -
+                command: 'phpunit'
+                coverage:
+                    file: 'build/logs/clover.xml'
+                    format: 'php-clover'
+tools:
+    php_analyzer: true
+    php_mess_detector: true
+    php_pdepend: true
+    php_cpd: true
+    php_hhvm: true
+    php_cs_fixer:
+        config: { level: psr2 }
+    sensiolabs_security_checker: true
