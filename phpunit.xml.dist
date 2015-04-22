@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <phpunit bootstrap="tests/bootstrap.php" backupGlobals="false" colors="true">
     <testsuites>
-        <testsuite name="phpmath/biginteger">
+        <testsuite name="phpab/phpab">
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
