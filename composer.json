@@ -1,6 +1,7 @@
 {
     "name": "phpab/phpab",
     "description": "A PHP library to create A/B tests.",
+    "keywords": ["ab", "abtesting", "test", "testing"],
     "license": "MIT",
     "require": {
         "php": ">=5.3.3"
@@ -18,5 +19,12 @@
             "PhpAbTest\\": "tests/PhpAbTest",
             "PhpAbTestAsset\\": "tests/PhpAbTestAsset"
         }
-    }
+    },
+    "authors": [
+        {
+            "name": "Walter Tamboer",
+            "homepage": "http://www.waltertamboer.nl",
+            "role": "Developer"
+        }
+    ]
 }
