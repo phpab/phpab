@@ -206,11 +206,11 @@ class AbRunner
 
         switch ($choice) {
             case self::CHOICE_A:
-                call_user_func_array($test->getCallbackA(), array($this, $test, $choice));
+                call_user_func_array($test->getCallback('A'), array($this, $test, $choice));
                 break;
 
             case self::CHOICE_B:
-                call_user_func_array($test->getCallbackB(), array($this, $test, $choice));
+                call_user_func_array($test->getCallback('B'), array($this, $test, $choice));
                 break;
 
             case self::CHOICE_NONE:

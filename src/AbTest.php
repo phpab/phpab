@@ -89,6 +89,7 @@ class AbTest implements TestInterface
 
     /**
      * Gets the A-case callback of this test.
+     * @deprecated since 1.0.0 in favor of getCallback
      *
      * @return callable
      */
@@ -99,6 +100,7 @@ class AbTest implements TestInterface
 
     /**
      * Gets the B-case callback of this test.
+     * @deprecated since 1.0.0 in favor of getCallback
      *
      * @return callable
      */
