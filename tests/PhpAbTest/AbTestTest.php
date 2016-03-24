@@ -88,7 +88,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException RuntimeException
      */
     public function testGetInvalidCallback()
     {

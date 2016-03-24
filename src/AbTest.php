@@ -3,6 +3,7 @@
 namespace PhpAb;
 
 use InvalidArgumentException;
+use RuntimeException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 /**
@@ -73,17 +74,17 @@ class AbTest implements TestInterface
     /**
      * @inheritDoc
      */
-    public function getCallback($identifier)
+    public function getCallback($choice)
     {
-        if('A' === $identifier) {
+        if('A' === $choice) {
             return $this->callbackA;
         }
 
-        if('B' === $identifier) {
+        if('B' === $choice) {
             return $this->callbackB;
         }
 
-        throw new InvalidArgumentException("The Identifier must be one of [A,B]. Given: \"$identifier\"");
+        throw new RuntimeException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
     }
 
 
