@@ -2,7 +2,7 @@
 
 namespace PhpAb\Storage;
 
-use PhpAb\AbTest;
+use PhpAb\TestInterface;
 
 /**
  * The interface that should be implemented by all storage devices.
@@ -12,23 +12,23 @@ interface StorageInterface
     /**
      * Clears the storage.
      *
-     * @param AbTest $abTest The test to clear the storage for.
+     * @param TestInterface $abTest The test to clear the storage for.
      */
-    public function clear(AbTest $abTest);
+    public function clear(TestInterface $abTest);
 
     /**
      * Reads the value from the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $abTest The test to read the value for.
      * @return string
      */
-    public function read(AbTest $abTest);
+    public function read(TestInterface $abTest);
 
     /**
      * Writes the value to the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $abTest The test to read the value for.
      * @param string $choice The value to write.
      */
-    public function write(AbTest $abTest, $choice);
+    public function write(TestInterface $abTest, $choice);
 }

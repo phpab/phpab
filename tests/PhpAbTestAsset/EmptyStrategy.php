@@ -2,8 +2,8 @@
 
 namespace PhpAbTestAsset;
 
-use PhpAb\AbRunner;
 use PhpAb\Participation\Strategy\StrategyInterface;
+use PhpAb\RunnerInterface;
 
 class EmptyStrategy implements StrategyInterface
 {
@@ -19,7 +19,7 @@ class EmptyStrategy implements StrategyInterface
         $this->participating = $participating;
     }
 
-    public function isParticipating(AbRunner $runner)
+    public function isParticipating(RunnerInterface $runner)
     {
         return $this->participating;
     }

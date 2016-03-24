@@ -2,7 +2,7 @@
 
 namespace PhpAb\Storage;
 
-use PhpAb\AbTest;
+use PhpAb\TestInterface;
 use RuntimeException;
 
 /**
@@ -76,12 +76,12 @@ class CookieStorage implements StorageInterface
     /**
      * Builds the name of the cookie for the given test.
      *
-     * @param AbTest $abTest The test to build the name of the cookie for.
+     * @param TestInterface $test The test to build the name of the cookie for.
      * @return string
      */
-    private function getCookieName(AbTest $abTest)
+    private function getCookieName(TestInterface $test)
     {
-        $replaced = preg_replace('/[^a-z0-9]+/i', '_', $this->name . '_' . $abTest->getName());
+        $replaced = preg_replace('/[^a-z0-9]+/i', '_', $this->name . '_' . $test->getName());
 
         return strtolower($replaced);
     }
@@ -89,15 +89,15 @@ class CookieStorage implements StorageInterface
     /**
      * Clears the storage.
      *
-     * @param AbTest $abTest The test to clear the storage for.
+     * @param TestInterface $test The test to clear the storage for.
      */
-    public function clear(AbTest $abTest)
+    public function clear(TestInterface $test)
     {
         if (headers_sent()) {
             throw new RuntimeException('The headers are already sent. Cannot clear cookie.');
         }
 
-        $cookieName = $this->getCookieName($abTest);
+        $cookieName = $this->getCookieName($test);
 
         setcookie($cookieName, '', time() - 1, $this->path, $this->domain, $this->secure, $this->httpOnly);
     }
@@ -105,12 +105,12 @@ class CookieStorage implements StorageInterface
     /**
      * Reads the value from the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $test The test to read the value for.
      * @return string
      */
-    public function read(AbTest $abTest)
+    public function read(TestInterface $test)
     {
-        $cookieName = $this->getCookieName($abTest);
+        $cookieName = $this->getCookieName($test);
 
         if (isset($_COOKIE[$cookieName])) {
             $value = $_COOKIE[$cookieName];
@@ -124,16 +124,16 @@ class CookieStorage implements StorageInterface
     /**
      * Writes the value to the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $test The test to read the value for.
      * @param string $choice The value to write.
      */
-    public function write(AbTest $abTest, $choice)
+    public function write(TestInterface $test, $choice)
     {
         if (headers_sent()) {
             throw new RuntimeException('The headers are already sent. Cannot set cookie.');
         }
 
-        $cookieName = $this->getCookieName($abTest);
+        $cookieName = $this->getCookieName($test);
 
         setcookie(
             $cookieName,
