@@ -7,7 +7,7 @@ use PhpAb\Participation\Strategy\StrategyInterface;
 use PhpAb\Storage\StorageInterface;
 use RuntimeException;
 
-class AbRunner
+class AbRunner implements RunnerInterface
 {
     const CHOICE_NONE = null;
     const CHOICE_A = 'A';
@@ -47,19 +47,15 @@ class AbRunner
     }
 
     /**
-     * Adds a test to the runner.
-     *
-     * @param AbTest $test The test to add.
+     * @inheritDoc
      */
-    public function addTest(AbTest $test)
+    public function addTest(TestInterface $test)
     {
         $this->tests[] = $test;
     }
 
     /**
-     * Gets all the tests that are executed.
-     *
-     * @return AbTest[]
+     * @inheritDoc
      */
     public function getTests()
     {
@@ -67,9 +63,7 @@ class AbRunner
     }
 
     /**
-     * Sets the tests that should be executed.
-     *
-     * @param AbTest[] $tests The tests to execute.
+     * @inheritDoc
      */
     public function setTests($tests)
     {
@@ -81,9 +75,7 @@ class AbRunner
     }
 
     /**
-     * Gets the analytics service used to register statistics about the tests.
-     *
-     * @return AnalyticsInterface
+     * @inheritDoc
      */
     public function getAnalytics()
     {
@@ -91,9 +83,7 @@ class AbRunner
     }
 
     /**
-     * Sets the analytics service used to register statistics about the tests.
-     *
-     * @param AnalyticsInterface $analytics The analytics service to set.
+     * @inheritDoc
      */
     public function setAnalytics(AnalyticsInterface $analytics)
     {
@@ -101,9 +91,7 @@ class AbRunner
     }
 
     /**
-     * Gets the storage container that is used to identify users.
-     *
-     * @return StorageInterface
+     * @inheritDoc
      */
     public function getStorage()
     {
@@ -111,9 +99,7 @@ class AbRunner
     }
 
     /**
-     * Sets the storage container that is used to identify users.
-     *
-     * @param StorageInterface $storage The storage container to set.
+     * @inheritDoc
      */
     public function setStorage(StorageInterface $storage)
     {
@@ -121,9 +107,7 @@ class AbRunner
     }
 
     /**
-     * Gets the participation strategy.
-     *
-     * @return StrategyInterface
+     * @inheritDoc
      */
     public function getParticipationStrategy()
     {
@@ -131,9 +115,7 @@ class AbRunner
     }
 
     /**
-     * Executes the tests.
-     *
-     * @return int Returns the amount of executed tests.
+     * @inheritDoc
      */
     public function test()
     {
