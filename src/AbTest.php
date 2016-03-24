@@ -8,7 +8,7 @@ use PhpAb\Participation\Strategy\StrategyInterface;
 /**
  * The definition of a test.
  */
-class AbTest
+class AbTest implements TestInterface
 {
     /**
      * The name of the test.
@@ -71,6 +71,23 @@ class AbTest
     {
         return $this->name;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCallback($identifier)
+    {
+        if('A' === $identifier) {
+            return $this->callbackA;
+        }
+
+        if('B' === $identifier) {
+            return $this->callbackB;
+        }
+
+        throw new InvalidArgumentException("The Identifier must be one of [A,B]. Given: \"$identifier\"");
+    }
+
 
     /**
      * Gets the A-case callback of this test.

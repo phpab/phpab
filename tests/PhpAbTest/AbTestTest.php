@@ -71,6 +71,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertEquals($this->callbackA, $abTest->getCallbackA());
+        $this->assertEquals($this->callbackA, $abTest->getCallback('A'));
     }
 
     public function testGetCallbackB()
@@ -83,6 +84,22 @@ class AbTestTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertEquals($this->callbackB, $abTest->getCallbackB());
+        $this->assertEquals($this->callbackB, $abTest->getCallback('B'));
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetInvalidCallback()
+    {
+        // Arrange
+        // ...
+        //
+        // Act
+        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+
+        // Execute
+        $abTest->getCallback('invalid');
     }
 
     public function testGetParticipationStrategy()
