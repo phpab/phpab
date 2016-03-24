@@ -14,10 +14,10 @@ interface TestInterface
     /**
      * Gets the Callback by it's identifier
      *
-     * @param $identifier
+     * @param string $choice
      * @return callable
      */
-    public function getCallback($identifier);
+    public function getCallback($choice);
 
     /**
      * Gets the participation strategy.
