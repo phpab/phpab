@@ -63,9 +63,7 @@ class AbTest implements TestInterface
     }
 
     /**
-     * Gets the name of this test.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName()
     {
@@ -110,9 +108,7 @@ class AbTest implements TestInterface
     }
 
     /**
-     * Gets the participation strategy.
-     *
-     * @return StrategyInterface
+     * @inheritDoc
      */
     public function getParticipationStrategy()
     {
