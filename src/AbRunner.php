@@ -16,7 +16,7 @@ class AbRunner implements RunnerInterface
     /**
      * A list with all tests that should be executed.
      *
-     * @var AbTest[]
+     * @var TestInterface[]
      */
     private $tests;
 
