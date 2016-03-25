@@ -132,6 +132,10 @@ class AbTest implements TestInterface
     {
         $chosen = array_rand($this->validChoices);
 
+        if(null === $chosen) {
+            throw new \RuntimeException('There must be at least one possible choice.');
+        }
+
         return $this->validChoices[$chosen];
     }
 }
