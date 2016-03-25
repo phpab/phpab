@@ -23,7 +23,7 @@ abstract class Runner implements RunnerInterface
      *
      * @var TestInterface[]
      */
-    private $tests;
+    private $tests = array();
 
     /**
      * @var AnalyticsInterface
@@ -47,7 +47,6 @@ abstract class Runner implements RunnerInterface
      */
     public function __construct(StrategyInterface $participationStrategy = null)
     {
-        $this->tests = array();
         $this->participationStrategy = $participationStrategy;
     }
 

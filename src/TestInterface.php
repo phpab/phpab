@@ -2,6 +2,7 @@
 
 namespace PhpAb;
 
+use PhpAb\Exception\ChoiceNotFoundException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 interface TestInterface
@@ -16,6 +17,8 @@ interface TestInterface
     /**
      * Gets the Callback by it's identifier
      *
+     * @throws ChoiceNotFoundException
+     * 
      * @param string $choice
      * @return callable
      */

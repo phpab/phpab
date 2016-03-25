@@ -88,7 +88,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException RuntimeException
+     * @expectedException \PhpAb\Exception\ChoiceNotFoundException
      */
     public function testGetInvalidCallback()
     {

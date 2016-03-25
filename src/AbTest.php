@@ -3,6 +3,7 @@
 namespace PhpAb;
 
 use InvalidArgumentException;
+use PhpAb\Exception\ChoiceNotFoundException;
 use RuntimeException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
@@ -84,7 +85,7 @@ class AbTest implements TestInterface
             return $this->callbackB;
         }
 
-        throw new RuntimeException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
+        throw new ChoiceNotFoundException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
     }
 
 
