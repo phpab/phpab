@@ -142,40 +142,33 @@ abstract class Runner implements RunnerInterface
      */
     private function executeTest(TestInterface $test)
     {
+        // Take the strategy from the test if it's set
+        // If not, take the strategy from the runner
+        $strategy = $test->getParticipationStrategy()
+            ? $test->getParticipationStrategy()
+            : $this->getParticipationStrategy();
+
+        if (null === $strategy) {
+            // There was no strategy set.
+            // Not in the test nor in the runner.
+            // So we pretend that the test should always run
+
+            $this->executeChoice($test, $test->choose(), true);
+            return true;
+        }
+
+        if (! $strategy->isParticipating($this)) {
+            return false;
+        }
+
         if ($choice = $this->getStoredChoice($test)) {
             // execute the choice which was stored for the visitor
             $this->executeChoice($test, $choice, false);
             return true;
         }
 
-        if ($this->getParticipationStrategy()) {
-            return $this->getParticipationStrategy()->isParticipating($this);
-        }
-
-        if ($this->isParticipating($test)) {
-            $this->executeChoice($test, self::CHOICE_B, true);
-        } else {
-            $this->executeChoice($test, self::CHOICE_A, true);
-        }
-
+        $this->executeChoice($test, $test->choose(), true);
         return true;
-    }
-
-    /**
-     * Checks if the visitor is participating in the test
-     *
-     * @param \PhpAb\TestInterface $test
-     * @return bool
-     */
-    private function isParticipating(TestInterface $test)
-    {
-        if(! $test->getParticipationStrategy()) {
-            // There was no participation strategy given
-            // Let the visitor always participate
-            return true;
-        }
-
-        return $test->getParticipationStrategy()->isParticipating($this);
     }
 
     /**

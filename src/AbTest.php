@@ -40,6 +40,13 @@ class AbTest implements TestInterface
     private $participationStrategy;
 
     /**
+     * An array of valid choices
+     *
+     * @var array
+     */
+    private $validChoices = array('A', 'B');
+
+    /**
      * Initializes a new instance of this class.
      *
      * @param string $name The name of the test case.
@@ -116,5 +123,15 @@ class AbTest implements TestInterface
     public function getParticipationStrategy()
     {
         return $this->participationStrategy;
+    }
+
+    /**
+    * @inheritDoc
+    */
+    public function choose()
+    {
+        $chosen = array_rand($this->validChoices);
+
+        return $this->validChoices[$chosen];
     }
 }
