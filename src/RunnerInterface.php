@@ -4,6 +4,7 @@ namespace PhpAb;
 
 use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Storage\StorageInterface;
+use PhpAb\Participation\Strategy\StrategyInterface;
 
 interface RunnerInterface
 {
@@ -18,14 +19,14 @@ interface RunnerInterface
     /**
      * Gets all the tests that are executed.
      *
-     * @return AbTest[]
+     * @return TestInterface[]
      */
     public function getTests();
 
     /**
      * Sets the tests that should be executed.
      *
-     * @param AbTest[] $tests The tests to execute.
+     * @param TestInterface[] $tests The tests to execute.
      */
     public function setTests($tests);
 

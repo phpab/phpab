@@ -2,6 +2,8 @@
 
 namespace PhpAb;
 
+use PhpAb\Participation\Strategy\StrategyInterface;
+
 interface TestInterface
 {
     /**
