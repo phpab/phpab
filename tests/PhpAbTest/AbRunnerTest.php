@@ -125,6 +125,20 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $executedTests);
     }
 
+    public function testTestWithMultipleTests()
+    {
+        // Arrange
+        $phpab = new AbRunner();
+        $phpab->addTest(new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest(new AbTest('test2', $this->callbackA, $this->callbackB, $this->strategy));
+
+        // Act
+        $executedTests = $phpab->test();
+
+        // Assert
+        $this->assertEquals(2, $executedTests);
+    }
+
     public function testTestWithEmptyStorage()
     {
         // Arrange
