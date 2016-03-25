@@ -4,7 +4,6 @@ namespace PhpAb;
 
 use InvalidArgumentException;
 use PhpAb\Exception\ChoiceNotFoundException;
-use RuntimeException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 /**
