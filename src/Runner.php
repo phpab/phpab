@@ -12,7 +12,7 @@ use RuntimeException;
  *
  * @package \PhpAb
  */
-class Runner implements RunnerInterface
+abstract class Runner implements RunnerInterface
 {
     const CHOICE_NONE = null;
     const CHOICE_A = 'A';
@@ -165,9 +165,17 @@ class Runner implements RunnerInterface
         return true;
     }
 
+    /**
+     * Checks if the visitor is participating in the test
+     *
+     * @param \PhpAb\TestInterface $test
+     * @return bool
+     */
     private function isParticipating(TestInterface $test)
     {
         if(! $test->getParticipationStrategy()) {
+            // There was no participation strategy given
+            // Let the visitor always participate
             return true;
         }
 
