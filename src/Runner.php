@@ -156,19 +156,22 @@ class Runner implements RunnerInterface
             return false;
         }
 
-        if ($test->getParticipationStrategy()) {
-            $isParticipating = $test->getParticipationStrategy()->isParticipating($this);
-        } else {
-            $isParticipating = true;
-        }
-
-        if ($isParticipating) {
+        if ($this->isParticipating($test)) {
             $this->executeChoice($test, self::CHOICE_B, true);
         } else {
             $this->executeChoice($test, self::CHOICE_A, true);
         }
 
         return true;
+    }
+
+    private function isParticipating(TestInterface $test)
+    {
+        if(! $test->getParticipationStrategy()) {
+            return true;
+        }
+
+        return $test->getParticipationStrategy()->isParticipating($this);
     }
 
     /**
