@@ -143,7 +143,7 @@ abstract class Runner implements RunnerInterface
      */
     private function executeTest(TestInterface $test)
     {
-        if ($choice = $this->getChoiceFromStorage($test)) {
+        if ($choice = $this->getStoredChoice($test)) {
             $this->executeChoice($test, $choice, false);
             return true;
         }

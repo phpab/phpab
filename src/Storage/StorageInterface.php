@@ -20,7 +20,7 @@ interface StorageInterface
      * Reads the value from the storage.
      *
      * @param TestInterface $abTest The test to read the value for.
-     * @return string
+     * @return string|null The value of the choice
      */
     public function read(TestInterface $abTest);
 

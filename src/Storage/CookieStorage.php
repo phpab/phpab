@@ -87,9 +87,7 @@ class CookieStorage implements StorageInterface
     }
 
     /**
-     * Clears the storage.
-     *
-     * @param TestInterface $test The test to clear the storage for.
+     * @inheritdoc
      */
     public function clear(TestInterface $test)
     {
@@ -103,29 +101,17 @@ class CookieStorage implements StorageInterface
     }
 
     /**
-     * Reads the value from the storage.
-     *
-     * @param TestInterface $test The test to read the value for.
-     * @return string
+     * @inheritdoc
      */
     public function read(TestInterface $test)
     {
         $cookieName = $this->getCookieName($test);
 
-        if (isset($_COOKIE[$cookieName])) {
-            $value = $_COOKIE[$cookieName];
-
-            return $value;
-        }
-
-        return null;
+        return isset($_COOKIE[$cookieName]) ? $_COOKIE[$cookieName] : null;
     }
 
     /**
-     * Writes the value to the storage.
-     *
-     * @param TestInterface $test The test to read the value for.
-     * @param string $choice The value to write.
+     * @inheritdoc
      */
     public function write(TestInterface $test, $choice)
     {
