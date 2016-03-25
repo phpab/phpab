@@ -61,14 +61,8 @@ class SessionStorage implements StorageInterface
     public function read(TestInterface $test)
     {
         $sessionName = $this->getSessionName($test);
-
-        if (isset($_SESSION[$sessionName])) {
-            $value = $_SESSION[$sessionName];
-
-            return $value;
-        }
-
-        return null;
+        
+        return isset($_SESSION[$sessionName]) ? $_SESSION[$sessionName] : null;
     }
 
     /**

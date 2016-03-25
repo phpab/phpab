@@ -143,12 +143,9 @@ abstract class Runner implements RunnerInterface
      */
     private function executeTest(TestInterface $test)
     {
-        if ($this->getStorage()) {
-            $choice = $this->getStorage()->read($test);
-            if ($choice !== self::CHOICE_NONE) {
-                $this->executeChoice($test, $choice, false);
-                return true;
-            }
+        if ($choice = $this->getChoiceFromStorage($test)) {
+            $this->executeChoice($test, $choice, false);
+            return true;
         }
 
         if ($this->getParticipationStrategy() &&
@@ -180,6 +177,21 @@ abstract class Runner implements RunnerInterface
         }
 
         return $test->getParticipationStrategy()->isParticipating($this);
+    }
+
+    /**
+     * Get the choice from storage
+     *
+     * @param \PhpAb\TestInterface $test
+     * @return null|string the value of the choice or null
+     */
+    private function getStoredChoice(TestInterface $test)
+    {
+        if (! $this->getStorage()) {
+            return null;
+        }
+
+        return $this->getStorage()->read($test);
     }
 
     /**
