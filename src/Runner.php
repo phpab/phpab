@@ -214,18 +214,6 @@ abstract class Runner implements RunnerInterface
             $this->getAnalytics()->registerExistingVisitor($test, $choice);
         }
 
-        switch ($choice) {
-            case self::CHOICE_A:
-                call_user_func_array($test->getCallback(self::CHOICE_A), array($this, $test, $choice));
-                break;
-
-            case self::CHOICE_B:
-                call_user_func_array($test->getCallback(self::CHOICE_B), array($this, $test, $choice));
-                break;
-
-            case self::CHOICE_NONE:
-            default:
-                throw new RuntimeException('The choice "' . $choice . '" is not implemented.');
-        }
+        call_user_func_array($test->getCallback($choice), array($this, $test, $choice));
     }
 }
