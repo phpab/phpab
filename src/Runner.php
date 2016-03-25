@@ -143,13 +143,13 @@ abstract class Runner implements RunnerInterface
     private function executeTest(TestInterface $test)
     {
         if ($choice = $this->getStoredChoice($test)) {
+            // execute the choice which was stored for the visitor
             $this->executeChoice($test, $choice, false);
             return true;
         }
 
-        if ($this->getParticipationStrategy() &&
-            !$this->getParticipationStrategy()->isParticipating($this)) {
-            return false;
+        if ($this->getParticipationStrategy()) {
+            return $this->getParticipationStrategy()->isParticipating($this);
         }
 
         if ($this->isParticipating($test)) {
