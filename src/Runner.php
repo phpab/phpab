@@ -138,10 +138,10 @@ class Runner implements RunnerInterface
     /**
      * Executes the provided test.
      *
-     * @param AbTest $test The test to execute.
+     * @param TestInterface $test The test to execute.
      * @return bool Returns true when the test is executed; false otherwise.
      */
-    private function executeTest(AbTest $test)
+    private function executeTest(TestInterface $test)
     {
         if ($this->getStorage()) {
             $choice = $this->getStorage()->read($test);
@@ -174,12 +174,12 @@ class Runner implements RunnerInterface
     /**
      * Executes the choice that is made.
      *
-     * @param AbTest $test The test a choice is made for.
+     * @param TestInterface $test The test a choice is made for.
      * @param string $choice The choice that is made.
      * @param bool $firstTime Whether or not this was the first time the test was executed.
      * @throws RuntimeException Thrown when no valid choice is provided.
      */
-    private function executeChoice(AbTest $test, $choice, $firstTime)
+    private function executeChoice(TestInterface $test, $choice, $firstTime)
     {
         if ($firstTime && $this->getStorage()) {
             $this->getStorage()->write($test, $choice);
