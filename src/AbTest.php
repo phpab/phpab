@@ -3,12 +3,13 @@
 namespace PhpAb;
 
 use InvalidArgumentException;
+use RuntimeException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 /**
  * The definition of a test.
  */
-class AbTest
+class AbTest implements TestInterface
 {
     /**
      * The name of the test.
@@ -63,9 +64,7 @@ class AbTest
     }
 
     /**
-     * Gets the name of this test.
-     *
-     * @return string
+     * @inheritDoc
      */
     public function getName()
     {
@@ -73,7 +72,25 @@ class AbTest
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getCallback($choice)
+    {
+        if('A' === $choice) {
+            return $this->callbackA;
+        }
+
+        if('B' === $choice) {
+            return $this->callbackB;
+        }
+
+        throw new RuntimeException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
+    }
+
+
+    /**
      * Gets the A-case callback of this test.
+     * @deprecated since 1.0.0 in favor of getCallback
      *
      * @return callable
      */
@@ -84,6 +101,7 @@ class AbTest
 
     /**
      * Gets the B-case callback of this test.
+     * @deprecated since 1.0.0 in favor of getCallback
      *
      * @return callable
      */
@@ -93,9 +111,7 @@ class AbTest
     }
 
     /**
-     * Gets the participation strategy.
-     *
-     * @return StrategyInterface
+     * @inheritDoc
      */
     public function getParticipationStrategy()
     {

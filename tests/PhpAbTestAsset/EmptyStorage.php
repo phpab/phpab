@@ -2,7 +2,7 @@
 
 namespace PhpAbTestAsset;
 
-use PhpAb\AbTest;
+use PhpAb\TestInterface;
 use PhpAb\Storage\StorageInterface;
 
 class EmptyStorage2 implements StorageInterface
@@ -14,17 +14,17 @@ class EmptyStorage2 implements StorageInterface
         $this->choice = $choice;
     }
 
-    public function clear(AbTest $abTest)
+    public function clear(TestInterface $test)
     {
         $this->choice = null;
     }
 
-    public function read(AbTest $abTest)
+    public function read(TestInterface $test)
     {
         return $this->choice;
     }
 
-    public function write(AbTest $abTest, $choice)
+    public function write(TestInterface $test, $choice)
     {
         $this->choice = $choice;
     }

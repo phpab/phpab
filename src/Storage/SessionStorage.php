@@ -2,7 +2,7 @@
 
 namespace PhpAb\Storage;
 
-use PhpAb\AbTest;
+use PhpAb\TestInterface;
 
 /**
  * The SessionStorage class holds the value of the test in a session meaning that the test will only be active
@@ -30,12 +30,12 @@ class SessionStorage implements StorageInterface
     /**
      * Builds the name of the session for the given test.
      *
-     * @param AbTest $abTest The test to build the name of the session for.
+     * @param TestInterface $test The test to build the name of the session for.
      * @return string
      */
-    private function getSessionName(AbTest $abTest)
+    private function getSessionName(TestInterface $test)
     {
-        $replaced = preg_replace('/[^a-z0-9]+/i', '_', $this->name . '_' . $abTest->getName());
+        $replaced = preg_replace('/[^a-z0-9]+/i', '_', $this->name . '_' . $test->getName());
 
         return strtolower($replaced);
     }
@@ -43,11 +43,11 @@ class SessionStorage implements StorageInterface
     /**
      * Clears the storage.
      *
-     * @param AbTest $abTest The test to clear the storage for.
+     * @param TestInterface $test The test to clear the storage for.
      */
-    public function clear(AbTest $abTest)
+    public function clear(TestInterface $test)
     {
-        $sessionName = $this->getSessionName($abTest);
+        $sessionName = $this->getSessionName($test);
 
         unset($_SESSION[$sessionName]);
     }
@@ -55,12 +55,12 @@ class SessionStorage implements StorageInterface
     /**
      * Reads the value from the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $test The test to read the value for.
      * @return string
      */
-    public function read(AbTest $abTest)
+    public function read(TestInterface $test)
     {
-        $sessionName = $this->getSessionName($abTest);
+        $sessionName = $this->getSessionName($test);
 
         if (isset($_SESSION[$sessionName])) {
             $value = $_SESSION[$sessionName];
@@ -74,12 +74,12 @@ class SessionStorage implements StorageInterface
     /**
      * Writes the value to the storage.
      *
-     * @param AbTest $abTest The test to read the value for.
+     * @param TestInterface $test The test to read the value for.
      * @param string $choice The value to write.
      */
-    public function write(AbTest $abTest, $choice)
+    public function write(TestInterface $test, $choice)
     {
-        $sessionName = $this->getSessionName($abTest);
+        $sessionName = $this->getSessionName($test);
 
         $_SESSION[$sessionName] = $choice;
     }
