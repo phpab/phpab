@@ -18,7 +18,7 @@ class AbRunner implements RunnerInterface
      *
      * @var TestInterface[]
      */
-    private $tests;
+    private $tests = array();
 
     /**
      * @var AnalyticsInterface
@@ -42,7 +42,6 @@ class AbRunner implements RunnerInterface
      */
     public function __construct(StrategyInterface $participationStrategy = null)
     {
-        $this->tests = array();
         $this->participationStrategy = $participationStrategy;
     }
 
@@ -133,48 +132,64 @@ class AbRunner implements RunnerInterface
     /**
      * Executes the provided test.
      *
-     * @param AbTest $test The test to execute.
+     * @param TestInterface $test The test to execute.
      * @return bool Returns true when the test is executed; false otherwise.
      */
-    private function executeTest(AbTest $test)
+    private function executeTest(TestInterface $test)
     {
-        if ($this->getStorage()) {
-            $choice = $this->getStorage()->read($test);
-            if ($choice !== self::CHOICE_NONE) {
-                $this->executeChoice($test, $choice, false);
-                return true;
-            }
+        // Take the strategy from the test if it's set
+        // If not, take the strategy from the runner
+        $strategy = $test->getParticipationStrategy()
+            ? $test->getParticipationStrategy()
+            : $this->getParticipationStrategy();
+
+        if (null === $strategy) {
+            // There was no strategy set.
+            // Not in the test nor in the runner.
+            // So we pretend that the test should always run
+
+            $this->executeChoice($test, $test->choose(), true);
+            return true;
         }
 
-        if ($this->getParticipationStrategy() &&
-            !$this->getParticipationStrategy()->isParticipating($this)) {
+        if (! $strategy->isParticipating($this)) {
             return false;
         }
 
-        if ($test->getParticipationStrategy()) {
-            $isParticipating = $test->getParticipationStrategy()->isParticipating($this);
-        } else {
-            $isParticipating = true;
-        }
-        
-        if ($isParticipating) {
-            $this->executeChoice($test, self::CHOICE_B, true);
-        } else {
-            $this->executeChoice($test, self::CHOICE_A, true);
+        if ($choice = $this->getStoredChoice($test)) {
+            // execute the choice which was stored for the visitor
+            $this->executeChoice($test, $choice, false);
+            return true;
         }
 
+        $this->executeChoice($test, $test->choose(), true);
         return true;
+    }
+
+    /**
+     * Get the choice from storage
+     *
+     * @param \PhpAb\TestInterface $test
+     * @return null|string the value of the choice or null
+     */
+    private function getStoredChoice(TestInterface $test)
+    {
+        if (! $this->getStorage()) {
+            return null;
+        }
+
+        return $this->getStorage()->read($test);
     }
 
     /**
      * Executes the choice that is made.
      *
-     * @param AbTest $test The test a choice is made for.
+     * @param TestInterface $test The test a choice is made for.
      * @param string $choice The choice that is made.
      * @param bool $firstTime Whether or not this was the first time the test was executed.
      * @throws RuntimeException Thrown when no valid choice is provided.
      */
-    private function executeChoice(AbTest $test, $choice, $firstTime)
+    private function executeChoice(TestInterface $test, $choice, $firstTime)
     {
         if ($firstTime && $this->getStorage()) {
             $this->getStorage()->write($test, $choice);
@@ -186,18 +201,6 @@ class AbRunner implements RunnerInterface
             $this->getAnalytics()->registerExistingVisitor($test, $choice);
         }
 
-        switch ($choice) {
-            case self::CHOICE_A:
-                call_user_func_array($test->getCallback(self::CHOICE_A), array($this, $test, $choice));
-                break;
-
-            case self::CHOICE_B:
-                call_user_func_array($test->getCallback(self::CHOICE_B), array($this, $test, $choice));
-                break;
-
-            case self::CHOICE_NONE:
-            default:
-                throw new RuntimeException('The choice "' . $choice . '" is not implemented.');
-        }
+        call_user_func_array($test->getCallback($choice), array($this, $test, $choice));
     }
 }

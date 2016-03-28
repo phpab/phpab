@@ -41,9 +41,7 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-     * Clears the storage.
-     *
-     * @param TestInterface $test The test to clear the storage for.
+     * @inheritdoc
      */
     public function clear(TestInterface $test)
     {
@@ -53,29 +51,17 @@ class SessionStorage implements StorageInterface
     }
 
     /**
-     * Reads the value from the storage.
-     *
-     * @param TestInterface $test The test to read the value for.
-     * @return string
+     * @inheritdoc
      */
     public function read(TestInterface $test)
     {
         $sessionName = $this->getSessionName($test);
 
-        if (isset($_SESSION[$sessionName])) {
-            $value = $_SESSION[$sessionName];
-
-            return $value;
-        }
-
-        return null;
+        return isset($_SESSION[$sessionName]) ? $_SESSION[$sessionName] : null;
     }
 
     /**
-     * Writes the value to the storage.
-     *
-     * @param TestInterface $test The test to read the value for.
-     * @param string $choice The value to write.
+     * @inheritdoc
      */
     public function write(TestInterface $test, $choice)
     {

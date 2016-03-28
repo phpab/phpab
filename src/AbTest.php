@@ -3,7 +3,7 @@
 namespace PhpAb;
 
 use InvalidArgumentException;
-use RuntimeException;
+use PhpAb\Exception\ChoiceNotFoundException;
 use PhpAb\Participation\Strategy\StrategyInterface;
 
 /**
@@ -38,6 +38,13 @@ class AbTest implements TestInterface
      * @var StrategyInterface
      */
     private $participationStrategy;
+
+    /**
+     * An array of valid choices
+     *
+     * @var array
+     */
+    private $validChoices = array('A', 'B');
 
     /**
      * Initializes a new instance of this class.
@@ -84,7 +91,7 @@ class AbTest implements TestInterface
             return $this->callbackB;
         }
 
-        throw new RuntimeException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
+        throw new ChoiceNotFoundException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
     }
 
 
@@ -116,5 +123,19 @@ class AbTest implements TestInterface
     public function getParticipationStrategy()
     {
         return $this->participationStrategy;
+    }
+
+    /**
+    * @inheritDoc
+    */
+    public function choose()
+    {
+        $chosen = array_rand($this->validChoices);
+
+        if(null === $chosen) {
+            throw new \RuntimeException('There must be at least one possible choice.');
+        }
+
+        return $this->validChoices[$chosen];
     }
 }
