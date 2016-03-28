@@ -2,12 +2,12 @@
 
 namespace PhpAbTest;
 
-use PhpAb\AbTest;
+use PhpAb\Test;
 use PhpAbTestAsset\CallbackHandler;
 use PhpAbTestAsset\EmptyStrategy;
 use PHPUnit_Framework_TestCase;
 
-class AbTestTest extends PHPUnit_Framework_TestCase
+class TestTest extends PHPUnit_Framework_TestCase
 {
     private $handler;
     private $strategy;
@@ -30,7 +30,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', null, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', null, $this->callbackB, $this->strategy);
 
         // Assert
         // ...
@@ -44,7 +44,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', $this->callbackA, null, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, null, $this->strategy);
 
         // Assert
         // ...
@@ -55,7 +55,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
 
         // Assert
         $this->assertEquals('test', $abTest->getName());
@@ -67,7 +67,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
 
         // Assert
         $this->assertEquals($this->callbackA, $abTest->getCallbackA());
@@ -80,7 +80,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
 
         // Assert
         $this->assertEquals($this->callbackB, $abTest->getCallbackB());
@@ -96,7 +96,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
 
         // Execute
         $abTest->getCallback('invalid');
@@ -108,7 +108,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
 
         // Assert
         $this->assertEquals($this->strategy, $abTest->getParticipationStrategy());

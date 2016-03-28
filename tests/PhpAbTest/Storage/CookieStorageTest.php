@@ -2,7 +2,7 @@
 
 namespace PhpAbTest\Storage;
 
-use PhpAb\AbTest;
+use PhpAb\Test;
 use PhpAb\Storage\CookieStorage;
 use PhpAbTestAsset\CallbackHandler;
 use PhpAbTestAsset\EmptyStrategy;
@@ -22,7 +22,7 @@ class CookieStorageTest extends PHPUnit_Framework_TestCase
         $this->strategy = new EmptyStrategy();
         $this->callbackA = array($this->handler, 'methodA');
         $this->callbackB = array($this->handler, 'methodB');
-        $this->abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $this->abTest = new Test('test', $this->callbackA, $this->callbackB, $this->strategy);
     }
 
     /**

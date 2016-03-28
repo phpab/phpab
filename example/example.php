@@ -10,7 +10,7 @@
 require '../vendor/autoload.php';
 
 use PhpAb\AbRunner;
-use PhpAb\AbTest;
+use PhpAb\Test;
 use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Participation\Strategy\StrategyInterface;
 use PhpAb\RunnerInterface;
@@ -72,5 +72,5 @@ $callbackB = function (AbRunner $phpab, AbTest $test, $choice) {
 $phpab = new AbRunner(new \PercentageStrategy(1.0));
 $phpab->setAnalytics(new Analytics());
 $phpab->setStorage(new CookieStorage('abtest', 3600));
-$phpab->addTest(new AbTest('My Test', $callbackA, $callbackB, null));
+$phpab->addTest(new Test('My Test', $callbackA, $callbackB, null));
 $phpab->test();
