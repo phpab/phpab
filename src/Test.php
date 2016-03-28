@@ -47,7 +47,7 @@ class Test implements TestInterface
      *
      * @param string $name The name of the test case.
      * @param callable $control The A-case callback.
-     * @param callable[] $variants The B-case callback.
+     * @param callable[] $variants All possible variants.
      * @param StrategyInterface $participationStrategy The strategy that decides the case to execute.
      * @param VariantChooserInterface $variantChooser The VariantChooser decides which of the variants is chosen
      */
