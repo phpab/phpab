@@ -23,51 +23,55 @@ class Test implements TestInterface
      *
      * @var callback
      */
-    private $callbackA;
+    private $control;
 
     /**
      * The callback that should be executed when the B-case is executed.
      *
      * @var callback
      */
-    private $callbackB;
+    private $variants;
 
     /**
-     * A strategy that decides wheter case A or case B should be executed.
-     *
      * @var StrategyInterface
      */
     private $participationStrategy;
 
     /**
-     * An array of valid choices
-     *
-     * @var array
+     * @var \PhpAb\VariantChooserInterface
      */
-    private $validChoices = array('A', 'B');
+    private $variantChooser;
 
     /**
      * Initializes a new instance of this class.
      *
      * @param string $name The name of the test case.
-     * @param callable $callbackA The A-case callback.
-     * @param callable $callbackB The B-case callback.
+     * @param callable $control The A-case callback.
+     * @param callable[] $variants The B-case callback.
      * @param StrategyInterface $participationStrategy The strategy that decides the case to execute.
+     * @param VariantChooserInterface $variantChooser The VariantChooser decides which of the variants is chosen
      */
-    public function __construct($name, $callbackA, $callbackB, StrategyInterface $participationStrategy = null)
+    public function __construct($name, $control, $variants, StrategyInterface $participationStrategy, VariantChooserInterface $variantChooser)
     {
-        if (!is_callable($callbackA)) {
-            throw new InvalidArgumentException('Callback A is not callable.');
+        if (! is_callable($control)) {
+            throw new InvalidArgumentException('Control is not callable.');
         }
 
-        if (!is_callable($callbackB)) {
-            throw new InvalidArgumentException('Callback B is not callable.');
+        if (! count($variants)) {
+            throw new ChoiceNotFoundException('There must be at least one possible choice.');
+        }
+
+        foreach($variants as $k=>$variant) {
+            if (!is_callable($variant)) {
+                throw new InvalidArgumentException('Callback '.$k.' is not callable.');
+            }
         }
 
         $this->name = $name;
-        $this->callbackA = $callbackA;
-        $this->callbackB = $callbackB;
+        $this->control = $control;
+        $this->variants = $variants;
         $this->participationStrategy = $participationStrategy;
+        $this->variantChooser = $variantChooser;
     }
 
     /**
@@ -81,40 +85,23 @@ class Test implements TestInterface
     /**
      * @inheritDoc
      */
-    public function getCallback($choice)
+    public function getVariant($choice)
     {
-        if ('A' === $choice) {
-            return $this->callbackA;
+        $variants = $this->getVariants();
+
+        if(! isset($variants[$choice])) {
+            throw new ChoiceNotFoundException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
         }
 
-        if ('B' === $choice) {
-            return $this->callbackB;
-        }
-
-        throw new ChoiceNotFoundException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
+        return $variants[$choice];
     }
 
-
-    /**
-     * Gets the A-case callback of this test.
-     * @deprecated since 1.0.0 in favor of getCallback
-     *
-     * @return callable
-     */
-    public function getCallbackA()
+    public function getVariants()
     {
-        return $this->callbackA;
-    }
-
-    /**
-     * Gets the B-case callback of this test.
-     * @deprecated since 1.0.0 in favor of getCallback
-     *
-     * @return callable
-     */
-    public function getCallbackB()
-    {
-        return $this->callbackB;
+        return array_merge(
+            ['A' => $this->control],
+            $this->variants
+        );
     }
 
     /**
@@ -126,16 +113,10 @@ class Test implements TestInterface
     }
 
     /**
-    * @inheritDoc
-    */
-    public function choose()
+     * @inheritDoc
+     */
+    public function getVariantChooser()
     {
-        $chosen = array_rand($this->validChoices);
-
-        if (null === $chosen) {
-            throw new \RuntimeException('There must be at least one possible choice.');
-        }
-
-        return $this->validChoices[$chosen];
+        return $this->variantChooser;
     }
 }

@@ -15,14 +15,21 @@ interface TestInterface
     public function getName();
 
     /**
-     * Gets the Callback by it's identifier
+     * Gets the Variant by it's identifier
      *
      * @throws ChoiceNotFoundException
      *
-     * @param string $choice
+     * @param string $variant
      * @return callable
      */
-    public function getCallback($choice);
+    public function getVariant($variant);
+
+    /**
+     * Get all Variants for the test
+     *
+     * @return callable[]
+     */
+    public function getVariants();
 
     /**
      * Gets the participation strategy.
@@ -32,9 +39,10 @@ interface TestInterface
     public function getParticipationStrategy();
 
     /**
-     * Chooses one variation/option and returns the name
+     * Gets the Chooser which is responsible for choosing
+     * the variant for the new user.
      *
-     * @return string The chosen variation
+     * @return VariantChooserInterface
      */
-    public function choose();
+    public function getVariantChooser();
 }

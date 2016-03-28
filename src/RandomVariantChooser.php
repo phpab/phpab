@@ -1,13 +1,19 @@
 <?php
 
 namespace PhpAb;
+use PhpAb\Exception\ChoiceNotFoundException;
 
 /**
- * Class RandomVariantChooser
- *
- * @package \PhpAb
+ * Chooses a random variant
  */
-class RandomVariantChooser
+class RandomVariantChooser implements VariantChooserInterface
 {
+    /**
+     * @inheritDoc
+     */
+    public function chooseFrom($variants)
+    {
+        return array_rand($variants);
+    }
 
 }

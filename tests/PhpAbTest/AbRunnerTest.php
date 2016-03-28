@@ -3,6 +3,7 @@
 namespace PhpAbTest;
 
 use PhpAb\AbRunner;
+use PhpAb\RandomVariantChooser;
 use PhpAb\Test;
 use PhpAbTestAsset\CallbackHandler;
 use PhpAbTestAsset\EmptyStrategy;
@@ -15,6 +16,8 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
     private $strategy;
     private $callbackA;
     private $callbackB;
+    private $test;
+    private $test2;
 
     public function setUp()
     {
@@ -22,6 +25,8 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $this->strategy = new EmptyStrategy();
         $this->callbackA = array($this->handler, 'methodA');
         $this->callbackB = array($this->handler, 'methodB');
+        $this->test= new Test('test', $this->callbackA, ['B' =>$this->callbackB], $this->strategy, new RandomVariantChooser());
+        $this->test2= new Test('test2', $this->callbackA, ['B' =>$this->callbackB], $this->strategy, new RandomVariantChooser());
     }
 
     public function testEmptyConstructor()
@@ -54,7 +59,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $phpab = new AbRunner();
 
         // Act
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Assert
         $this->assertCount(1, $phpab->getTests());
@@ -67,7 +72,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
 
         // Act
         $phpab->setTests(array(
-            new Test('test', $this->callbackA, $this->callbackB, $this->strategy)
+            $this->test
         ));
 
         // Assert
@@ -116,7 +121,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $phpab = new AbRunner();
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -129,8 +134,8 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $phpab = new AbRunner();
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
-        $phpab->addTest(new Test('test2', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
+        $phpab->addTest($this->test2);
 
         // Act
         $executedTests = $phpab->test();
@@ -144,7 +149,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         // Arrange
         $phpab = new AbRunner();
         $phpab->setStorage($this->getMock('PhpAb\Storage\StorageInterface'));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -158,7 +163,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         // Arrange
         $phpab = new AbRunner();
         $phpab->setStorage($this->getMock('PhpAb\Storage\StorageInterface'));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -173,7 +178,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $this->strategy->setParticipating(false);
 
         $phpab = new AbRunner($this->strategy);
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -188,7 +193,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $this->strategy->setParticipating(false);
 
         $phpab = new AbRunner();
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -202,7 +207,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         // Arrange
         $phpab = new AbRunner();
         $phpab->setAnalytics($this->getMock('PhpAb\Analytics\AnalyticsInterface'));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -220,7 +225,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         $phpab = new AbRunner();
         $phpab->setAnalytics($this->getMock('PhpAb\Analytics\AnalyticsInterface'));
         $phpab->setStorage($storage);
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $executedTests = $phpab->test();
@@ -240,7 +245,7 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
 
         $phpab = new AbRunner();
         $phpab->setStorage($storage);
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, $this->strategy));
+        $phpab->addTest($this->test);
 
         // Act
         $phpab->test();
@@ -249,68 +254,4 @@ class AbRunnerTest extends PHPUnit_Framework_TestCase
         // ...
     }
 
-    public function testTestTestWithoutStrategy()
-    {
-        // Arrange
-        $phpab = new AbRunner();
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, null));
-
-        // Act
-        $executedTests = $phpab->test();
-
-        // Assert
-        $this->assertEquals(1, $executedTests);
-    }
-
-    public function testStrategyFromRunner()
-    {
-        // Arrange
-        $phpab = new AbRunner(new EmptyStrategy(true));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, null));
-
-        // Act
-        $executedTests = $phpab->test();
-
-        // Assert
-        $this->assertEquals(1, $executedTests);
-    }
-
-    public function testStrategyFromTest()
-    {
-        // Arrange
-        $phpab = new AbRunner();
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, new EmptyStrategy(true)));
-
-        // Act
-        $executedTests = $phpab->test();
-
-        // Assert
-        $this->assertEquals(1, $executedTests);
-    }
-
-    public function testStrategyIfNotSetInTest()
-    {
-        // Arrange
-        $phpab = new AbRunner(new EmptyStrategy(false));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, null));
-
-        // Act
-        $executedTests = $phpab->test();
-
-        // Assert
-        $this->assertEquals(0, $executedTests);
-    }
-
-    public function testStrategyIfBothSet()
-    {
-        // Arrange
-        $phpab = new AbRunner(new EmptyStrategy(false));
-        $phpab->addTest(new Test('test', $this->callbackA, $this->callbackB, new EmptyStrategy(true)));
-
-        // Act
-        $executedTests = $phpab->test();
-
-        // Assert
-        $this->assertEquals(1, $executedTests);
-    }
 }
