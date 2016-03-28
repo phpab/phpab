@@ -83,11 +83,11 @@ class AbTest implements TestInterface
      */
     public function getCallback($choice)
     {
-        if('A' === $choice) {
+        if ('A' === $choice) {
             return $this->callbackA;
         }
 
-        if('B' === $choice) {
+        if ('B' === $choice) {
             return $this->callbackB;
         }
 
@@ -132,7 +132,7 @@ class AbTest implements TestInterface
     {
         $chosen = array_rand($this->validChoices);
 
-        if(null === $chosen) {
+        if (null === $chosen) {
             throw new \RuntimeException('There must be at least one possible choice.');
         }
 

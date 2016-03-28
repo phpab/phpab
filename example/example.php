@@ -61,11 +61,11 @@ class PercentageStrategy implements StrategyInterface
     }
 }
 
-$callbackA = function(AbRunner $phpab, AbTest $test, $choice) {
+$callbackA = function (AbRunner $phpab, AbTest $test, $choice) {
     echo 'Executing test A<br />';
 };
 
-$callbackB = function(AbRunner $phpab, AbTest $test, $choice) {
+$callbackB = function (AbRunner $phpab, AbTest $test, $choice) {
     echo 'Executing test B<br />';
 };
 

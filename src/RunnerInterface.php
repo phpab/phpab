@@ -71,5 +71,4 @@ interface RunnerInterface
      * @return int Returns the amount of executed tests.
      */
     public function test();
-
 }
