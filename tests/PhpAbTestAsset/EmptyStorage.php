@@ -5,7 +5,7 @@ namespace PhpAbTestAsset;
 use PhpAb\TestInterface;
 use PhpAb\Storage\StorageInterface;
 
-class EmptyStorage2 implements StorageInterface
+class EmptyStorage implements StorageInterface
 {
     private $choice;
 
