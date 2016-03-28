@@ -15,6 +15,13 @@ interface TestInterface
     public function getName();
 
     /**
+     * Get the control variant
+     *
+     * @return callable
+     */
+    public function getControlVariant();
+
+    /**
      * Gets the Variant by it's identifier
      *
      * @throws ChoiceNotFoundException

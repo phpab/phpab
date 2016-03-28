@@ -85,6 +85,15 @@ class Test implements TestInterface
     /**
      * @inheritDoc
      */
+    public function getControlVariant()
+    {
+        return $this->control;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
     public function getVariant($choice)
     {
         $variants = $this->getVariants();
