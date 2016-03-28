@@ -143,12 +143,12 @@ class AbRunner implements RunnerInterface
 
         if ($choice = $this->getStoredChoice($test)) {
             // execute the choice which was stored for the visitor
-            $this->executeChoice($test, $test->getVariant($choice), false);
+            $this->executeChoice($test, $choice, false);
             return true;
         }
 
         $choice = $variantChooser->chooseFrom($variants);
-        $this->executeChoice($test, $test->getVariant($choice), true);
+        $this->executeChoice($test, $choice, true);
         return true;
     }
 
@@ -187,6 +187,6 @@ class AbRunner implements RunnerInterface
             $this->getAnalytics()->registerExistingVisitor($test, $choice);
         }
 
-        call_user_func_array($choice, array($this, $test, $choice));
+        call_user_func_array($test->getVariant($choice), array($this, $test, $choice));
     }
 }
