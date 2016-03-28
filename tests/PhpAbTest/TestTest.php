@@ -2,11 +2,9 @@
 
 namespace PhpAbTest;
 
-use PhpAb\Exception\ChoiceNotFoundException;
 use PhpAb\RandomVariantChooser;
 use PhpAb\Test;
 use PhpAbTestAsset\CallbackHandler;
-
 use PhpAbTestAsset\EmptyStrategy;
 use PHPUnit_Framework_TestCase;
 

@@ -61,7 +61,7 @@ class Test implements TestInterface
             throw new ChoiceNotFoundException('There must be at least one possible choice.');
         }
 
-        foreach($variants as $k=>$variant) {
+        foreach ($variants as $k=>$variant) {
             if (!is_callable($variant)) {
                 throw new InvalidArgumentException('Callback '.$k.' is not callable.');
             }
@@ -89,7 +89,7 @@ class Test implements TestInterface
     {
         $variants = $this->getVariants();
 
-        if(! isset($variants[$choice])) {
+        if (! isset($variants[$choice])) {
             throw new ChoiceNotFoundException('The choice "' . $choice . '" is not allowed in ABTest. Only [A,B] are allowed');
         }
 

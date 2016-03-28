@@ -4,7 +4,6 @@ namespace PhpAbTest\Storage;
 
 use PhpAb\RandomVariantChooser;
 use PhpAb\Test;
-
 use PhpAb\Storage\SessionStorage;
 use PhpAbTestAsset\CallbackHandler;
 use PhpAbTestAsset\EmptyStrategy;

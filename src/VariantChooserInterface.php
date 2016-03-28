@@ -1,6 +1,7 @@
 <?php
 
 namespace PhpAb;
+
 use PhpAb\Exception\ChoiceNotFoundException;
 
 /**
@@ -16,5 +17,4 @@ interface VariantChooserInterface
      * @return string the name of the chosen variant
      */
     public function chooseFrom($variants);
-
 }

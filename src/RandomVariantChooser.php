@@ -1,6 +1,7 @@
 <?php
 
 namespace PhpAb;
+
 use PhpAb\Exception\ChoiceNotFoundException;
 
 /**
@@ -15,5 +16,4 @@ class RandomVariantChooser implements VariantChooserInterface
     {
         return array_rand($variants);
     }
-
 }
