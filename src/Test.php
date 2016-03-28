@@ -9,7 +9,7 @@ use PhpAb\Participation\Strategy\StrategyInterface;
 /**
  * The definition of a test.
  */
-class AbTest implements TestInterface
+class Test implements TestInterface
 {
     /**
      * The name of the test.
