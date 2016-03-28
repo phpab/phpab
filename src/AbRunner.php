@@ -9,10 +9,6 @@ use RuntimeException;
 
 class AbRunner implements RunnerInterface
 {
-    const CHOICE_NONE = null;
-    const CHOICE_A = 'A';
-    const CHOICE_B = 'B';
-
     /**
      * A list with all tests that should be executed.
      *
