@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @license MIT License
- * @copyright  2016 Phpab Development Team
- */
-
 namespace Phpab\Phpab\VariantChooser;
 
 /**
