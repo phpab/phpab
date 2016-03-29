@@ -6,7 +6,7 @@ interface VariantInterface
 {
 
     /**
-     * Gets the Identifier for the variant.
+     * Gets the Identifier for the Variant.
      *
      * This will be stored in storage for participating users.
      *
@@ -15,9 +15,9 @@ interface VariantInterface
     public function getIdentifier();
 
     /**
-     * Run the variant
+     * Run the Variant
      *
-     * The variant will run if the user is already participaring
+     * The Variant will run if the user is already participating
      * and has this Variant in the Storage.
      *
      * It will also run if the User has no stored Variant but
