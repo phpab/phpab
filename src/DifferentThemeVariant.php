@@ -7,6 +7,11 @@ class DifferentThemeVariant implements VariantInterface
 
     private $eventManager;
 
+    /**
+     * DifferentThemeVariant constructor.
+     *
+     * @param $eventManager Event manager. E.G. from ZEND
+     */
     public function __construct($eventManager)
     {
         $this->eventManager = $eventManager;
