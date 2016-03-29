@@ -13,7 +13,10 @@ namespace Phpab\Phpab\ParticipationStrategy;
 interface ParticipationStrategyInterface
 {
 
-    // Given an implementation, establishes if User participates
-    // in current Test
-    public function isParticipant();
+    /**
+     * Checks if a user should participate in the test
+     *
+     * @return boolean
+     */
+    public function shouldParticipate();
 }
