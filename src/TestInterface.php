@@ -57,5 +57,4 @@ interface TestInterface
      * @return VariantChooserInterface
      */
     public function getVariantChooser();
-
 }

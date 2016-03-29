@@ -30,5 +30,4 @@ interface StorageInterface
      * @param string $choice The value to write.
      */
     public function write(TestInterface $test, $choice);
-
 }

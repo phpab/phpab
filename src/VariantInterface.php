@@ -25,5 +25,4 @@ interface VariantInterface
      * @return null
      */
     public function run();
-
 }
