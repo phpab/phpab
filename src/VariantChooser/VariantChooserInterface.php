@@ -1,6 +1,7 @@
 <?php
 
 namespace Phpab\Phpab\VariantChooser;
+
 use Phpab\Phpab\VariantInterface;
 
 /**

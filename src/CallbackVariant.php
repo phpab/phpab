@@ -40,5 +40,4 @@ class CallbackVariant implements VariantInterface
     {
         return call_user_func($this->callback);
     }
-
 }

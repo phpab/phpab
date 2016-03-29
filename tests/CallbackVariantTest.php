@@ -11,7 +11,7 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
     public function testGetIdentifier()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function() {});
+        $variant = new CallbackVariant('name', function () {});
 
         // Act
         $identifier = $variant->getIdentifier();
@@ -23,7 +23,7 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
     public function testRunWithSimpleClosure()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function() {
+        $variant = new CallbackVariant('name', function () {
             return 'Walter';
         });
 
@@ -63,5 +63,4 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
         // Act
         $variant->run();
     }
-
 }
