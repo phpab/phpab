@@ -32,5 +32,8 @@
 	},
 	"scripts": {
 		"test": "phpunit"
+	},
+	"require-dev": {
+		"scrutinizer/ocular": "^1.3"
 	}
 }
