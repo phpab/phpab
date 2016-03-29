@@ -7,7 +7,14 @@ use Phpab\Phpab\VariantChooser\VariantChooserInterface;
 
 interface TestInterface
 {
-    
+
+    /**
+     * Get the identifier for this test
+     *
+     * @return string
+     */
+    public function getIdentifier();
+
     /**
      * Get all variants for this test
      *

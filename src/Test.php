@@ -14,10 +14,19 @@ use Phpab\Phpab\VariantChooser\VariantChooserInterface;
  */
 class Test implements TestInterface
 {
-    public function __construct()
+    public function __construct($identifier)
     {
         // TODO
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getIdentifier()
+    {
+        // TODO: Implement getIdentifier() method.
+    }
+
 
     /**
      * @inheritDoc

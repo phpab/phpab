@@ -9,7 +9,7 @@ $engine = new \Phpab\Phpab\Engine(
     new \Phpab\Phpab\Analytics\GoogleExperiments('UA-asfsafsaf')
 );
 
-$test = new \Phpab\Phpab\Test();
+$test = new \Phpab\Phpab\Test('foo_test');
 $test->addVariant(new \Phpab\Phpab\DifferentThemeVariant('different_checkout_steps', $app->getEventManager()));
 
 // Add some tests
