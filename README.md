@@ -44,7 +44,9 @@ If you discover any security related issues, please email :author_email instead 
 
 ## Credits
 
-- [:author_name][link-author]
+- [Walter Tamboer](https://github.com/waltertamboer)
+- [Patrick](https://github.com/psren)
+- [Mariano F.co Benítez Mulet](https://github.com/pachico)
 - [All Contributors][link-contributors]
 
 ## License
