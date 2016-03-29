@@ -16,7 +16,7 @@ class CallbackVariant implements VariantInterface
     private $callback;
 
     /**
-     * @param          $identifier The Identifier of the Variant
+     * @param string   $identifier The Identifier of the Variant
      * @param callable $callback The Callable to execute on run
      */
     public function __construct($identifier, callable $callback)
