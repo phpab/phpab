@@ -6,80 +6,58 @@
  */
 
 namespace Phpab\Phpab;
+use Phpab\Phpab\ParticipationStrategy\ParticipationStrategyInterface;
+use Phpab\Phpab\VariantChooser\VariantChooserInterface;
 
 /**
  *
  */
-class Test
+class Test implements TestInterface
 {
-
-    /**
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     *
-     * @var int
-     */
-    protected $variant;
-
-    /**
-     *
-     * @var VariantChooser\VariantChooserInterface
-     */
-    protected $variant_chooser;
-
-    /**
-     *
-     * @var ParticipationStrategy\ParticipationStrategyInterface
-     */
-    protected $participation_strategy;
-
-    /**
-     *
-     * @param string $name Name of the test
-     * @param \Phpab\Phpab\VariantChooser\VariantChooserInterface $variant_chooser
-     * @param \Phpab\Phpab\ParticipationStrategy\ParticipationStrategyInterface $participation_strategy
-     */
-    public function __construct($name, VariantChooser\VariantChooserInterface $variant_chooser, ParticipationStrategy\ParticipationStrategyInterface $participation_strategy = null) {
-        
-        $this->name = (string) $name;
-
-        $this->variant_chooser = $variant_chooser;
-
-        $this->participation_strategy = $participation_strategy;
-
+    public function __construct()
+    {
+        // TODO
     }
 
     /**
-     *
-     * @return mixed int|null
+     * @inheritDoc
      */
-    public function getVariant() {
-
-        if ($this->participation_strategy) {
-
-            if (!$this->participation_strategy->isParticipant()) {
-
-                // In which case it will be null;
-                return $this->variant;
-            }
-        }
-
-        return $this->variant_chooser->chooseVariant();
-
+    public function getVariants()
+    {
+        // TODO: Implement getVariants() method.
     }
 
     /**
-     *
-     * @return string
+     * @inheritDoc
      */
-    function getName() {
-
-        return $this->name;
-
+    public function getVariant($variant)
+    {
+        // TODO: Implement getVariant() method.
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getOptions()
+    {
+        // TODO: Implement getOptions() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getParticipationStrategy()
+    {
+        // TODO: Implement getParticipationStrategy() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVariantChooser()
+    {
+        // TODO: Implement getVariantChooser() method.
+    }
+
 
 }

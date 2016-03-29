@@ -13,8 +13,6 @@ namespace Phpab\Phpab\Analytics;
 interface AnalyticsInterface
 {
 
-    /**
-     * 
-     */
-    public function register();
+    // TODO
+
 }

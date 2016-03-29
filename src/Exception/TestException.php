@@ -10,7 +10,7 @@ namespace Phpab\Phpab\Exception;
 /**
  * 
  */
-abstract class ExceptionAbstract extends \Exception
+abstract class TestException extends \Exception
 {
 
 }
