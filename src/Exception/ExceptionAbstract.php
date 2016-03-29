@@ -5,12 +5,12 @@
  * @copyright  2016 Phpab Development Team
  */
 
-namespace Phpab\Phpab;
+namespace Phpab\Phpab\Exception;
 
 /**
  * 
  */
-class Test
+abstract class ExceptionAbstract extends \Exception
 {
 
 }
