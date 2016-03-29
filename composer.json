@@ -1,19 +1,28 @@
 {
 	"name": "phpab/phpab",
+	"type": "library",
 	"description": "A PHP library to create A/B tests.",
-	"keywords": ["ab", "abtesting", "test", "testing"],
+	"keywords": [
+		"Phpab",
+		"Ab test",
+		"abtest"
+	],
+	"homepage": "https://github.com/phpab/phpab",
 	"license": "MIT",
 	"require": {
-		"php": ">=5.3.3"
-	},
-	"require-dev": {
-		"phpunit/phpunit": "~4.5",
-		"phpunit/php-code-coverage": "2.2.*",
-		"mockery/mockery": "0.9.*",
+		"php": "~5.4"
 	},
 	"autoload": {
 		"psr-4": {
-			"Phpab\\": "src"
+			"Phpab\\Phpab\\": "src"
 		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Phpab\\Phpab\\": "tests"
+		}
+	},
+	"scripts": {
+		"test": "phpunit"
 	}
 }
