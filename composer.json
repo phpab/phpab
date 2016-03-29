@@ -9,6 +9,14 @@
 	],
 	"homepage": "https://github.com/phpab/phpab",
 	"license": "MIT",
+    "authors": [
+      {
+        "name": "Patrick Heller",
+        "email": "paddy.heller@gmail.com",
+        "homepage": "https://github.com/psren",
+        "role": "Developer"
+      }
+    ],
 	"require": {
 		"php": "~5.4"
 	},
