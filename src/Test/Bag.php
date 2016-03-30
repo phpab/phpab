@@ -31,15 +31,15 @@ class Bag
      * Bag constructor.
      *
      * @param \Phpab\Phpab\Test\TestInterface            $test The test
-     * @param array                                      $options Additional options
      * @param \Phpab\Phpab\Participation\FilterInterface $participationFilter
      * @param \Phpab\Phpab\Variant\ChooserInterface      $variantChooser
+     * @param array                                      $options Additional options
      */
     public function __construct(
         TestInterface $test,
-        $options = [],
         FilterInterface $participationFilter,
-        ChooserInterface $variantChooser
+        ChooserInterface $variantChooser,
+        $options = []
     ) {
         $this->test = $test;
         $this->options = $options;
