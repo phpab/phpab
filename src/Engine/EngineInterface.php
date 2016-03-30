@@ -49,7 +49,7 @@ interface EngineInterface
     /**
      * Adds a test to the Engine
      *
-     * @param \Phpab\Phpab\TestInterface $test
+     * @param \Phpab\Phpab\Test\TestInterface $test
      * 
      * @throws TestCollisionException
      */

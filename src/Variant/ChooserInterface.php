@@ -2,7 +2,7 @@
 
 namespace Phpab\Phpab\Variant;
 
-use Phpab\Phpab\VariantInterface;
+use Phpab\Phpab\Variant\VariantInterface;
 
 /**
  * A VariantChooser is a class that chooses from n Variants
