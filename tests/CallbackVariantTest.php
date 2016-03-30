@@ -6,7 +6,6 @@ use Phpab\Phpab\Exception\TestExecutionException;
 
 class CallbackVariantTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testGetIdentifier()
     {
         // Arrange
