@@ -7,7 +7,6 @@ namespace Phpab\Phpab\ParticipationStrategy;
  */
 interface ParticipationFilterInterface
 {
-
     /**
      * Checks if a user should participate in the test
      *
