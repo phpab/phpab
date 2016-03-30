@@ -2,9 +2,10 @@
 
 namespace Phpab\Phpab;
 
+use Phpab\Phpab\Exception\TestExecutionException;
+
 interface VariantInterface
 {
-
     /**
      * Gets the Identifier for the Variant.
      *
@@ -17,10 +18,7 @@ interface VariantInterface
     /**
      * Run the Variant
      *
-     * The Variant will run if the user is already participating
-     * and has this Variant in the Storage.
-     *
-     * It will also run if the User has no stored Variant but
+     * @throws TestExecutionException
      *
      * @return null
      */
