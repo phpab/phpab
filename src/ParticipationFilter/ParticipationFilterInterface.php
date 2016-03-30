@@ -3,9 +3,9 @@
 namespace Phpab\Phpab\ParticipationStrategy;
 
 /**
- * 
+ * Filters out who should not participate
  */
-interface ParticipationStrategyInterface
+interface ParticipationFilterInterface
 {
 
     /**
