@@ -4,7 +4,6 @@ namespace Phpab\Phpab;
 
 class CallbackVariant implements VariantInterface
 {
-
     /**
      * @var string
      */
