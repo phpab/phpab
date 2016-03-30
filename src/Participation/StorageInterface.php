@@ -5,7 +5,7 @@ namespace Phpab\Phpab\Storage;
 /**
  * Stores the participation state of the user
  */
-interface ParticipationStorageInterface
+interface StorageInterface
 {
     /**
      * Checks if the test has a participation set.
