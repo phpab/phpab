@@ -7,7 +7,6 @@ use Phpab\Phpab\Variant\ChooserInterface;
 
 class BagTest extends \PHPUnit_Framework_TestCase
 {
-
     private $test;
     private $participationFilter;
     private $variantChooser;
@@ -78,5 +77,4 @@ class BagTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertInstanceOf(ChooserInterface::class, $chooser);
     }
-
 }
