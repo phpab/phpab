@@ -10,7 +10,6 @@ use Phpab\Phpab\Test\TestInterface;
 
 interface EngineInterface
 {
-
     /**
      * Gets the storage where information about
      * the users participation is stored.
@@ -51,10 +50,13 @@ interface EngineInterface
      * Adds a test to the Engine
      *
      * @param \Phpab\Phpab\Test\TestInterface $test
-     * 
+     * @param array                           $options
+     *
      * @throws TestCollisionException
+     *
+     * @return null
      */
-    public function addTest(TestInterface $test);
+    public function addTest(TestInterface $test, $options = []);
 
     /**
      * Starts the tests
