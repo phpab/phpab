@@ -8,13 +8,6 @@ namespace Phpab\Phpab\Storage;
 interface ParticipationStorageInterface
 {
     /**
-     * The identifier the session/cookie should be stored in.
-     *
-     * @return string
-     */
-    public function getIdentifier();
-
-    /**
      * Checks if the test has a participation set.
      *
      * @param string $identifier The tests identifier
