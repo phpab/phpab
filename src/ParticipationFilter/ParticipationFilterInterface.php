@@ -3,11 +3,10 @@
 namespace Phpab\Phpab\ParticipationStrategy;
 
 /**
- * 
+ * Filters out who should not participate
  */
-interface ParticipationStrategyInterface
+interface ParticipationFilterInterface
 {
-
     /**
      * Checks if a user should participate in the test
      *
