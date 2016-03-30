@@ -10,7 +10,6 @@ use Phpab\Phpab\Test\TestInterface;
 
 interface EngineInterface
 {
-
     /**
      * Gets the storage where information about
      * the users participation is stored.
