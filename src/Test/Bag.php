@@ -40,8 +40,7 @@ class Bag
         $options = [],
         FilterInterface $participationFilter,
         ChooserInterface $variantChooser
-    )
-    {
+    ) {
         $this->test = $test;
         $this->options = $options;
         $this->participationFilter = $participationFilter;
@@ -93,5 +92,4 @@ class Bag
     {
         return $this->variantChooser;
     }
-
 }
