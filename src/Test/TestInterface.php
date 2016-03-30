@@ -1,5 +1,7 @@
 <?php
 
+namespace Phpab\Phpab\Test;
+
 use Phpab\Phpab\Participation\FilterInterface;
 use Phpab\Phpab\Variant\ChooserInterface;
 
