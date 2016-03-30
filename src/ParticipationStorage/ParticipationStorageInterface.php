@@ -7,9 +7,10 @@ namespace Phpab\Phpab\Storage;
  */
 interface ParticipationStorageInterface
 {
-
     /**
-     * @return mixed The identifier the session/cookie should be stored in.
+     * The identifier the session/cookie should be stored in.
+     *
+     * @return string
      */
     public function getIdentifier();
 
