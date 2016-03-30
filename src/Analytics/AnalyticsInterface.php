@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpab\Phpab\Analytics;
+namespace PhpAb\Analytics;
 
 interface AnalyticsInterface
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Phpab\Phpab\Variant;
+namespace PhpAb\Variant;
 
-use Phpab\Phpab\Variant\VariantInterface;
+use PhpAb\Variant\VariantInterface;
 
 /**
  * A VariantChooser is a class that chooses from n Variants

@@ -1,8 +1,8 @@
 <?php
 
-namespace Phpab\Phpab\Variant;
+namespace PhpAb\Variant;
 
-use Phpab\Phpab\Exception\TestExecutionException;
+use PhpAb\Exception\TestExecutionException;
 
 class CallbackVariantTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +31,7 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Phpab\Phpab\Exception\TestExecutionException
+     * @expectedException \PhpAb\Exception\TestExecutionException
      */
     public function testRunClosureThrowsException()
     {

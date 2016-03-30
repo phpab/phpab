@@ -1,12 +1,12 @@
 <?php
 
-namespace Phpab\Phpab\Engine;
+namespace PhpAb\Engine;
 
-use Phpab\Phpab\Analytics\AnalyticsInterface;
-use Phpab\Phpab\Exception\TestCollisionException;
-use Phpab\Phpab\Exception\TestNotFoundException;
-use Phpab\Phpab\Participation\StorageInterface;
-use Phpab\Phpab\Test\TestInterface;
+use PhpAb\Analytics\AnalyticsInterface;
+use PhpAb\Exception\TestCollisionException;
+use PhpAb\Exception\TestNotFoundException;
+use PhpAb\Participation\StorageInterface;
+use PhpAb\Test\TestInterface;
 
 interface EngineInterface
 {
@@ -49,7 +49,7 @@ interface EngineInterface
     /**
      * Adds a test to the Engine
      *
-     * @param \Phpab\Phpab\Test\TestInterface $test
+     * @param \PhpAb\Test\TestInterface $test
      * @param array                           $options
      *
      * @throws TestCollisionException

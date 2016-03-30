@@ -1,8 +1,8 @@
 <?php
 
-namespace Phpab\Phpab\Test;
+namespace PhpAb\Test;
 
-use Phpab\Phpab\Variant\VariantInterface;
+use PhpAb\Variant\VariantInterface;
 
 interface TestInterface
 {

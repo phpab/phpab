@@ -1,14 +1,14 @@
 <?php
 
-namespace Phpab\Phpab\Test;
+namespace PhpAb\Test;
 
-use Phpab\Phpab\Participation\FilterInterface;
-use Phpab\Phpab\Variant\ChooserInterface;
+use PhpAb\Participation\FilterInterface;
+use PhpAb\Variant\ChooserInterface;
 
 class Bag
 {
     /**
-     * @var \Phpab\Phpab\Test\TestInterface
+     * @var \PhpAb\Test\TestInterface
      */
     private $test;
 
@@ -18,21 +18,21 @@ class Bag
     private $options;
 
     /**
-     * @var \Phpab\Phpab\Participation\FilterInterface
+     * @var \PhpAb\Participation\FilterInterface
      */
     private $participationFilter;
 
     /**
-     * @var \Phpab\Phpab\Variant\ChooserInterface
+     * @var \PhpAb\Variant\ChooserInterface
      */
     private $variantChooser;
 
     /**
      * Bag constructor.
      *
-     * @param \Phpab\Phpab\Test\TestInterface            $test The test
-     * @param \Phpab\Phpab\Participation\FilterInterface $participationFilter
-     * @param \Phpab\Phpab\Variant\ChooserInterface      $variantChooser
+     * @param \PhpAb\Test\TestInterface            $test The test
+     * @param \PhpAb\Participation\FilterInterface $participationFilter
+     * @param \PhpAb\Variant\ChooserInterface      $variantChooser
      * @param array                                      $options Additional options
      */
     public function __construct(

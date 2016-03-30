@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpab\Phpab\Variant;
+namespace PhpAb\Variant;
 
 class CallbackVariant implements VariantInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpab\Phpab\Participation;
+namespace PhpAb\Participation;
 
 /**
  * Stores the participation state of the user

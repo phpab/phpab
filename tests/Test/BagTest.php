@@ -1,9 +1,9 @@
 <?php
 
-namespace Phpab\Phpab\Test;
+namespace PhpAb\Test;
 
-use Phpab\Phpab\Participation\FilterInterface;
-use Phpab\Phpab\Variant\ChooserInterface;
+use PhpAb\Participation\FilterInterface;
+use PhpAb\Variant\ChooserInterface;
 
 class BagTest extends \PHPUnit_Framework_TestCase
 {

@@ -22,12 +22,12 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Phpab\\Phpab\\": "src"
+			"PhpAb\\": "src"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Phpab\\Phpab\\": "tests"
+			"Phpab\\": "tests"
 		}
 	},
 	"scripts": {

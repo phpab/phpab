@@ -1,8 +1,8 @@
 <?php
 
-namespace Phpab\Phpab\Variant;
+namespace PhpAb\Variant;
 
-use Phpab\Phpab\Exception\TestExecutionException;
+use PhpAb\Exception\TestExecutionException;
 
 interface VariantInterface
 {
