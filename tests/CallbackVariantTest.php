@@ -32,33 +32,15 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Walter', $variant->run());
     }
 
-    public function testRunWithCallbackAndDependencies()
-    {
-        // Arrange
-        $callback = [
-            new DummyCallbackClass('White'),
-            'callbackMethod'
-        ];
-
-        $variant = new CallbackVariant('name', $callback);
-
-        // Act
-        // Assert
-        $this->assertEquals('White', $variant->run());
-    }
-
     /**
      * @expectedException \Phpab\Phpab\Exception\TestExecutionException
      */
-    public function testExecutionThrowsException()
+    public function testRunClosureThrowsException()
     {
         // Arrange
-        $callback = [
-            new DummyCallbackClass('White'),
-            'failingCallbackMethod'
-        ];
-
-        $variant = new CallbackVariant('name', $callback);
+        $variant = new CallbackVariant('name', function () {
+            throw new TestExecutionException();
+        });
 
         // Act
         $variant->run();
