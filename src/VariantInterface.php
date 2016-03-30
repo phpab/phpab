@@ -6,7 +6,6 @@ use Phpab\Phpab\Exception\TestExecutionException;
 
 interface VariantInterface
 {
-
     /**
      * Gets the Identifier for the Variant.
      *
