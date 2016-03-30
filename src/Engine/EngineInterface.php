@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpab\Phpab;
+namespace Phpab\Phpab\Engine;
 
 use Phpab\Phpab\Analytics\AnalyticsInterface;
 use Phpab\Phpab\Exception\TestCollisionException;
 use Phpab\Phpab\Exception\TestNotFoundException;
-use Phpab\Phpab\Storage\StorageInterface;
+use Phpab\Phpab\Participation\StorageInterface;
 
 interface EngineInterface
 {
