@@ -10,7 +10,6 @@ use Phpab\Phpab\VariantInterface;
  */
 interface VariantChooserInterface
 {
-
     /**
      * Chooses the Variant from an array of Variants
      *
