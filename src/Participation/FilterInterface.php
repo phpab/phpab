@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpab\Phpab\ParticipationStrategy;
+namespace Phpab\Phpab\Participation;
 
 /**
  * Filters out who should not participate

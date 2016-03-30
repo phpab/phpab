@@ -1,9 +1,9 @@
 <?php
 
-namespace Phpab\Phpab;
+namespace Phpab\Phpab\Test;
 
-use Phpab\Phpab\ParticipationStrategy\ParticipationStrategyInterface;
-use Phpab\Phpab\VariantChooser\VariantChooserInterface;
+use Phpab\Phpab\Participation\FilterInterface;
+use Phpab\Phpab\Variant\ChooserInterface;
 
 interface TestInterface
 {
@@ -44,9 +44,9 @@ interface TestInterface
     /**
      * Get the Participation Strategy
      *
-     * @return ParticipationStrategyInterface
+     * @return FilterInterface
      */
-    public function getParticipationStrategy();
+    public function getParticipationFilter();
 
     /**
      * Get the Variant Chooser.
@@ -54,7 +54,7 @@ interface TestInterface
      * The Variant Chooser chooses the variant after the
      * Strategy allowed the user to participate in the test.
      *
-     * @return VariantChooserInterface
+     * @return ChooserInterface
      */
     public function getVariantChooser();
 }

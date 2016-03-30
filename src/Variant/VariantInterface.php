@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpab\Phpab;
+namespace Phpab\Phpab\Variant;
 
 use Phpab\Phpab\Exception\TestExecutionException;
 
