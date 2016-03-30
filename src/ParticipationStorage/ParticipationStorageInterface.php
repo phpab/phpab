@@ -7,6 +7,12 @@ namespace Phpab\Phpab\Storage;
  */
 interface ParticipationStorageInterface
 {
+
+    /**
+     * @return mixed The identifier the session/cookie should be stored in.
+     */
+    public function getIdentifier();
+
     /**
      * Checks if the test has a participation set.
      *
@@ -48,4 +54,11 @@ interface ParticipationStorageInterface
      * @return mixed The removed value or null when it does not exist
      */
     public function remove($identifier);
+
+    /**
+     * Clears out state for a test.
+     *
+     * @return mixed Whatever data was contained.
+     */
+    public function clear();
 }
