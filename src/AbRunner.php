@@ -9,10 +9,6 @@ use RuntimeException;
 
 class AbRunner implements RunnerInterface
 {
-    const CHOICE_NONE = null;
-    const CHOICE_A = 'A';
-    const CHOICE_B = 'B';
-
     /**
      * A list with all tests that should be executed.
      *
@@ -137,20 +133,9 @@ class AbRunner implements RunnerInterface
      */
     private function executeTest(TestInterface $test)
     {
-        // Take the strategy from the test if it's set
-        // If not, take the strategy from the runner
-        $strategy = $test->getParticipationStrategy()
-            ? $test->getParticipationStrategy()
-            : $this->getParticipationStrategy();
-
-        if (null === $strategy) {
-            // There was no strategy set.
-            // Not in the test nor in the runner.
-            // So we pretend that the test should always run
-
-            $this->executeChoice($test, $test->choose(), true);
-            return true;
-        }
+        $strategy = $test->getParticipationStrategy();
+        $variants = $test->getVariants();
+        $variantChooser = $test->getVariantChooser();
 
         if (! $strategy->isParticipating($this)) {
             return false;
@@ -162,7 +147,8 @@ class AbRunner implements RunnerInterface
             return true;
         }
 
-        $this->executeChoice($test, $test->choose(), true);
+        $choice = $variantChooser->chooseFrom($variants);
+        $this->executeChoice($test, $choice, true);
         return true;
     }
 
@@ -201,6 +187,6 @@ class AbRunner implements RunnerInterface
             $this->getAnalytics()->registerExistingVisitor($test, $choice);
         }
 
-        call_user_func_array($test->getCallback($choice), array($this, $test, $choice));
+        call_user_func_array($test->getVariant($choice), array($this, $test, $choice));
     }
 }

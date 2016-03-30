@@ -10,7 +10,7 @@
 require '../vendor/autoload.php';
 
 use PhpAb\AbRunner;
-use PhpAb\AbTest;
+use PhpAb\Test;
 use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Participation\Strategy\StrategyInterface;
 use PhpAb\RunnerInterface;
@@ -61,16 +61,16 @@ class PercentageStrategy implements StrategyInterface
     }
 }
 
-$callbackA = function (AbRunner $phpab, AbTest $test, $choice) {
+$callbackA = function (RunnerInterface $phpab, TestInterface $test, $choice) {
     echo 'Executing test A<br />';
 };
 
-$callbackB = function (AbRunner $phpab, AbTest $test, $choice) {
+$callbackB = function (RunnerInterface $phpab, TestInterface $test, $choice) {
     echo 'Executing test B<br />';
 };
 
-$phpab = new AbRunner(new \PercentageStrategy(1.0));
+$phpab = new AbRunner();
 $phpab->setAnalytics(new Analytics());
 $phpab->setStorage(new CookieStorage('abtest', 3600));
-$phpab->addTest(new AbTest('My Test', $callbackA, $callbackB, null));
+$phpab->addTest(new Test('My Test', $callbackA, ['B' => $callbackB], new \PercentageStrategy(1.0), new \PhpAb\RandomVariantChooser()));
 $phpab->test();

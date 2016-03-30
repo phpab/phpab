@@ -2,12 +2,13 @@
 
 namespace PhpAbTest;
 
-use PhpAb\AbTest;
+use PhpAb\RandomVariantChooser;
+use PhpAb\Test;
 use PhpAbTestAsset\CallbackHandler;
 use PhpAbTestAsset\EmptyStrategy;
 use PHPUnit_Framework_TestCase;
 
-class AbTestTest extends PHPUnit_Framework_TestCase
+class TestTest extends PHPUnit_Framework_TestCase
 {
     private $handler;
     private $strategy;
@@ -30,21 +31,21 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', null, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', null, ['B' =>  $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Assert
         // ...
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \PhpAb\Exception\ChoiceNotFoundException
      */
     public function testInvalidCallbackB()
     {
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', $this->callbackA, null, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, [], $this->strategy, new RandomVariantChooser());
 
         // Assert
         // ...
@@ -55,7 +56,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // Arrange
 
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, ['B' => $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Assert
         $this->assertEquals('test', $abTest->getName());
@@ -67,11 +68,10 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, ['B' => $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Assert
-        $this->assertEquals($this->callbackA, $abTest->getCallbackA());
-        $this->assertEquals($this->callbackA, $abTest->getCallback('A'));
+        $this->assertEquals($this->callbackA, $abTest->getVariant('A'));
     }
 
     public function testGetCallbackB()
@@ -80,11 +80,10 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, ['B' => $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Assert
-        $this->assertEquals($this->callbackB, $abTest->getCallbackB());
-        $this->assertEquals($this->callbackB, $abTest->getCallback('B'));
+        $this->assertEquals($this->callbackB, $abTest->getVariant('B'));
     }
 
     /**
@@ -96,10 +95,10 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, ['B' => $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Execute
-        $abTest->getCallback('invalid');
+        $abTest->getVariant('invalid');
     }
 
     public function testGetParticipationStrategy()
@@ -108,7 +107,7 @@ class AbTestTest extends PHPUnit_Framework_TestCase
         // ...
         //
         // Act
-        $abTest = new AbTest('test', $this->callbackA, $this->callbackB, $this->strategy);
+        $abTest = new Test('test', $this->callbackA, ['B' => $this->callbackB], $this->strategy, new RandomVariantChooser());
 
         // Assert
         $this->assertEquals($this->strategy, $abTest->getParticipationStrategy());
