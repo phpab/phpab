@@ -5,10 +5,8 @@ namespace Phpab\Phpab\Engine;
 use Phpab\Phpab\Analytics\AnalyticsInterface;
 use Phpab\Phpab\Exception\TestCollisionException;
 use Phpab\Phpab\Exception\TestNotFoundException;
-use Phpab\Phpab\Participation\FilterInterface;
 use Phpab\Phpab\Participation\StorageInterface;
 use Phpab\Phpab\Test\TestInterface;
-use Phpab\Phpab\Variant\ChooserInterface;
 
 interface EngineInterface
 {
