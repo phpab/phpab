@@ -3,7 +3,6 @@
 namespace Phpab\Phpab;
 
 use Phpab\Phpab\Exception\TestExecutionException;
-use Phpab\Phpab\TestDummy\DummyCallbackClass;
 
 class CallbackVariantTest extends \PHPUnit_Framework_TestCase
 {
