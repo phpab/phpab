@@ -52,7 +52,7 @@ class Session implements StorageInterface
             return false;
         }
 
-        return !empty($_SESSION[$this->getNamespace()][$identifier]);
+        return array_key_exists($identifier, $_SESSION[$this->getNamespace()]);
     }
 
     /**

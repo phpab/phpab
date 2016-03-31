@@ -127,6 +127,24 @@ class SessionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PhpAb\Storage\Session::has
+     */
+    public function testHasWithZeroEntry()
+    {
+        // Arrange
+        $this->startSession();
+
+        $session = new Session('namespace');
+        $session->set('0', 'participation');
+
+        // Act
+        $result = $session->has('0');
+
+        // Assert
+        $this->assertTrue($result);
+    }
+
+    /**
      * @covers PhpAb\Storage\Session::get
      */
     public function testGetValidEntry()
