@@ -45,7 +45,7 @@ this is not ideal but it's the fastest way to get the issue solved.
 - [Walter Tamboer](https://github.com/waltertamboer)
 - [Patrick Heller](https://github.com/psren)
 - [Mariano F.co Benítez Mulet](https://github.com/pachico)
-- [All Contributors][https://github.com/phpab/phpab/graphs/contributors]
+- [All Contributors](https://github.com/phpab/phpab/graphs/contributors)
 
 ## License
 
