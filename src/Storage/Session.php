@@ -23,7 +23,8 @@ class Session implements StorageInterface
      */
     public function __construct($namespace)
     {
-        if (!$namespace) {
+        // We cannot typehint for primitive types yet so therefor we check if the namespace is a (valid) string.
+        if (!is_string($namespace) || $namespace === '') {
             throw new InvalidArgumentException('The namespace is invalid.');
         }
 

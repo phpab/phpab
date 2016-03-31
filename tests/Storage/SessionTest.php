@@ -47,13 +47,30 @@ class SessionTest extends PHPUnit_Framework_TestCase
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage The namespace is invalid.
      */
-    public function testConstructorWithInvalidNamespace()
+    public function testConstructorWithNullNamespace()
     {
         // Arrange
-        $this->startSession();
+        // ...
 
         // Act
         $session = new Session(null);
+
+        // Assert
+        // ...
+    }
+
+    /**
+     * @covers PhpAb\Storage\Session::__construct
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The namespace is invalid.
+     */
+    public function testConstructorWithNonStringNamespace()
+    {
+        // Arrange
+        // ...
+
+        // Act
+        $session = new Session(0.3);
 
         // Assert
         // ...
