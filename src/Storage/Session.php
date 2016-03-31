@@ -38,7 +38,7 @@ class Session implements StorageInterface
     /**
      * Gets the namespace that is used for this stroage.
      */
-    public function getNamespace()
+    private function getNamespace()
     {
         return $this->namespace;
     }

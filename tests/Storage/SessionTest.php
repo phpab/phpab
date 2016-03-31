@@ -26,20 +26,17 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PhpAb\Storage\Session::__construct
-     * @covers PhpAb\Storage\Session::getNamespace
      */
     public function testConstructorWithValidNamespace()
     {
         // Arrange
         $this->startSession();
 
+        // Act
         $session = new Session('namespace');
 
-        // Act
-        $result = $session->getNamespace();
-
         // Assert
-        $this->assertEquals('namespace', $result);
+        // ...
     }
 
     /**
@@ -95,6 +92,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PhpAb\Storage\Session::has
+     * @covers PhpAb\Storage\Session::getNamespace
      */
     public function testHasWithValidEntry()
     {
