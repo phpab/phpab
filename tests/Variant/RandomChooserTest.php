@@ -46,5 +46,4 @@ class RandomChooserTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertEquals(null, $chosen);
     }
-    
 }

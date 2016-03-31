@@ -13,6 +13,4 @@ class RandomChooser implements ChooserInterface
 
         return isset($variants[$chosen]) ? $variants[$chosen] : null;
     }
-
-
 }
