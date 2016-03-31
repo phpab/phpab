@@ -10,6 +10,15 @@ use PhpAb\Test\TestInterface;
 
 interface EngineInterface
 {
+
+    /**
+     * Requires the Analytics instance which handles the Events
+     * that occur during the test process.
+     * 
+     * @param AnalyticsInterface $analytics
+     */
+    public function __construct(AnalyticsInterface $analytics);
+
     /**
      * Gets the storage where information about
      * the users participation is stored.
@@ -56,7 +65,7 @@ interface EngineInterface
      *
      * @return null
      */
-    public function addTest(TestInterface $test, $options = []);
+    public function addTest(TestInterface $test, array $options = []);
 
     /**
      * Starts the tests
