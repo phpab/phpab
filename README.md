@@ -1,4 +1,4 @@
-# Phpab
+# phpab
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
@@ -7,8 +7,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+This is a PHP library to implement A/B testing.
 
 ## Install
 
@@ -20,9 +19,7 @@ $ composer require phpab/phpab
 
 ## Usage
 
-``` php
-// Write usage
-```
+Take a look at the example directory.
 
 ## Change log
 
@@ -40,14 +37,15 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
+If you discover any security related issues, please open an issue in the issue tracker. We realize 
+this is not ideal but it's the fastest way to get the issue solved.
 
 ## Credits
 
 - [Walter Tamboer](https://github.com/waltertamboer)
 - [Patrick Heller](https://github.com/psren)
 - [Mariano F.co Benítez Mulet](https://github.com/pachico)
-- [All Contributors][link-contributors]
+- [All Contributors][https://github.com/phpab/phpab/graphs/contributors]
 
 ## License
 
