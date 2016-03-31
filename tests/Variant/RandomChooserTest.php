@@ -3,7 +3,7 @@
 namespace PhpAb\Variant;
 
 /**
- * Override time() in current namespace for testing
+ * Override array_rand from global namespace
  *
  * @return int
  */
