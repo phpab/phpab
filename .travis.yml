@@ -24,6 +24,9 @@ after_script:
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
 notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#phpab"
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/d0ddf7e190c3ea82d710
