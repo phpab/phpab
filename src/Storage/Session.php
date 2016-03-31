@@ -48,7 +48,7 @@ class Session implements StorageInterface
      */
     public function has($identifier)
     {
-        if (empty($_SESSION[$this->getNamespace()])) {
+        if (!array_key_exists($this->getNamespace(), $_SESSION)) {
             return false;
         }
 
@@ -80,7 +80,7 @@ class Session implements StorageInterface
      */
     public function all()
     {
-        if (empty($_SESSION[$this->getNamespace()])) {
+        if (!array_key_exists($this->getNamespace(), $_SESSION)) {
             return [];
         }
 
@@ -108,7 +108,7 @@ class Session implements StorageInterface
      */
     public function clear()
     {
-        if (empty($_SESSION[$this->getNamespace()])) {
+        if (!array_key_exists($this->getNamespace(), $_SESSION)) {
             return [];
         }
 
