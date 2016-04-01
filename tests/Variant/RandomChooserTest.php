@@ -2,21 +2,23 @@
 
 namespace PhpAb\Variant;
 
-/**
- * Override array_rand from global namespace
- *
- * @return int
- */
-function array_rand()
-{
-    return 1;
-}
+use phpmock\functions\FixedValueFunction;
+use phpmock\Mock;
+use phpmock\MockBuilder;
 
 class RandomChooserTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testChooseVariants()
     {
+        // Override mt_rand
+        $builder = new MockBuilder();
+        $builder->setNamespace(__NAMESPACE__)
+                ->setName('mt_rand')
+                ->setFunctionProvider(new FixedValueFunction(1));
+        $mock = $builder->build();
+        $mock->enable();
+
         // Arrange
         $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
         $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
@@ -35,6 +37,32 @@ class RandomChooserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($variant2, $chosen);
     }
 
+    public function testChooseVariantsWithKeys()
+    {
+        // Override mt_rand
+        $builder = new MockBuilder();
+        $builder->setNamespace(__NAMESPACE__)
+            ->setName('mt_rand')
+            ->setFunctionProvider(new FixedValueFunction(0));
+        $mock = $builder->build();
+        $mock->enable();
+
+        // Arrange
+        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
+        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
+
+        $chooser = new RandomChooser();
+
+        // Act
+        $chosen = $chooser->chooseVariant([
+            'Walter' => $variant1,
+            'White' => $variant2,
+        ]);
+
+        // Assert
+        $this->assertSame($variant1, $chosen);
+    }
+
     public function testChooseVariantsFromEmpty()
     {
         // Arrange
@@ -45,5 +73,11 @@ class RandomChooserTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertNull($chosen);
+    }
+
+    public function tearDown()
+    {
+        // disable all mocked functions
+        Mock::disableAll();
     }
 }

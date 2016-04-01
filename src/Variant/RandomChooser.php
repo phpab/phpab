@@ -9,8 +9,14 @@ class RandomChooser implements ChooserInterface
      */
     public function chooseVariant($variants)
     {
-        $chosen = array_rand($variants);
+        $count = count($variants);
+        if (0 === $count) {
+            return null;
+        }
 
-        return isset($variants[$chosen]) ? $variants[$chosen] : null;
+        $chosenCount = mt_rand(0, $count);
+        $keys = array_keys($variants);
+        
+        return $variants[$keys[$chosenCount]];
     }
 }
