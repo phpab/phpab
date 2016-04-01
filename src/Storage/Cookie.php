@@ -8,7 +8,8 @@ use RuntimeException;
 /**
  * Stores the participation state of the user in a session.
  */
-class Cookie implements StorageInterface {
+class Cookie implements StorageInterface
+{
 
     /**
      * @var string Name of cookie
@@ -34,7 +35,8 @@ class Cookie implements StorageInterface {
      * @param int   $ttl           How long should the cookie last in browser. Default 5 years
      *                              Setting a negative number will make cookie expire after current session
      */
-    public function __construct($cookiename, $ttl = 157766400) {
+    public function __construct($cookiename, $ttl = 157766400)
+    {
 
         // We cannot typehint for primitive types yet so therefor we check if the cookie name is a (valid) string.
         if (!is_string($cookiename) || empty($cookiename)) {
@@ -54,8 +56,8 @@ class Cookie implements StorageInterface {
      * Parses any previous cookie and stores is internally
      * @return void
      */
-    protected function parseExistingCookie() {
-
+    protected function parseExistingCookie()
+    {
         if (is_array($this->cookievalues)) {
             return;
         }
@@ -79,8 +81,8 @@ class Cookie implements StorageInterface {
      * Saves cookie with serialized test values
      * @return bool
      */
-    protected function saveCookie() {
-
+    protected function saveCookie()
+    {
         $this->parseExistingCookie();
         return setcookie($this->cookiename, json_encode($this->cookievalues), time() + $this->ttl, '/');
     }
@@ -89,8 +91,8 @@ class Cookie implements StorageInterface {
      * @inheritDoc
      * @throws InvalidArgumentException
      */
-    public function has($identifier) {
-
+    public function has($identifier)
+    {
         if (!is_string($identifier) || empty($identifier)) {
             throw new InvalidArgumentException('Test identifier is invalid.');
         }
@@ -104,8 +106,8 @@ class Cookie implements StorageInterface {
      * @inheritDoc
      * @throws InvalidArgumentException
      */
-    public function get($identifier) {
-
+    public function get($identifier)
+    {
         if (!is_string($identifier) || empty($identifier)) {
             throw new InvalidArgumentException('Test identifier is invalid.');
         }
@@ -124,8 +126,8 @@ class Cookie implements StorageInterface {
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function set($identifier, $participation) {
-
+    public function set($identifier, $participation)
+    {
         if (!is_string($identifier) || empty($identifier)) {
             throw new InvalidArgumentException('Test identifier is invalid.');
         }
@@ -148,8 +150,8 @@ class Cookie implements StorageInterface {
     /**
      * @inheritDoc
      */
-    public function all() {
-
+    public function all()
+    {
         $this->parseExistingCookie();
         return $this->cookievalues;
     }
@@ -159,8 +161,8 @@ class Cookie implements StorageInterface {
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
-    public function remove($identifier) {
-
+    public function remove($identifier)
+    {
         if (!is_string($identifier) || empty($identifier)) {
             throw new InvalidArgumentException('Test identifier is invalid.');
         }
@@ -188,8 +190,8 @@ class Cookie implements StorageInterface {
      * @inheritDoc
      * @throws RuntimeException
      */
-    public function clear() {
-
+    public function clear()
+    {
         if (headers_sent()) {
             throw new RuntimeException('Headers have been sent. Cannot save cookie.');
         }
@@ -201,5 +203,4 @@ class Cookie implements StorageInterface {
 
         return $values;
     }
-
 }

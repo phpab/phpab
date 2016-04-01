@@ -2,22 +2,24 @@
 
 namespace PhpAb\Storage;
 
-use PHPUnit_Framework_TestCase,
-    phpmock\MockBuilder,
-    phpmock\Mock,
-    phpmock\functions\FixedValueFunction;
+use PHPUnit_Framework_TestCase;
+use phpmock\MockBuilder;
+use phpmock\Mock;
+use phpmock\functions\FixedValueFunction;
 
 /**
  * During the execution of some of these tests,
  * global functions might be overwritten
  */
-class CookieTest extends PHPUnit_Framework_TestCase {
+class CookieTest extends PHPUnit_Framework_TestCase
+{
 
     /**
      * Reset global cookies array and disable 
      * global function mocks
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
         $_COOKIE = [];
         \phpmock\Mock::disableAll();
@@ -26,28 +28,32 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionNameNotString() {
+    public function testConstructorExceptionNameNotString()
+    {
         new Cookie(123);
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionNameEmpty() {
+    public function testConstructorExceptionNameEmpty()
+    {
         new Cookie('');
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testConstructorExceptionTtlNotInt() {
+    public function testConstructorExceptionTtlNotInt()
+    {
         new Cookie('chars', 'bar');
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testHasException() {
+    public function testHasException()
+    {
         $cookie = new Cookie('chars');
         $cookie->has([123]);
     }
@@ -55,8 +61,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testParseExistingCookie() {
-
+    public function testParseExistingCookie()
+    {
         $cookie = new Cookie('chars');
         $this->assertSame([], $cookie->all());
 
@@ -71,7 +77,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
 
     /**
      */
-    public function testHas() {
+    public function testHas()
+    {
         $_COOKIE['chars'] = json_encode([
             'walter' => 'white',
             'bernard' => 'black',
@@ -84,7 +91,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testGetException() {
+    public function testGetException()
+    {
         $cookie = new Cookie('chars');
         $cookie->get([123]);
     }
@@ -92,7 +100,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testGet() {
+    public function testGet()
+    {
         $_COOKIE['chars'] = json_encode([
             'walter' => 'white',
             'bernard' => 'black',
@@ -106,7 +115,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testSetExceptionIdentifierNotString() {
+    public function testSetExceptionIdentifierNotString()
+    {
         $cookie = new Cookie('chars');
         $cookie->set(123, 'black');
     }
@@ -114,7 +124,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testSetExceptionParticipationEmpty() {
+    public function testSetExceptionParticipationEmpty()
+    {
         $cookie = new Cookie('chars');
         $cookie->set('walter', '');
     }
@@ -122,7 +133,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testSet() {
+    public function testSet()
+    {
 
         // Mock global functions
         $builder = new MockBuilder();
@@ -153,7 +165,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException RuntimeException
      */
-    public function testSetExceptionHeadersSent() {
+    public function testSetExceptionHeadersSent()
+    {
         $cookie = new Cookie('chars');
         $cookie->set('walter', 'black');
     }
@@ -161,7 +174,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testAll() {
+    public function testAll()
+    {
         $values = [
             'walter' => 'white',
             'bernard' => 'black',
@@ -174,7 +188,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testRemoveExceptionIdentifierNotString() {
+    public function testRemoveExceptionIdentifierNotString()
+    {
         $cookie = new Cookie('chars');
         $cookie->remove(123);
     }
@@ -182,7 +197,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException RuntimeException
      */
-    public function testRemoveExceptionHeadersSent() {
+    public function testRemoveExceptionHeadersSent()
+    {
         $cookie = new Cookie('chars');
         $cookie->remove('foo');
     }
@@ -190,7 +206,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testRemove() {
+    public function testRemove()
+    {
 
         // Mock global functions
         $builder = new MockBuilder();
@@ -221,7 +238,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * @expectedException RuntimeException
      */
-    public function testClearExceptionHeadersSent() {
+    public function testClearExceptionHeadersSent()
+    {
         $cookie = new Cookie('chars');
         $cookie->clear();
     }
@@ -229,7 +247,8 @@ class CookieTest extends PHPUnit_Framework_TestCase {
     /**
      * 
      */
-    public function testClear() {
+    public function testClear()
+    {
 
         // Mock global functions
         $builder = new MockBuilder();
@@ -256,5 +275,4 @@ class CookieTest extends PHPUnit_Framework_TestCase {
         $this->assertSame($values, $cookie->clear());
         $this->assertEmpty($cookie->all());
     }
-
 }
