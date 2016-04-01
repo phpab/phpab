@@ -49,6 +49,7 @@ class LotteryFilter implements FilterInterface
             return true;
         }
 
+        var_dump(mt_rand(0, $propability));
         return  0 === mt_rand(0, $propability);
     }
 }
