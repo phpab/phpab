@@ -37,6 +37,6 @@ class CallbackVariant implements VariantInterface
      */
     public function run()
     {
-        return call_user_func($this->callback);
+        call_user_func($this->callback);
     }
 }

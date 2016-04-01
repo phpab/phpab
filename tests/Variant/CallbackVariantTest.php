@@ -18,16 +18,18 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('name', $identifier);
     }
 
-    public function testRunWithSimpleClosure()
+    public function testRunExecutesCallback()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function () {
-            return 'Walter';
+        $action = null;
+        $variant = new CallbackVariant('name', function () use ($action) {
+            $action = 'Walter';
+            return $action;
         });
 
         // Act
         // Assert
-        $this->assertEquals('Walter', $variant->run());
+        $this->assertNull($variant->run());
     }
 
     /**
@@ -42,5 +44,19 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $variant->run();
+    }
+
+    public function testRunReturnsNull()
+    {
+        // Arrange
+        $variant = new CallbackVariant('name', function () {
+            return 'Walter';
+        });
+
+        // Act
+        $result = $variant->run();
+
+        // Assert
+        $this->assertNull($result);
     }
 }
