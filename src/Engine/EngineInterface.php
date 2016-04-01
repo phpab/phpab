@@ -19,16 +19,6 @@ interface EngineInterface
     public function getStorage();
 
     /**
-     * Get the Analytics instance which handles the Events
-     * that occur during the test process.
-     *
-     * This is like a EventListener with limited API
-     *
-     * @return AnalyticsInterface
-     */
-    public function getAnalytics();
-
-    /**
      * Get all tests for the engine
      *
      * @return TestInterface[]|array
@@ -63,5 +53,5 @@ interface EngineInterface
      *
      * @return null
      */
-    public function start();
+    public function run();
 }

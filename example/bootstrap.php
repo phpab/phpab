@@ -1,28 +1,41 @@
 <?php
 
-// this is pseude code because it's not implemented yet and we do not have tests
+require __DIR__.'/../vendor/autoload.php';
 
-$app = new myShinyWhateverFramework();
+$participationViewHelper = new \PhpAb\Helper\ParticipationChecker();
+$googleHelper = new \PhpAb\Helper\GoogleExperimentsHelper();
 
-$engine = new \PhpAb\Engine(
-    new \PhpAb\Storage\CookieStorage(),
-    new \PhpAb\Analytics\GoogleExperiments('UA-asfsafsaf')
-);
+$dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+$dispatcher->addSubscriber($participationViewHelper);
+$dispatcher->addSubscriber($googleHelper);
 
-$test = new \PhpAb\Test(
-    'foo_test',
-    new \PhpAb\ParticipationStrategy\LotteryParticipationStrategy(0.1),
-    new \PhpAb\VariantChooser\RandomVariantChooser()
-);
-$test->addVariant(new \PhpAb\DifferentThemeVariant('different_checkout_steps', $app->getEventManager()));
+$engine = new \PhpAb\Engine\Engine($dispatcher);
+$engine->run();
 
-// Add some tests
-$engine->addTest($test);
+// lets get a nicer name in our view
+$abUser = $participationViewHelper;
 
-// Start testing. Must occur before the EventCycle of the app starts
-$engine->start();
 
-// Start the app
-// The Events of the app fire
-// e.g. EVENT_MERGE_CONFIG where our Variant listens to
-$app->run();
+// Then later in the View
+if($abUser->participatesInVariantForTest('test1', 'variant1')) {
+    echo 'yay, participates in variant1 for test1';
+} elseif ($abUser->participatesInVariantForTest('test1', 'variant2') ){
+    echo 'yay, participates in variant2 for test1';
+} else {
+    echo 'old business case';
+}
+
+echo '<br/>';
+echo '<br/>';
+
+if($abUser->participatesInVariantForTest('test2', 'variant1')) {
+    echo 'yay, participates in variant1 for test2';
+} else {
+    echo 'old business case for test2';
+}
+
+echo '<br/>';
+echo '<br/>';
+
+// get the data from a different driver
+echo $googleHelper->getScript();
