@@ -15,7 +15,7 @@ interface ChooserInterface
      *
      * @param VariantInterface[] $variants Variants to choose from
      *
-     * @return VariantInterface the chosen Variant
+     * @return VariantInterface|null the chosen Variant or null if none given
      */
     public function chooseVariant($variants);
 }
