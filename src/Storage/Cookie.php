@@ -14,32 +14,31 @@ class Cookie implements StorageInterface
     /**
      * @var string Name of cookie
      */
-    protected $cookiename;
+    protected $cookieName;
 
     /**
-     *
      * @var int Cookie's time to live in seconds
      */
     protected $ttl;
 
     /**
-     *
      * @var mixed null|array Array of which will be saved in cookie
      */
-    protected $cookievalues;
+    protected $cookieValues;
 
     /**
      * Initializes a new instance of this class.
      *
-     * @param string $cookiename   The name the cookie.
+     * @param string $cookieName   The name the cookie.
      * @param int   $ttl           How long should the cookie last in browser. Default 5 years
-     *                              Setting a negative number will make cookie expire after current session
+     *                             Setting a negative number will make cookie expire after current session
+     * @throws InvalidArgumentException
      */
-    public function __construct($cookiename, $ttl = 157766400)
+    public function __construct($cookieName, $ttl = 157766400)
     {
 
-        // We cannot typehint for primitive types yet so therefor we check if the cookie name is a (valid) string.
-        if (!is_string($cookiename) || empty($cookiename)) {
+        // We cannot typehint for primitive types yet so therefore we check if the cookie name is a (valid) string.
+        if (!is_string($cookieName) || empty($cookieName)) {
             throw new InvalidArgumentException('The cookie name is invalid.');
         }
 
@@ -47,34 +46,34 @@ class Cookie implements StorageInterface
             throw new InvalidArgumentException('The cookie ttl parameter should be a integer.');
         }
 
-        $this->cookiename = $cookiename;
+        $this->cookieName = $cookieName;
 
         $this->ttl = $ttl;
     }
 
     /**
-     * Parses any previous cookie and stores is internally
+     * Parses any previous cookie and stores it internally
      * @return void
      */
     protected function parseExistingCookie()
     {
-        if (is_array($this->cookievalues)) {
+        if (is_array($this->cookieValues)) {
             return;
         }
 
-        if (empty($_COOKIE) || !isset($_COOKIE[$this->cookiename])) {
-            $this->cookievalues = [];
+        if (empty($_COOKIE) || !isset($_COOKIE[$this->cookieName])) {
+            $this->cookieValues = [];
             return;
         }
 
-        $deserialized_cookie = json_decode($_COOKIE[$this->cookiename], true);
+        $deserializedCookie = json_decode($_COOKIE[$this->cookieName], true);
 
-        if (is_null($deserialized_cookie)) {
-            $this->cookievalues = [];
+        if (is_null($deserializedCookie)) {
+            $this->cookieValues = [];
             return;
         }
 
-        $this->cookievalues = $deserialized_cookie;
+        $this->cookieValues = $deserializedCookie;
     }
 
     /**
@@ -84,53 +83,43 @@ class Cookie implements StorageInterface
     protected function saveCookie()
     {
         $this->parseExistingCookie();
-        return setcookie($this->cookiename, json_encode($this->cookievalues), time() + $this->ttl, '/');
+        
+        return setcookie($this->cookieName, json_encode($this->cookieValues), time() + $this->ttl, '/');
     }
 
     /**
      * @inheritDoc
-     * @throws InvalidArgumentException
      */
     public function has($identifier)
     {
-        if (!is_string($identifier) || empty($identifier)) {
+        if (!is_string($identifier) || $identifier === '') {
             throw new InvalidArgumentException('Test identifier is invalid.');
         }
 
         $this->parseExistingCookie();
 
-        return isset($this->cookievalues[$identifier]);
+        return isset($this->cookieValues[$identifier]);
     }
 
     /**
      * @inheritDoc
-     * @throws InvalidArgumentException
      */
     public function get($identifier)
     {
-        if (!is_string($identifier) || empty($identifier)) {
-            throw new InvalidArgumentException('Test identifier is invalid.');
-        }
-
-        $this->parseExistingCookie();
-
         if (!$this->has($identifier)) {
             return null;
         }
 
-        return $this->cookievalues[$identifier];
+        return $this->cookieValues[$identifier];
     }
 
     /**
      * @inheritDoc
-     * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     public function set($identifier, $participation)
     {
-        if (!is_string($identifier) || empty($identifier)) {
-            throw new InvalidArgumentException('Test identifier is invalid.');
-        }
+        $this->has($identifier);
 
         if (empty($participation)) {
             throw new InvalidArgumentException('Participation name is invalid.');
@@ -142,7 +131,7 @@ class Cookie implements StorageInterface
 
         $this->parseExistingCookie();
 
-        $this->cookievalues[$identifier] = $participation;
+        $this->cookieValues[$identifier] = $participation;
 
         return $this->saveCookie();
     }
@@ -153,19 +142,17 @@ class Cookie implements StorageInterface
     public function all()
     {
         $this->parseExistingCookie();
-        return $this->cookievalues;
+
+        return $this->cookieValues;
     }
 
     /**
      * @inheritDoc
-     * @throws InvalidArgumentException
      * @throws RuntimeException
      */
     public function remove($identifier)
     {
-        if (!is_string($identifier) || empty($identifier)) {
-            throw new InvalidArgumentException('Test identifier is invalid.');
-        }
+        $this->has($identifier);
 
         if (headers_sent()) {
             throw new RuntimeException('Headers have been sent. Cannot save cookie.');
@@ -179,7 +166,7 @@ class Cookie implements StorageInterface
             return null;
         }
 
-        unset($this->cookievalues[$identifier]);
+        unset($this->cookieValues[$identifier]);
 
         $this->saveCookie();
 
@@ -197,8 +184,8 @@ class Cookie implements StorageInterface
         }
 
         $this->parseExistingCookie();
-        $values = $this->cookievalues;
-        $this->cookievalues = [];
+        $values = $this->cookieValues;
+        $this->cookieValues = [];
         $this->saveCookie();
 
         return $values;
