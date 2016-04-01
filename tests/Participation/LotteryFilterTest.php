@@ -8,9 +8,6 @@ use phpmock\MockBuilder;
 
 class LotteryFilterTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers PhpAb\Participation\LotteryFilter::__construct
-     */
     public function testShouldParticipateWithFullPropability()
     {
         // Arrange
@@ -82,6 +79,18 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $lottery = new LotteryFilter(101);
+
+        // Act
+        $lottery->shouldParticipate();
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testShouldAcceptIntergerOnly()
+    {
+        // Arrange
+        $lottery = new LotteryFilter('Walter');
 
         // Act
         $lottery->shouldParticipate();
