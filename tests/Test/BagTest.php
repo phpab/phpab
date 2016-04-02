@@ -4,8 +4,9 @@ namespace PhpAb\Test;
 
 use PhpAb\Participation\FilterInterface;
 use PhpAb\Variant\ChooserInterface;
+use PHPUnit_Framework_TestCase;
 
-class BagTest extends \PHPUnit_Framework_TestCase
+class BagTest extends PHPUnit_Framework_TestCase
 {
     private $test;
     private $participationFilter;
