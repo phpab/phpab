@@ -37,7 +37,6 @@ class Test implements TestInterface
         }
 
         $this->identifier = $identifier;
-
         $this->setVariants($variants);
     }
 
