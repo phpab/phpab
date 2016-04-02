@@ -1,31 +1,38 @@
-sudo: false
-
 language: php
+
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+
+# This triggers builds to run on the new TravisCI infrastructure.
+# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
 
 matrix:
   fast_finish: true
   include:
-    - php: 5.5
     - php: 5.6
       env:
-        - UPLOAD_COVERAGE=true
-    - php: 7
-    - php: hhvm
+        - 'UPLOAD_COVERAGE=true'
   allow_failures:
     - php: 5.5
     - php: hhvm
 
-before_install:
-  - composer self-update
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpcs --standard=psr2 src/
+  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
-  - if [[ $UPLOAD_COVERAGE == 'true' ]]; then ./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml ; fi
+  - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '7.0' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
 
 notifications:
   email: false
