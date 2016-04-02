@@ -3,6 +3,7 @@
 namespace PhpAb\Test;
 
 use InvalidArgumentException;
+use PhpAb\Exception\DuplicateVariantException;
 use PhpAb\Variant\VariantInterface;
 
 /**
@@ -56,7 +57,7 @@ class Test implements TestInterface
     public function addVariant(VariantInterface $variant)
     {
         if (array_key_exists($variant->getIdentifier(), $this->variants)) {
-            throw new InvalidArgumentException('A variant with this identifier has already been added.');
+            throw new DuplicateVariantException('A variant with this identifier has already been added.');
         }
 
         $this->variants[$variant->getIdentifier()] = $variant;

@@ -82,7 +82,7 @@ class TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PhpAb\Test\Test::addVariant
-     * @expectedException InvalidArgumentException
+     * @expectedException PhpAb\Exception\DuplicateVariantException
      * @expectedExceptionMessage A variant with this identifier has already been added.
      */
     public function testAddVariantWithDuplicateIdentifier()
@@ -154,7 +154,7 @@ class TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PhpAb\Test\Test::setVariants
-     * @expectedException InvalidArgumentException
+     * @expectedException PhpAb\Exception\DuplicateVariantException
      * @expectedExceptionMessage A variant with this identifier has already been added.
      */
     public function testSetVariantsWithDuplicateVariants()
