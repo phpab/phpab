@@ -51,7 +51,7 @@ class Engine implements EngineInterface
      */
     public function addTest(TestInterface $test, $options = [])
     {
-        if($this->locked) {
+        if ($this->locked) {
             throw new EngineLockedException('You cannot add tests once the engine was started.');
         }
 

@@ -32,6 +32,4 @@ class Manager implements ParticipationManagerInterface
     {
         // TODO: Implement participate() method.
     }
-
-
 }
