@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/../vendor/autoload.php';
+
 // Engine and Analytics have to be implemented before this works
 
 $engine = new \PhpAb\Engine(
