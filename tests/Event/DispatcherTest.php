@@ -1,8 +1,6 @@
 <?php
 
-namespace Event;
-
-use PhpAb\Event\Dispatcher;
+namespace PhpAb\Event;
 
 class DispatcherTest extends \PHPUnit_Framework_TestCase
 {
