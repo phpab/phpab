@@ -4,17 +4,20 @@ namespace PhpAb\Test;
 
 use PhpAb\Variant\VariantInterface;
 
+/**
+ * The interface that should be implemented by all tests.
+ */
 interface TestInterface
 {
     /**
-     * Get the identifier for this test
+     * Get the identifier for this test.
      *
      * @return string
      */
     public function getIdentifier();
 
     /**
-     * Get all variants for this test
+     * Get all variants for this test.
      *
      * @return VariantInterface[]
      */
@@ -23,9 +26,8 @@ interface TestInterface
     /**
      * Get a single variant for this test
      *
-     * @param string $variant The variants Identifier
-     *
-     * @return VariantInterface
+     * @param string $identifier The identifier of the variant to get.
+     * @return VariantInterface|null
      */
-    public function getVariant($variant);
+    public function getVariant($identifier);
 }
