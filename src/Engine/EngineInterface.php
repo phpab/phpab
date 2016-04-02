@@ -2,7 +2,6 @@
 
 namespace PhpAb\Engine;
 
-use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\StorageInterface;
@@ -10,24 +9,6 @@ use PhpAb\Test\TestInterface;
 
 interface EngineInterface
 {
-    /**
-     * Gets the storage where information about
-     * the users participation is stored.
-     *
-     * @return StorageInterface
-     */
-    public function getStorage();
-
-    /**
-     * Get the Analytics instance which handles the Events
-     * that occur during the test process.
-     *
-     * This is like a EventListener with limited API
-     *
-     * @return AnalyticsInterface
-     */
-    public function getAnalytics();
-
     /**
      * Get all tests for the engine
      *
