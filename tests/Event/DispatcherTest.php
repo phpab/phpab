@@ -22,7 +22,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $dispatcher = new Dispatcher();
-        $dispatcher->addListener('event.foo', function($subject) {
+        $dispatcher->addListener('event.foo', function ($subject) {
             $subject->executed = true;
         });
 
@@ -36,15 +36,44 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($subject->executed);
     }
 
+    public function testDispatchSubscriberNotAllDispatched()
+    {
+        // Arrange
+        $callable = function ($subject) {
+            $subject->touched++;
+        };
+
+        $subscriber = $this->getMock(SubscriberInterface::class);
+        $subscriber
+            ->method('getSubscribedEvents')
+            ->willReturn([
+                'event.foo' => $callable,
+                'event.bar' => $callable,
+            ]);
+
+        $dispatcher = new Dispatcher();
+        $dispatcher->addSubscriber($subscriber);
+
+        $subject = new \stdClass();
+        $subject->touched = 0;
+
+        // Act
+        $result = $dispatcher->dispatch('event.foo', $subject);
+
+        // Assert
+        $this->assertNull($result);
+        $this->assertEquals(1, $subject->touched);
+    }
+
     public function testDispatchWithMultipleListenersOnOneEvent()
     {
         // Arrange
         $dispatcher = new Dispatcher();
-        $dispatcher->addListener('event.foo', function($subject) {
+        $dispatcher->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
-        $dispatcher->addListener('event.foo', function($subject) {
+        $dispatcher->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
@@ -63,11 +92,11 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $dispatcher = new Dispatcher();
-        $dispatcher->addListener('event.foo', function($subject) {
+        $dispatcher->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
-        $dispatcher->addListener('event.bar', function($subject) {
+        $dispatcher->addListener('event.bar', function ($subject) {
             $subject->touched++;
         });
 

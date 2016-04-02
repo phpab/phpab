@@ -1,8 +1,8 @@
 <?php
 
-namespace Event;
+namespace PhpAb\Event;
 
-interface EventSubscriberInterface
+interface SubscriberInterface
 {
     public function getSubscribedEvents();
 }

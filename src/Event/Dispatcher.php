@@ -2,8 +2,6 @@
 
 namespace PhpAb\Event;
 
-use Event\SubscriberInterface;
-
 class Dispatcher implements DispatcherInterface
 {
     private $listeners = [];
@@ -13,22 +11,21 @@ class Dispatcher implements DispatcherInterface
         $this->listeners[$eventName][] = $callable;
     }
 
-    public function addSubscriber(EventSubscriberInterface $subscriber)
+    public function addSubscriber(SubscriberInterface $subscriber)
     {
-        foreach($subscriber->getSubscribedEvents() as $eventName => $callable) {
+        foreach ($subscriber->getSubscribedEvents() as $eventName => $callable) {
             $this->addListener($eventName, $callable);
         }
     }
 
     public function dispatch($event, $options)
     {
-        if(! array_key_exists($event, $this->listeners)) {
+        if (! array_key_exists($event, $this->listeners)) {
             // no callbacks given for this event
             return;
         }
 
-        foreach($this->listeners[$event] as $callable)
-        {
+        foreach ($this->listeners[$event] as $callable) {
             call_user_func($callable, $options);
         }
     }
