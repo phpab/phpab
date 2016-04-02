@@ -28,8 +28,8 @@ install:
 
 script:
   - composer validate --strict
-  - vendor/bin/phpcs --standard=psr2 src/
-  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - ./vendor/bin/phpcs --standard=psr2 src/
+  - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
   - if [[ $UPLOAD_COVERAGE == 'true' ]]; then ./vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml ; fi
