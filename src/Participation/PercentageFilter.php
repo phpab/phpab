@@ -2,7 +2,7 @@
 
 namespace PhpAb\Participation;
 
-class LotteryFilter implements FilterInterface
+class PercentageFilter implements FilterInterface
 {
     /**
      * @var int

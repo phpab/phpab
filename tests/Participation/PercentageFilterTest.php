@@ -6,12 +6,12 @@ use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
 
-class LotteryFilterTest extends \PHPUnit_Framework_TestCase
+class PercentageFilterTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldParticipateWithFullPropability()
     {
         // Arrange
-        $lottery = new LotteryFilter(100);
+        $lottery = new PercentageFilter(100);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -23,7 +23,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithZeroPropability()
     {
         // Arrange
-        $lottery = new LotteryFilter(0);
+        $lottery = new PercentageFilter(0);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -43,7 +43,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
         $mock = $builder->build();
         $mock->enable();
 
-        $lottery = new LotteryFilter(23);
+        $lottery = new PercentageFilter(23);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -63,7 +63,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
         $mock = $builder->build();
         $mock->enable();
 
-        $lottery = new LotteryFilter(23);
+        $lottery = new PercentageFilter(23);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -78,7 +78,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithOverPercentage()
     {
         // Arrange
-        $lottery = new LotteryFilter(101);
+        $lottery = new PercentageFilter(101);
 
         // Act
         $lottery->shouldParticipate();
@@ -90,7 +90,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldAcceptIntergerOnly()
     {
         // Arrange
-        $lottery = new LotteryFilter('Walter');
+        $lottery = new PercentageFilter('Walter');
 
         // Act
         $lottery->shouldParticipate();
@@ -102,7 +102,7 @@ class LotteryFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithUnderPercentage()
     {
         // Arrange
-        $lottery = new LotteryFilter(-1);
+        $lottery = new PercentageFilter(-1);
 
         // Act
         $lottery->shouldParticipate();
