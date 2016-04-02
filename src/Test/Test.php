@@ -65,7 +65,7 @@ class Test implements TestInterface
     /**
      * Sets the variants in this test.
      *
-     * @param $variants The variants to set.
+     * @param VariantInterface[] $variants The variants to set.
      */
     public function setVariants($variants)
     {
