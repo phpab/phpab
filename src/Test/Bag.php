@@ -8,7 +8,7 @@ use PhpAb\Variant\ChooserInterface;
 class Bag
 {
     /**
-     * @var \PhpAb\Test\TestInterface
+     * @var TestInterface
      */
     private $test;
 
@@ -18,22 +18,22 @@ class Bag
     private $options;
 
     /**
-     * @var \PhpAb\Participation\FilterInterface
+     * @var FilterInterface
      */
     private $participationFilter;
 
     /**
-     * @var \PhpAb\Variant\ChooserInterface
+     * @var ChooserInterface
      */
     private $variantChooser;
 
     /**
-     * Bag constructor.
+     * Initializes a new instance of this class.
      *
-     * @param \PhpAb\Test\TestInterface            $test The test
-     * @param \PhpAb\Participation\FilterInterface $participationFilter
-     * @param \PhpAb\Variant\ChooserInterface      $variantChooser
-     * @param array                                      $options Additional options
+     * @param TestInterface $test The test
+     * @param FilterInterface $participationFilter
+     * @param ChooserInterface $variantChooser
+     * @param array $options Additional options
      */
     public function __construct(
         TestInterface $test,
