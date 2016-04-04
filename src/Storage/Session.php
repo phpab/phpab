@@ -19,7 +19,6 @@ class Session implements StorageInterface
      * Initializes a new instance of this class.
      *
      * @param string $namespace The namespace of the session.
-     * @param bool $startSession Whether or not to start the session if it hasn't been started yet.
      */
     public function __construct($namespace)
     {
