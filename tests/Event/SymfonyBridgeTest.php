@@ -10,7 +10,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->dispatcher = new Dispatcher(new EventDispatcher());
+        $this->dispatcher = new SymfonyBridge(new EventDispatcher());
     }
 
     public function testDispatchEventWithoutListeners()
@@ -31,7 +31,7 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $dispatcher = $this->dispatcher;
-        $dispatcher->addListener('event.foo', function ($subject) {
+        $dispatcher->getOriginal()->addListener('event.foo', function ($subject) {
             $subject->executed = true;
             return 'yolo';
         });
@@ -46,43 +46,15 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($subject->executed);
     }
 
-    public function testDispatchSubscriberNotAllDispatched()
-    {
-        // Arrange
-        $callable = function ($subject) {
-            $subject->touched++;
-        };
-
-        $subscriber = $this->getMock(SubscriberInterface::class);
-        $subscriber
-            ->method('getSubscribedEvents')
-            ->willReturn([
-                'event.foo' => $callable,
-                'event.bar' => $callable,
-            ]);
-
-        $dispatcher = $this->dispatcher;
-        $dispatcher->addSubscriber($subscriber);
-
-        $subject = new \stdClass();
-        $subject->touched = 0;
-
-        // Act
-        $dispatcher->dispatch('event.foo', $subject);
-
-        // Assert
-        $this->assertEquals(1, $subject->touched);
-    }
-
     public function testDispatchWithMultipleListenersOnOneEvent()
     {
         // Arrange
         $dispatcher = $this->dispatcher;
-        $dispatcher->addListener('event.foo', function ($subject) {
+        $dispatcher->getOriginal()->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
-        $dispatcher->addListener('event.foo', function ($subject) {
+        $dispatcher->getOriginal()->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
@@ -100,11 +72,11 @@ class SymfonyBridgeTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $dispatcher = $this->dispatcher;
-        $dispatcher->addListener('event.foo', function ($subject) {
+        $dispatcher->getOriginal()->addListener('event.foo', function ($subject) {
             $subject->touched++;
         });
 
-        $dispatcher->addListener('event.bar', function ($subject) {
+        $dispatcher->getOriginal()->addListener('event.bar', function ($subject) {
             $subject->touched++;
         });
 

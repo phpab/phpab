@@ -30,4 +30,14 @@ class SymfonyBridge implements DispatcherInterface
             call_user_func($listener, $options);
         }
     }
+
+    /**
+     * Gets the original EventDispatcher
+     *
+     * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+     */
+    public function getOriginal()
+    {
+        return $this->eventDispatcher;
+    }
 }
