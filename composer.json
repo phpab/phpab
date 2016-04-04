@@ -28,6 +28,7 @@
             "homepage": "https://github.com/pachico",
             "role": "Developer"
         }
+
     ],
     "require": {
         "php": "~5.5|~7.0",
@@ -50,6 +51,11 @@
         "scrutinizer/ocular": "^1.3",
         "phpunit/phpunit": "4.*",
         "squizlabs/php_codesniffer": "^2.5",
-        "php-mock/php-mock": "^1.0"
+        "php-mock/php-mock": "^1.0",
+        "zendframework/zend-eventmanager": "^3.0",
+        "symfony/event-dispatcher": "^3.0"
+    },
+    "suggest": {
+        "symfony/event-dispatcher": "Allows to use the (way better) symfony EventDispatcher with the packages eventsystem."
     }
 }

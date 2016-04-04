@@ -34,5 +34,4 @@ ga('set', 'bernard', 0);
         // Assert
         $this->assertSame("", $script);
     }
-
 }

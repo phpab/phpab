@@ -5,6 +5,7 @@
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
 [![Quality Score][ico-code-quality]][link-code-quality]
+[![Dependency Status][ico-versioneye]][link-versioneye]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 This is a PHP library to implement A/B testing.
@@ -57,11 +58,13 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/phpab/phpab.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/phpab/phpab.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/phpab/phpab.svg?style=flat-square
+[ico-versioneye]: https://img.shields.io/versioneye/d/phpab/phpab.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/phpab/phpab
 [link-travis]: https://travis-ci.org/phpab/phpab
 [link-scrutinizer]: https://scrutinizer-ci.com/g/phpab/phpab/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/phpab/phpab
 [link-downloads]: https://packagist.org/packages/phpab/phpab
+[link-versioneye]: https://www.versioneye.com/user/projects/5702c846fcd19a004543f8fb
 [link-author]: https://github.com/:author_username
 [link-contributors]: ../../contributors
