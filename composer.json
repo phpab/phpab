@@ -33,7 +33,7 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Phpab\\": "tests"
+			"PhpAb\\": "tests"
 		}
 	},
 	"scripts": {
