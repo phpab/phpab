@@ -15,7 +15,7 @@ class Dispatcher implements DispatcherInterface
     private $listeners = [];
 
     /**
-     * @param          $eventName The name of the event to listen for
+     * @param string   $eventName The name of the event to listen for
      * @param callable $callable  The Callable to execute once the event takes place
      */
     public function addListener($eventName, callable $callable)

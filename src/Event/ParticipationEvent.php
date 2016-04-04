@@ -6,8 +6,6 @@ use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 
 /**
- * Class ParticipationEvent
- *
  * Holds information about a participation event which is needed for
  * further processing.
  */
