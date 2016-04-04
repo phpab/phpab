@@ -11,6 +11,9 @@ class SymfonyBridge implements DispatcherInterface
      */
     private $eventDispatcher;
 
+    /**
+     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher The Symfony EventDispatcher
+     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
