@@ -18,9 +18,9 @@ class CookieTest extends PHPUnit_Framework_TestCase
      * Reset global cookies array and disable 
      * global function mocks
      */
-    protected function setUp()
+    protected function tearDown()
     {
-        parent::setUp();
+        parent::tearDown();
         $_COOKIE = [];
         \phpmock\Mock::disableAll();
     }
@@ -141,16 +141,16 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("headers_sent")
                 ->setFunctionProvider(new FixedValueFunction(false));
-        $headers_sent_mock = $builder->build();
+        $headersSentMock = $builder->build();
 
 
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("setcookie")
                 ->setFunctionProvider(new FixedValueFunction(true));
-        $setcookie_mock = $builder->build();
+        $setcookieMock = $builder->build();
 
-        $headers_sent_mock->enable();
-        $setcookie_mock->enable();
+        $headersSentMock->enable();
+        $setcookieMock->enable();
 
         $_COOKIE['chars'] = json_encode([
             'walter' => 'white',
@@ -214,15 +214,15 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("headers_sent")
                 ->setFunctionProvider(new FixedValueFunction(false));
-        $headers_sent_mock = $builder->build();
+        $headersSentMock = $builder->build();
 
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("setcookie")
                 ->setFunctionProvider(new FixedValueFunction(true));
-        $setcookie_mock = $builder->build();
+        $setcookieMock = $builder->build();
 
-        $headers_sent_mock->enable();
-        $setcookie_mock->enable();
+        $headersSentMock->enable();
+        $setcookieMock->enable();
 
         $_COOKIE['chars'] = json_encode([
             'walter' => 'white',
@@ -255,15 +255,15 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("headers_sent")
                 ->setFunctionProvider(new FixedValueFunction(false));
-        $headers_sent_mock = $builder->build();
+        $headersSentMock = $builder->build();
 
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("setcookie")
                 ->setFunctionProvider(new FixedValueFunction(true));
-        $setcookie_mock = $builder->build();
+        $setcookieMock = $builder->build();
 
-        $headers_sent_mock->enable();
-        $setcookie_mock->enable();
+        $headersSentMock->enable();
+        $setcookieMock->enable();
 
         $values = [
             'walter' => 'white',
@@ -275,4 +275,5 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->assertSame($values, $cookie->clear());
         $this->assertEmpty($cookie->all());
     }
+
 }
