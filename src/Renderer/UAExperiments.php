@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpAb\Render;
+namespace PhpAb\Renderer;
 
 /**
  * This class will only work for Universal Analytics
@@ -10,7 +10,7 @@ class UAExperiments
 {
 
     /**
-     * @var array Of test identifiers and their variant's indexes 
+     * @var array Of test identifiers and their variant's indexes
      */
     private $testsData = [];
 

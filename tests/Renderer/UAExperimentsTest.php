@@ -1,6 +1,6 @@
 <?php
 
-namespace PhpAb\Render;
+namespace PhpAb\Renderer;
 
 class UAExperimentsTest extends \PHPUnit_Framework_TestCase
 {

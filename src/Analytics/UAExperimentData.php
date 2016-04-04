@@ -13,7 +13,6 @@ class UAExperimentData
     private $testsData = [];
 
     /**
-     * 
      * @param string $testIdentifier It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
      * @param int $variationIndex
      * @return \PhpAb\Analytics\UAExperiments
