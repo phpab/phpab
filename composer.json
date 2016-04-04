@@ -1,48 +1,49 @@
 {
-	"name": "phpab/phpab",
-	"type": "library",
-	"description": "A PHP library to create A/B tests.",
-	"keywords": [
-		"Phpab",
-		"Ab test",
-		"abtest"
-	],
-	"homepage": "https://github.com/phpab/phpab",
-	"license": "MIT",
-    "authors": [
-		{
-			"name": "Walter Tamboer",
-			"email": "walter@tamboer.nl",
-			"homepage": "https://github.com/waltertamboer",
-			"role": "Developer"
-		},
-		{
-			"name": "Patrick Heller",
-			"email": "paddy.heller@gmail.com",
-			"homepage": "https://github.com/psren",
-			"role": "Developer"
-		}
+    "name": "phpab/phpab",
+    "type": "library",
+    "description": "A PHP library to create A/B tests.",
+    "keywords": [
+        "Phpab",
+        "Ab test",
+        "abtest"
     ],
-	"require": {
-		"php": "~5.5|~7.0"
-	},
-	"autoload": {
-		"psr-4": {
-			"PhpAb\\": "src"
-		}
-	},
-	"autoload-dev": {
-		"psr-4": {
-			"PhpAb\\": "tests"
-		}
-	},
-	"scripts": {
-		"test": "phpunit"
-	},
-	"require-dev": {
-		"scrutinizer/ocular": "^1.3",
-		"phpunit/phpunit": "4.*",
-		"squizlabs/php_codesniffer": "^2.5",
-        "php-mock/php-mock": "^1.0"
+    "homepage": "https://github.com/phpab/phpab",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Walter Tamboer",
+            "email": "walter@tamboer.nl",
+            "homepage": "https://github.com/waltertamboer",
+            "role": "Developer"
+        },
+        {
+            "name": "Patrick Heller",
+            "email": "paddy.heller@gmail.com",
+            "homepage": "https://github.com/psren",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "~5.5|~7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpAb\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpAb\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "require-dev": {
+        "scrutinizer/ocular": "^1.3",
+        "phpunit/phpunit": "4.*",
+        "squizlabs/php_codesniffer": "^2.5",
+        "php-mock/php-mock": "^1.0",
+        "zendframework/zend-eventmanager": "^3.0"
     }
 }
