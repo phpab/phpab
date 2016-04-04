@@ -275,5 +275,4 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->assertSame($values, $cookie->clear());
         $this->assertEmpty($cookie->all());
     }
-
 }

@@ -2,39 +2,38 @@
 
 namespace PhpAb\Analytics;
 
-use PhpAb\Test;
+use Webmozart\Assert\Assert;
 
-/**
- * This is just a concept, no code review required
- */
 class UAExperimentData
 {
 
     /**
-     * @var array
+     * @var array Of test identifiers and their variant's indexes
      */
     private $testsData = [];
 
     /**
      * 
-     * @param string $testIdentifier
+     * @param string $testIdentifier It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
      * @param int $variationIndex
      * @return \PhpAb\Analytics\UAExperiments
+     * @throws InvalidArgumentException
      */
-    public function addTestResult($testIdentifier, $variationIndex)
+    public function onRegisterParticipation($testIdentifier, $variationIndex)
     {
-        // $testIdentifier is not the name of the test but 
-        // the experiment code provided by GAExperiments interface
-        // It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
+        Assert::string($testIdentifier, 'Test identifier must be astring');
 
-        // Check for collision?
+        Assert::integer($variationIndex, 'Variation index must be integer');
+
+        Assert::greaterThan($variationIndex, -1, 'Variation index must be integer >= 0');
+
         $this->testsData[$testIdentifier] = $variationIndex;
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return array 
      */
     public function getTestsData()
     {

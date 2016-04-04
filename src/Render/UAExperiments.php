@@ -2,11 +2,15 @@
 
 namespace PhpAb\Render;
 
+/**
+ * This class will only work for Universal Analytics
+ * Experiments ran as External
+ */
 class UAExperiments
 {
 
     /**
-     * @var array
+     * @var array Of test identifiers and their variant's indexes 
      */
     private $testsData = [];
 
@@ -18,10 +22,7 @@ class UAExperiments
         $this->testsData = $testsData;
     }
 
-
     /**
-     * This would be valid for External version of Universal Analytics
-     * Anyother implementation won't work (JScript API, redirection Experiments, etc.)
      * @return string
      */
     public function getScript()
