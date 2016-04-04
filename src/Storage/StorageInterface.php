@@ -7,11 +7,12 @@ namespace PhpAb\Storage;
  */
 interface StorageInterface
 {
+
     /**
      * Checks if the test has a participation set.
      *
      * @param string $identifier The tests identifier
-     *
+     * @throws InvalidArgumentException
      * @return bool true if the test participation is defined, false otherwise
      */
     public function has($identifier);
@@ -20,16 +21,16 @@ interface StorageInterface
      * Returns the participation value (Variant or false).
      *
      * @param string $identifier The tests identifier name
-     *
+     * @throws InvalidArgumentException
      * @return mixed
      */
     public function get($identifier);
 
     /**
      * Sets participation value for a test
-     *
      * @param string $identifier The tests identifier
      * @param mixed  $participation The participated variant
+     * @throws InvalidArgumentException
      */
     public function set($identifier, $participation);
 
@@ -44,7 +45,7 @@ interface StorageInterface
      * Removes a stored test.
      *
      * @param string $identifier
-     *
+     * @throws InvalidArgumentException
      * @return mixed The removed value or null when it does not exist
      */
     public function remove($identifier);
