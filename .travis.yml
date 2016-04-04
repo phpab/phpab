@@ -1,27 +1,34 @@
-sudo: false
-
 language: php
 
+php:
+  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+
+# This triggers builds to run on the new TravisCI infrastructure.
+# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+
 matrix:
-  fast_finish: true
   include:
-    - php: 5.5
     - php: 5.6
-      env:
-        - UPLOAD_COVERAGE=true
-    - php: 7
-    - php: hhvm
+      env: 'UPLOAD_COVERAGE=true'
+  fast_finish: true
   allow_failures:
-    - php: 5.5
+    - php: 5.4
     - php: hhvm
 
 before_install:
-  - composer self-update
+  - travis_retry composer self-update
 
 install:
   - travis_retry composer install --no-interaction --ignore-platform-reqs
 
 script:
+  - composer validate --strict
+  - vendor/bin/phpcs --standard=psr2 src/
   - vendor/bin/phpunit
 
 after_script:

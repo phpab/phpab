@@ -2,7 +2,15 @@
 
 namespace PhpAb\Variant;
 
-class CallbackVariant implements VariantInterface
+/**
+ * SimpleVariant does not perform any action on run()
+ * It's simple a named Variant
+ *
+ * It can be used for example for
+ * - Control-Group
+ * - Simple Frontend-Tests
+ */
+class SimpleVariant implements VariantInterface
 {
     /**
      * @var string
@@ -10,18 +18,11 @@ class CallbackVariant implements VariantInterface
     private $identifier;
 
     /**
-     * @var callable
-     */
-    private $callback;
-
-    /**
      * @param string   $identifier The Identifier of the Variant
-     * @param callable $callback The Callable to execute on run
      */
-    public function __construct($identifier, callable $callback)
+    public function __construct($identifier)
     {
         $this->identifier = $identifier;
-        $this->callback = $callback;
     }
 
     /**
@@ -37,6 +38,6 @@ class CallbackVariant implements VariantInterface
      */
     public function run()
     {
-        call_user_func($this->callback);
+        // no return to comply with the interface
     }
 }
