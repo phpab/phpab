@@ -39,7 +39,7 @@ class Manager implements ParticipationManagerInterface
         $storedValue = $this->storage->get($this->getKey($test));
 
         if (null !== $variant && $storedValue === $variant) {
-            // Is wasn't asked expilcitly for the variant, so we will only make
+            // Is wasn't asked explicitly for the variant, so we will only make
             // a check for the test.
             return true;
         }
@@ -64,7 +64,7 @@ class Manager implements ParticipationManagerInterface
     }
 
     /**
-     * @param string $identifier The indentifier to build the key with
+     * @param string $identifier The identifier to build the key with
      *
      * @return string The namespaced key
      */
