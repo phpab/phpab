@@ -24,6 +24,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher();
         $dispatcher->addListener('event.foo', function ($subject) {
             $subject->executed = true;
+            return 'yolo';
         });
 
         $subject = new \stdClass();
@@ -58,10 +59,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $subject->touched = 0;
 
         // Act
-        $result = $dispatcher->dispatch('event.foo', $subject);
+        $dispatcher->dispatch('event.foo', $subject);
 
         // Assert
-        $this->assertNull($result);
         $this->assertEquals(1, $subject->touched);
     }
 
@@ -81,10 +81,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $subject->touched = 0;
 
         // Act
-        $result = $dispatcher->dispatch('event.foo', $subject);
+        $dispatcher->dispatch('event.foo', $subject);
 
         // Assert
-        $this->assertNull($result);
         $this->assertEquals(2, $subject->touched);
     }
 
