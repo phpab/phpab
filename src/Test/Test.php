@@ -52,6 +52,8 @@ class Test implements TestInterface
     /**
      * Adds a variant to this test.
      *
+     * @throws DuplicateVariantException
+     *
      * @param VariantInterface $variant The variant to add to this test.
      */
     public function addVariant(VariantInterface $variant)
