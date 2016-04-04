@@ -6,21 +6,18 @@ class UAExperiments
 {
 
     /**
-     *
      * @var array
      */
     private $testsData = [];
 
     /**
-     * Or should this be done in the constructor?
      * @param array $testsData
-     * @return \PhpAb\Render\UAExperiments
      */
-    public function setTestsData(array $testsData)
+    public function __construct(array $testsData)
     {
         $this->testsData = $testsData;
-        return $this;
     }
+
 
     /**
      * This would be valid for External version of Universal Analytics
@@ -45,5 +42,4 @@ class UAExperiments
 
         return implode("\n", $script);
     }
-
 }
