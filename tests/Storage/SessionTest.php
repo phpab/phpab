@@ -3,25 +3,41 @@
 namespace PhpAb\Storage;
 
 use PHPUnit_Framework_TestCase;
+use phpmock\MockBuilder;
+use phpmock\Mock;
+use phpmock\functions\FixedValueFunction;
 
 class SessionTest extends PHPUnit_Framework_TestCase
 {
+
     protected function setUp()
     {
         parent::setUp();
-
-        // We need to abort sessions, else we cannot execute our test safely.
-        @session_abort();
 
         // Let's make sure the session is empty before we start a test.
         $_SESSION = [];
     }
 
+    /**
+     * Disable global function mocks
+     */
+    protected function tearDown()
+    {
+        parent::tearDown();
+        \phpmock\Mock::disableAll();
+    }
+
+    /**
+     * Mock global session_status() function
+     */
     private function startSession()
     {
-        // Unfortunately we cannot start sessions in a normal way because phpunit already sends output to
-        // the screen. Therefor we are suppressing the warning.
-        @session_start();
+        $builder = new MockBuilder();
+        $builder->setNamespace(__NAMESPACE__)
+            ->setName("session_status")
+            ->setFunctionProvider(new FixedValueFunction(PHP_SESSION_ACTIVE));
+        $sessionStatusMock = $builder->build();
+        $sessionStatusMock->enable();
     }
 
     /**
@@ -232,7 +248,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             'identifier1' => 'participation1',
             'identifier2' => 'participation2',
-        ], $result);
+            ], $result);
     }
 
     /**
@@ -307,7 +323,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([
             'identifier1' => 'participation1',
             'identifier2' => 'participation2',
-        ], $result);
+            ], $result);
         $this->assertCount(0, $session->all());
     }
 }
