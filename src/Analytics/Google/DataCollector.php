@@ -1,41 +1,40 @@
 <?php
 
-namespace PhpAb\Analytics;
+namespace PhpAb\Analytics\Google;
 
 use Webmozart\Assert\Assert;
 
-class UAExperimentData
+class DataCollector
 {
 
     /**
-     * @var array Of test identifiers and their variant's indexes
+     * @var array Test identifiers and variation indexes
      */
-    private $testsData = [];
+    private $participations = [];
 
     /**
      * @param string $testIdentifier It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
      * @param int $variationIndex
-     * @return \PhpAb\Analytics\UAExperiments
      * @throws InvalidArgumentException
+     *
+     * @return void
      */
     public function onRegisterParticipation($testIdentifier, $variationIndex)
     {
-        Assert::string($testIdentifier, 'Test identifier must be astring');
+        Assert::string($testIdentifier, 'Test identifier must be a string');
 
         Assert::integer($variationIndex, 'Variation index must be integer');
 
         Assert::greaterThan($variationIndex, -1, 'Variation index must be integer >= 0');
 
-        $this->testsData[$testIdentifier] = $variationIndex;
-
-        return $this;
+        $this->participations[$testIdentifier] = $variationIndex;
     }
 
     /**
-     * @return array 
+     * @return array
      */
     public function getTestsData()
     {
-        return $this->testsData;
+        return $this->participations;
     }
 }

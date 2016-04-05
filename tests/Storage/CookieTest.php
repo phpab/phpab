@@ -15,7 +15,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * Reset global cookies array and disable 
+     * Reset global cookies array and disable
      * global function mocks
      */
     protected function tearDown()
@@ -58,9 +58,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->has([123]);
     }
 
-    /**
-     * 
-     */
     public function testParseExistingCookie()
     {
         $cookie = new Cookie('chars');
@@ -75,8 +72,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $this->assertSame([], $cookie->all());
     }
 
-    /**
-     */
     public function testHas()
     {
         $_COOKIE['chars'] = json_encode([
@@ -97,9 +92,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->get([123]);
     }
 
-    /**
-     * 
-     */
     public function testGet()
     {
         $_COOKIE['chars'] = json_encode([
@@ -130,9 +122,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->set('walter', '');
     }
 
-    /**
-     * 
-     */
     public function testSet()
     {
 
@@ -171,9 +160,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->set('walter', 'black');
     }
 
-    /**
-     * 
-     */
     public function testAll()
     {
         $values = [
@@ -203,9 +189,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->remove('foo');
     }
 
-    /**
-     * 
-     */
     public function testRemove()
     {
 
@@ -244,9 +227,6 @@ class CookieTest extends PHPUnit_Framework_TestCase
         $cookie->clear();
     }
 
-    /**
-     * 
-     */
     public function testClear()
     {
 

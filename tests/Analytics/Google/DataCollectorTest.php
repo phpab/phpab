@@ -1,17 +1,17 @@
 <?php
 
-namespace PhpAb\Analytics;
+namespace PhpAb\Analytics\Google;
 
-class UAExperimentDataTest extends \PHPUnit_Framework_TestCase
+class DataCollectorTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function OnRegisterParticipationInvalidTestIdentifier()
+    public function onRegisterParticipationInvalidTestIdentifier()
     {
         // Arrange
-        $expData = new UAExperimentData();
+        $expData = new DataCollector();
 
         // Act
         $expData->onRegisterParticipation(987, 1);
@@ -23,10 +23,10 @@ class UAExperimentDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function OnRegisterParticipationInvalidVariationIndexRange()
+    public function onRegisterParticipationInvalidVariationIndexRange()
     {
         // Arrange
-        $expData = new UAExperimentData();
+        $expData = new DataCollector();
 
         // Act
         $expData->onRegisterParticipation('walter', -1);
@@ -38,13 +38,13 @@ class UAExperimentDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function OnRegisterParticipationInvalidVariationNotInt()
+    public function onRegisterParticipationInvalidVariationNotInt()
     {
         // Arrange
-        $expData = new UAExperimentData();
+        $expData = new DataCollector();
 
         // Act
-        $expData->onRegisterParticipation('walter', "1");
+        $expData->onRegisterParticipation('walter', '1');
 
         // Assert
         // ..
@@ -53,7 +53,7 @@ class UAExperimentDataTest extends \PHPUnit_Framework_TestCase
     public function testOnRegisterParticipation()
     {
         // Arrange
-        $expData = new UAExperimentData();
+        $expData = new DataCollector();
         $expData->onRegisterParticipation('walter', 0);
         $expData->onRegisterParticipation('bernard', 1);
 
@@ -61,9 +61,12 @@ class UAExperimentDataTest extends \PHPUnit_Framework_TestCase
         $data = $expData->getTestsData();
 
         // Assert
-        $this->assertSame([
-            'walter' => 0,
-            'bernard' => 1
-            ], $data);
+        $this->assertSame(
+            [
+                'walter' => 0,
+                'bernard' => 1
+            ],
+            $data
+        );
     }
 }

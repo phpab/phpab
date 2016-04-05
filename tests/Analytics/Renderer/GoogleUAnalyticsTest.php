@@ -1,14 +1,14 @@
 <?php
 
-namespace PhpAb\Renderer;
+namespace PhpAb\Analytics\Renderer;
 
-class UAExperimentsTest extends \PHPUnit_Framework_TestCase
+class GoogleUAnalyticsTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetScript()
     {
         // Arrange
-        $gaRenderer = new UAExperiments([
+        $gaRenderer = new GoogleUAnalytics([
             'walter' => 1,
             'bernard' => 0
         ]);
@@ -26,7 +26,7 @@ ga('set', 'bernard', 0);
     public function testGetScriptEmpty()
     {
         // Arrange
-        $gaRenderer = new UAExperiments([]);
+        $gaRenderer = new GoogleUAnalytics([]);
 
         // Act
         $script = $gaRenderer->getScript();
