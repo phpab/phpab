@@ -29,7 +29,6 @@ class Manager implements ParticipationManagerInterface
         if ($test instanceof TestInterface) {
             $test = $test->getIdentifier();
         }
-
         
         if ($variant instanceof VariantInterface) {
             $variant = $variant->getIdentifier();
