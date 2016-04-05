@@ -10,14 +10,6 @@ use PhpAb\Test\TestInterface;
 interface EngineInterface
 {
     /**
-     * Gets the storage where information about
-     * the users participation is stored.
-     *
-     * @return StorageInterface
-     */
-    public function getStorage();
-
-    /**
      * Get all tests for the engine
      *
      * @return TestInterface[]|array
