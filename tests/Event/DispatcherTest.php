@@ -2,7 +2,9 @@
 
 namespace PhpAb\Event;
 
-class DispatcherTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class DispatcherTest extends PHPUnit_Framework_TestCase
 {
     public function testDispatchEventWithoutListeners()
     {
