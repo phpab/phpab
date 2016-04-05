@@ -2,6 +2,7 @@
 
 namespace PhpAb\Participation;
 
+use PhpAb\Storage\Cookie;
 use PhpAb\Storage\Runtime;
 use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
