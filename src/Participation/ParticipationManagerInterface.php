@@ -11,7 +11,9 @@ interface ParticipationManagerInterface
      * @param string      $test    The identifier of the test to check
      * @param string|null $variant The identifier of the variant to check
      *
-     * @return false|string Returns false it no participation. A string for the participated variant if participating.
+     * @return boolean|string false if no participation.
+     *                        string for the participated variant if participating.
+     *                        true if explicit variant was asked and matches
      */
     public function participates($test, $variant = null);
 
