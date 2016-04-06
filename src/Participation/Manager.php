@@ -26,13 +26,8 @@ class Manager implements ParticipationManagerInterface
      */
     public function participates($test, $variant = null)
     {
-        if ($test instanceof TestInterface) {
-            $test = $test->getIdentifier();
-        }
-        
-        if ($variant instanceof VariantInterface) {
-            $variant = $variant->getIdentifier();
-        }
+        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
+        $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
 
         $storedValue = $this->storage->get($test);
 
@@ -55,13 +50,8 @@ class Manager implements ParticipationManagerInterface
      */
     public function participate($test, $variant)
     {
-        if ($test instanceof TestInterface) {
-            $test = $test->getIdentifier();
-        }
-
-        if ($variant instanceof VariantInterface) {
-            $variant = $variant->getIdentifier();
-        }
+        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
+        $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
 
         $this->storage->set($test, $variant);
     }
