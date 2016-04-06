@@ -37,14 +37,14 @@ class Manager implements ParticipationManagerInterface
         $storedValue = $this->storage->get($test);
 
         if (null !== $variant && $storedValue === $variant) {
-            // Is wasn't asked explicitly for the variant, so we will only make
-            // a check for the test.
+            // It was asked explicitly for the variant and it matches
             return true;
         }
 
         if (null === $variant && $this->storage->has($test)) {
             // The stored value exists, so we participate at the test
-            return true;
+            // lets return the stored variant
+            return $storedValue;
         }
 
         return false;
