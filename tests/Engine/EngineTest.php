@@ -7,7 +7,7 @@ use PhpAb\Participation\ParticipationManagerInterface;
 use PhpAb\Participation\PercentageFilter;
 use PhpAb\Storage\Runtime;
 use PhpAb\Test\Test;
-use PhpAb\Variant\RandomChooser;
+use PhpAb\Variant\StaticChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 
@@ -21,7 +21,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->alwaysParticipateFilter = new PercentageFilter(100);
-        $this->chooser = new RandomChooser();
+        $this->chooser = new StaticChooser(0);
 
         $this->variant = $this->getMockBuilder(VariantInterface::class)
             ->setMethods(['getIdentifier', 'run'])

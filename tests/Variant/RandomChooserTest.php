@@ -8,7 +8,6 @@ use phpmock\MockBuilder;
 
 class RandomChooserTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testChooseVariants()
     {
         // Override mt_rand
