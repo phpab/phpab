@@ -15,4 +15,16 @@ class StaticChooserTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertEquals(4, $result);
     }
+
+    public function testChooseStaticFails()
+    {
+        // Arrange
+        $chooser = new StaticChooser(3);
+
+        // Act
+        $result = $chooser->chooseVariant([1,2]);
+
+        // Assert
+        $this->assertNull($result);
+    }
 }

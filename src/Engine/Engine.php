@@ -100,13 +100,13 @@ class Engine implements EngineInterface
                 return;
             }
 
-            // He should participate so lets choose an option for him
-            $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
-
-            if (! $chosen) {
+            if (! $test->getVariants()) {
                 // There was no variant existent so we will not do anything
                 return;
             }
+
+            // He should participate so lets choose an option for him
+            $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
 
             // Store the chosen variant so he will not switch between different states
             $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());

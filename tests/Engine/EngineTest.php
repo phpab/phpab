@@ -243,8 +243,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $storage = new Runtime();
         $manager = new Manager($storage);
+        $test = new Test('t1');
 
         $engine = new Engine($manager);
+        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('v1'));
         $engine->start();
 
         // Act
