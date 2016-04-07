@@ -228,18 +228,29 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('v3'));
 
         $engine = new Engine($manager);
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('v1'));
 
         // Act
         $engine->start();
         $result = $manager->participates('t1');
 
         // Assert
-        $this->assertStringStartsWith('v', $result);
+        $this->assertEquals('v1', $result);
     }
 
     public function testNoVariantAvailableForTest()
     {
-        $this->markTestIncomplete('Must be implemented');
+        // Arrange
+        $storage = new Runtime();
+        $manager = new Manager($storage);
+
+        $engine = new Engine($manager);
+        $engine->start();
+
+        // Act
+        $result = $manager->participates('t1');
+
+        // Assert
+        $this->assertFalse($result);
     }
 }
