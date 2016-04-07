@@ -2,6 +2,7 @@
 
 namespace PhpAb\Engine;
 
+use PhpAb\Event\DispatcherInterface;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\FilterInterface;
@@ -21,10 +22,15 @@ class Engine implements EngineInterface
      * @var \PhpAb\Participation\ParticipationManagerInterface
      */
     private $participationManager;
+    /**
+     * @var \PhpAb\Event\DispatcherInterface
+     */
+    private $dispatcher;
 
-    public function __construct(ParticipationManagerInterface $participationManager)
+    public function __construct(ParticipationManagerInterface $participationManager, DispatcherInterface $dispatcher)
     {
         $this->participationManager = $participationManager;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
