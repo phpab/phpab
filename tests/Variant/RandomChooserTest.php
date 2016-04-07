@@ -37,34 +37,6 @@ class RandomChooserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($variant3, $chosen);
     }
 
-    public function testChooseVariantsWithToHeightKey()
-    {
-        // Override mt_rand
-        $builder = new MockBuilder();
-        $builder->setNamespace(__NAMESPACE__)
-            ->setName('mt_rand')
-            ->setFunctionProvider(new FixedValueFunction(3));
-        $mock = $builder->build();
-        $mock->enable();
-
-        // Arrange
-        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
-        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
-        $variant3 = $this->getMock(VariantInterface::class, [], ['v3']);
-
-        $chooser = new RandomChooser();
-
-        // Act
-        $chosen = $chooser->chooseVariant([
-            $variant1,
-            $variant2,
-            $variant3,
-        ]);
-
-        // Assert
-        $this->assertSame($variant1, $chosen);
-    }
-
     public function testChooseVariantsWithKeys()
     {
         // Override mt_rand
