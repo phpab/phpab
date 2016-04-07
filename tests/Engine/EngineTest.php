@@ -218,8 +218,24 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
     public function testUserGetsNewParticipation()
     {
-        $this->markTestIncomplete('Check if ParticipationManager was adjusted');
-        $this->markTestIncomplete('Check if the variant got executed');
+        // Arrange
+        $storage = new Runtime();
+        $manager = new Manager($storage);
+
+        $test = new Test('t1');
+        $test->addVariant(new SimpleVariant('v1'));
+        $test->addVariant(new SimpleVariant('v2'));
+        $test->addVariant(new SimpleVariant('v3'));
+
+        $engine = new Engine($manager);
+        $engine->addTest($test, [], $this->alwaysParticipateFilter, $this->chooser);
+
+        // Act
+        $engine->start();
+        $result = $manager->participates('t1');
+
+        // Assert
+        $this->assertStringStartsWith('v', $result);
     }
 
     public function testNoVariantAvailableForTest()
