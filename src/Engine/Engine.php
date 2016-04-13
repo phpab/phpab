@@ -92,47 +92,40 @@ class Engine implements EngineInterface
 
         if (null === $testParticipation) {
             // is marked as "do not participate"
+            $this->dispatcher->dispatch('phpab.participation.blocked', [$this, $bag]);
 
-            return;
+            return false;
         }
 
         if (false === $testParticipation) {
-            // The user does not participate at the test yet.
+            // The user does not participate at the test
             // let him participate
             if (! $bag->getParticipationFilter()->shouldParticipate()) {
                 // The user should not participate so let's set participation
                 // to null so he will not participate in the future, too.
+                $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
                 $this->participationManager->participate($test->getIdentifier(), null);
-                return;
+
+                return false;
             }
-
-            if (! $test->getVariants()) {
-                // There was no variant existent so we will not do anything
-                return;
-            }
-
-            // He should participate so lets choose an option for him
-            $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
-
-            // Store the chosen variant so he will not switch between different states
-            $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
-
-            // Then run the variant
-            $chosen->run();
-
-            return;
         }
 
-        // The user has a stored participation
-        $variantParticipation = $test->getVariant('bar');
-        if (null === $variantParticipation) {
-            // oops the stored variant does no longer exist
-            // Let the user not apply to the same test a second time
+        // Choose a variant for later usage.
+        // If the user should participate this one will be used
+        $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
+
+        if (null === $chosen or !$test->getVariant($chosen->getIdentifier())) {
+            // The user has a stored participation, but it does not exist any more
+            $this->dispatcher->dispatch('phpab.participation.variant_missing', [$this, $bag]);
             $this->participationManager->participate($test->getIdentifier(), null);
-            return;
+
+            return false;
         }
 
-        // the variant exists. So GOGOGOGOGOGO.
-        $variantParticipation->run();
+        // Store the chosen variant so he will not switch between different states
+        $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
+
+        $this->dispatcher->dispatch('phpab.participation.variant_run', [$chosen]);
+        $chosen->run();
     }
 }

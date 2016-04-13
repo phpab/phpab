@@ -106,7 +106,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant($this->variant);
 
         $engine = new Engine($this->manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('bar'));
 
         // Act
         $result = $engine->start();
@@ -156,10 +156,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->start();
-        $result = $manager->participates('foo', null);
+        $result = $manager->participates('foo', 'bar');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertFalse($result);
     }
 
     public function testUserShouldNotParticipateWasStoredInStorage()
@@ -254,6 +254,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('t1');
 
         // Assert
-        $this->assertFalse($result);
+        $this->assertNull($result);
     }
 }
