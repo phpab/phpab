@@ -85,6 +85,13 @@ class Engine implements EngineInterface
         }
     }
 
+    /**
+     * Process the test bag
+     *
+     * @param \PhpAb\Test\Bag $bag
+     *
+     * @return bool true if the variant got executed, false otherwise
+     */
     private function handleTestBag(Bag $bag)
     {
         $test = $bag->getTest();
@@ -127,5 +134,7 @@ class Engine implements EngineInterface
 
         $this->dispatcher->dispatch('phpab.participation.variant_run', [$chosen]);
         $chosen->run();
+        
+        return true;
     }
 }
