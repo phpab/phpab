@@ -22,15 +22,41 @@ class Engine implements EngineInterface
      * @var \PhpAb\Participation\ParticipationManagerInterface
      */
     private $participationManager;
+
     /**
      * @var \PhpAb\Event\DispatcherInterface
      */
     private $dispatcher;
 
-    public function __construct(ParticipationManagerInterface $participationManager, DispatcherInterface $dispatcher)
+    /**
+     * @var \PhpAb\Participation\FilterInterface
+     */
+    private $filter;
+
+    /**
+     * @var \PhpAb\Variant\ChooserInterface
+     */
+    private $chooser;
+
+    /**
+     * @param \PhpAb\Participation\ParticipationManagerInterface $participationManager Handles the Participation state
+     * @param \PhpAb\Event\DispatcherInterface                   $dispatcher           Dispatches events
+     * @param \PhpAb\Participation\FilterInterface|null          $filter               The default filter to use if no filter is provided
+     *                                                                                 for the test.
+     * @param \PhpAb\Variant\ChooserInterface|null $chooser                            The default chooser to use if no chooser is provided
+     *                                                                                 for the test.
+     */
+    public function __construct(
+        ParticipationManagerInterface $participationManager,
+        DispatcherInterface $dispatcher,
+        FilterInterface $filter = null,
+        ChooserInterface $chooser = null
+    )
     {
         $this->participationManager = $participationManager;
         $this->dispatcher = $dispatcher;
+        $this->filter = $filter;
+        $this->chooser = $chooser;
     }
 
     /**
@@ -71,6 +97,11 @@ class Engine implements EngineInterface
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
+
+        // If no filter/chooser is set use the ones from
+        // the engine.
+        $filter = $filter ? $filter : $this->filter;
+        $chooser = $chooser ? $chooser : $this->chooser;
 
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
