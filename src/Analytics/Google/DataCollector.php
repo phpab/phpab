@@ -40,23 +40,6 @@ class DataCollector implements SubscriberInterface
         ];
     }
 
-    private function onVariantRun($options)
-    {
-        /** @var TestInterface $test */
-        $test = $options[1]->getTest();
-
-        /** @var VariantInterface $chosenVariant */
-        $chosenVariant = $options[2];
-
-        $variants = $test->getVariants();
-
-        // Get the index number of the element
-        $chosenIndex = array_search($chosenVariant->getIdentifier(), array_keys($variants));
-
-        // Call the add method
-        $this->addParticipation($test->getIdentifier(), $chosenIndex);
-    }
-
     /**
      * @param string $testIdentifier It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
      * @param int $variationIndex
