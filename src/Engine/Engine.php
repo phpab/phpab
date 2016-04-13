@@ -39,12 +39,13 @@ class Engine implements EngineInterface
     private $chooser;
 
     /**
-     * @param \PhpAb\Participation\ParticipationManagerInterface $participationManager Handles the Participation state
-     * @param \PhpAb\Event\DispatcherInterface                   $dispatcher           Dispatches events
-     * @param \PhpAb\Participation\FilterInterface|null          $filter               The default filter to use if no filter is provided
-     *                                                                                 for the test.
-     * @param \PhpAb\Variant\ChooserInterface|null $chooser                            The default chooser to use if no chooser is provided
-     *                                                                                 for the test.
+     * @param \PhpAb\Participation\ParticipationManagerInterface $participationManager
+     *                                                          Handles the Participation state
+     * @param \PhpAb\Event\DispatcherInterface $dispatcher Dispatches events
+     * @param \PhpAb\Participation\FilterInterface|null $filter The default filter to use if no filter is provided
+     *                                                          for the test.
+     * @param \PhpAb\Variant\ChooserInterface|null $chooser The default chooser to use if no chooser is provided
+     *                                                      for the test.
      */
     public function __construct(
         ParticipationManagerInterface $participationManager,
