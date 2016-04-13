@@ -2,13 +2,13 @@
 
 namespace PhpAb\Analytics\Renderer;
 
-class GoogleUAnalyticsTest extends \PHPUnit_Framework_TestCase
+class GoogleUniversalAnalyticsTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testGetScript()
     {
         // Arrange
-        $gaRenderer = new GoogleUAnalytics([
+        $gaRenderer = new GoogleUniversalAnalytics([
             'walter' => 1,
             'bernard' => 0
         ]);
@@ -26,12 +26,12 @@ ga('set', 'bernard', 0);
     public function testGetScriptEmpty()
     {
         // Arrange
-        $gaRenderer = new GoogleUAnalytics([]);
+        $gaRenderer = new GoogleUniversalAnalytics([]);
 
         // Act
         $script = $gaRenderer->getScript();
 
         // Assert
-        $this->assertSame("", $script);
+        $this->assertSame('', $script);
     }
 }
