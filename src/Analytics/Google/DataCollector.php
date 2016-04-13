@@ -21,8 +21,8 @@ class DataCollector implements SubscriberInterface
     public function getSubscribedEvents()
     {
         return [
-            'phpab.participation.variant_run' => function ($options)
-            {
+            'phpab.participation.variant_run' => function ($options) {
+            
                 /** @var TestInterface $test */
                 $test = $options[1]->getTest();
 
