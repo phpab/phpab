@@ -7,5 +7,13 @@ namespace PhpAb\Event;
  */
 interface SubscriberInterface
 {
+    /**
+     * @return array The array of events it subscribes to
+     *               The format looks like
+     *               [
+     *                 'eventname' => callable,
+     *                 'eventname2' => callable
+     *               ]
+     */
     public function getSubscribedEvents();
 }

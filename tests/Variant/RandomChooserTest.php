@@ -8,14 +8,13 @@ use phpmock\MockBuilder;
 
 class RandomChooserTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testChooseVariants()
     {
         // Override mt_rand
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
                 ->setName('mt_rand')
-                ->setFunctionProvider(new FixedValueFunction(1));
+                ->setFunctionProvider(new FixedValueFunction(2));
         $mock = $builder->build();
         $mock->enable();
 
@@ -34,7 +33,7 @@ class RandomChooserTest extends \PHPUnit_Framework_TestCase
         ]);
 
         // Assert
-        $this->assertSame($variant2, $chosen);
+        $this->assertSame($variant3, $chosen);
     }
 
     public function testChooseVariantsWithKeys()
