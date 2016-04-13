@@ -51,8 +51,8 @@ class Engine implements EngineInterface
         DispatcherInterface $dispatcher,
         FilterInterface $filter = null,
         ChooserInterface $chooser = null
-    )
-    {
+    ) {
+    
         $this->participationManager = $participationManager;
         $this->dispatcher = $dispatcher;
         $this->filter = $filter;

@@ -15,9 +15,15 @@ $engine = new PhpAb\Engine\Engine($manager, $dispatcher, $filter, $chooser);
 
 $test = new \PhpAb\Test\Test('foo_test');
 $test->addVariant(new \PhpAb\Variant\SimpleVariant('_control'));
-$test->addVariant(new \PhpAb\Variant\CallbackVariant('v1', function() { echo 'v1'; }));
-$test->addVariant(new \PhpAb\Variant\CallbackVariant('v2', function() { echo 'v2'; }));
-$test->addVariant(new \PhpAb\Variant\CallbackVariant('v3', function() { echo 'v3'; }));
+$test->addVariant(new \PhpAb\Variant\CallbackVariant('v1', function () {
+    echo 'v1';
+}));
+$test->addVariant(new \PhpAb\Variant\CallbackVariant('v2', function () {
+    echo 'v2';
+}));
+$test->addVariant(new \PhpAb\Variant\CallbackVariant('v3', function () {
+    echo 'v3';
+}));
 
 // Add some tests
 $engine->addTest($test);
