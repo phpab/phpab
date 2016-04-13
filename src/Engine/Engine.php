@@ -19,33 +19,32 @@ class Engine implements EngineInterface
     public $tests = [];
 
     /**
-     * @var \PhpAb\Participation\ParticipationManagerInterface
+     * @var ParticipationManagerInterface
      */
     private $participationManager;
 
     /**
-     * @var \PhpAb\Event\DispatcherInterface
+     * @var DispatcherInterface
      */
     private $dispatcher;
 
     /**
-     * @var \PhpAb\Participation\FilterInterface
+     * @var FilterInterface
      */
     private $filter;
 
     /**
-     * @var \PhpAb\Variant\ChooserInterface
+     * @var ChooserInterface
      */
     private $chooser;
 
     /**
-     * @param \PhpAb\Participation\ParticipationManagerInterface $participationManager
-     *                                                          Handles the Participation state
-     * @param \PhpAb\Event\DispatcherInterface $dispatcher Dispatches events
-     * @param \PhpAb\Participation\FilterInterface|null $filter The default filter to use if no filter is provided
-     *                                                          for the test.
-     * @param \PhpAb\Variant\ChooserInterface|null $chooser The default chooser to use if no chooser is provided
-     *                                                      for the test.
+     * @param ParticipationManagerInterface $participationManager Handles the Participation state
+     * @param DispatcherInterface $dispatcher Dispatches events
+     * @param FilterInterface|null $filter The default filter to use if no filter is provided
+     *                                     for the test.
+     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided
+     *                                       for the test.
      */
     public function __construct(
         ParticipationManagerInterface $participationManager,
@@ -120,7 +119,7 @@ class Engine implements EngineInterface
     /**
      * Process the test bag
      *
-     * @param \PhpAb\Test\Bag $bag
+     * @param Bag $bag
      *
      * @return bool true if the variant got executed, false otherwise
      */
