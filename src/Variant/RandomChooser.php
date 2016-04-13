@@ -14,7 +14,7 @@ class RandomChooser implements ChooserInterface
             return null;
         }
 
-        $chosenCount = mt_rand(0, $count);
+        $chosenCount = mt_rand(0, $count-1);
         $keys = array_keys($variants);
         
         return $variants[$keys[$chosenCount]];
