@@ -121,7 +121,7 @@ class Engine implements EngineInterface
         // If the user should participate this one will be used
         $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
 
-        if (null === $chosen or !$test->getVariant($chosen->getIdentifier())) {
+        if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
             // The user has a stored participation, but it does not exist any more
             $this->dispatcher->dispatch('phpab.participation.variant_missing', [$this, $bag]);
             $this->participationManager->participate($test->getIdentifier(), null);
