@@ -34,4 +34,20 @@ ga('set', 'bernard', 0);
         // Assert
         $this->assertSame('', $script);
     }
+
+    public function testGetParticipations()
+    {
+        // Arrange
+        $data = [
+            'walter' => 1,
+            'bernard' => 0
+        ];
+        $gaRenderer = new GoogleUniversalAnalytics($data);
+
+        // Act
+        $returnedData = $gaRenderer->getParticipations();
+
+        // Assert
+        $this->assertSame($data, $returnedData);
+    }
 }

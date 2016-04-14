@@ -43,4 +43,13 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         return implode("\n", $script);
     }
+
+    /**
+     * @return @inheritDoc
+     */
+    public function getParticipations()
+    {
+
+        return $this->participations;
+    }
 }

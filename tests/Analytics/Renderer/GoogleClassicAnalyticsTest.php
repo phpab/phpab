@@ -34,4 +34,20 @@ cxApi.setChosenVariation(0, 'bernard')
         // Assert
         $this->assertSame('', $script);
     }
+
+    public function testGetParticipations()
+    {
+        // Arrange
+        $data = [
+            'walter' => 1,
+            'bernard' => 0
+        ];
+        $gaRenderer = new GoogleClassicAnalytics($data);
+
+        // Act
+        $returnedData = $gaRenderer->getParticipations();
+
+        // Assert
+        $this->assertSame($data, $returnedData);
+    }
 }
