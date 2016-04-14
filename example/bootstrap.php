@@ -4,7 +4,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 // Engine and Analytics have to be implemented before this works
 
-$storage = new \PhpAb\Storage\Runtime();
+$storage = new \PhpAb\Storage\Session('phpab');
 $manager = new \PhpAb\Participation\Manager($storage);
 $dispatcher = new \PhpAb\Event\Dispatcher();
 

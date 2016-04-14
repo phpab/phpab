@@ -143,11 +143,8 @@ class Engine implements EngineInterface
                 // The user should not participate so let's set participation
                 // to null so he will not participate in the future, too.
                 $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
-
-                // I don't think this line should be executed
-                // Every, filter should be able to filter at every run, especially
-                // because criteria might not apply between sessions/requests
-                // $this->participationManager->participate($test->getIdentifier(), null);
+                
+                $this->participationManager->participate($test->getIdentifier(), null);
 
                 return false;
             }
