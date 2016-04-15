@@ -27,8 +27,8 @@ class Session implements StorageInterface
             throw new InvalidArgumentException('The namespace is invalid.');
         }
 
-        if (session_status() === PHP_SESSION_NONE) {
-            throw new RuntimeException('The session has not been started.');
+        if (PHP_SESSION_NONE === session_status()) {
+            session_start();
         }
 
         $this->namespace = $namespace;

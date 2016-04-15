@@ -83,7 +83,7 @@ class Cookie implements StorageInterface
     protected function saveCookie()
     {
         $this->parseExistingCookie();
-        
+
         return setcookie($this->cookieName, json_encode($this->cookieValues), time() + $this->ttl, '/');
     }
 
@@ -121,7 +121,7 @@ class Cookie implements StorageInterface
     {
         $this->has($identifier);
 
-        if (empty($participation)) {
+        if ('' === $participation) {
             throw new InvalidArgumentException('Participation name is invalid.');
         }
 

@@ -30,7 +30,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     /**
      * Mock global session_status() function
      */
-    private function startSession()
+    private function sessionStatusMock()
     {
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
@@ -46,7 +46,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testConstructorWithValidNamespace()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         // Act
         $session = new Session('namespace');
@@ -91,13 +91,16 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PhpAb\Storage\Session::__construct
-     * @expectedException RuntimeException
-     * @expectedExceptionMessage The session has not been started.
      */
     public function testConstructorWithoutSessionStarted()
     {
         // Arrange
-        // ...
+        $builder = new MockBuilder();
+        $builder->setNamespace(__NAMESPACE__)
+            ->setName("session_start")
+            ->setFunctionProvider(new FixedValueFunction(true));
+        $sessionStartMock = $builder->build();
+        $sessionStartMock->enable();
 
         // Act
         $session = new Session('identifier');
@@ -113,7 +116,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testHasWithValidEntry()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('identifier', 'participation');
@@ -131,7 +134,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testHasWithInvalidEntry()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -148,7 +151,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testHasWithZeroEntry()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('0', 'participation');
@@ -166,7 +169,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testGetValidEntry()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('identifier', 'participation');
@@ -184,7 +187,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testGetInvalidEntry()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -201,7 +204,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -218,7 +221,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testAllWithEmptyStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -235,7 +238,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testAllWithFilledStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('identifier1', 'participation1');
@@ -257,7 +260,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testRemoveWithEmptyStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -274,7 +277,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testRemoveWithFilledStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('identifier', 'participation');
@@ -293,7 +296,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testClearEmptyStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
 
@@ -310,7 +313,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     public function testClearFilledStorage()
     {
         // Arrange
-        $this->startSession();
+        $this->sessionStatusMock();
 
         $session = new Session('namespace');
         $session->set('identifier1', 'participation1');

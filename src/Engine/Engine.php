@@ -8,6 +8,7 @@ use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\FilterInterface;
 use PhpAb\Participation\ParticipationManagerInterface;
 use PhpAb\Test\Bag;
+use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
 
@@ -52,7 +53,7 @@ class Engine implements EngineInterface
         FilterInterface $filter = null,
         ChooserInterface $chooser = null
     ) {
-    
+
         $this->participationManager = $participationManager;
         $this->dispatcher = $dispatcher;
         $this->filter = $filter;
@@ -93,7 +94,7 @@ class Engine implements EngineInterface
         FilterInterface $filter = null,
         ChooserInterface $chooser = null
     ) {
-    
+
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
@@ -142,9 +143,23 @@ class Engine implements EngineInterface
                 // The user should not participate so let's set participation
                 // to null so he will not participate in the future, too.
                 $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
+                
                 $this->participationManager->participate($test->getIdentifier(), null);
 
                 return false;
+            }
+        }
+
+        // Let's try to recover a previously stored Variant
+        if ($testParticipation) {
+            $variant = $bag->getTest()->getVariant($testParticipation);
+            // If we managed to identifier a Variant by a previously stored
+            // participation, do its magic again
+            if ($variant instanceof Variant\VariantInterface) {
+                $this->dispatcher->dispatch('phpab.participation.variant_run', [$variant]);
+                $variant->run();
+
+                return true;
             }
         }
 
@@ -165,7 +180,7 @@ class Engine implements EngineInterface
 
         $this->dispatcher->dispatch('phpab.participation.variant_run', [$chosen]);
         $chosen->run();
-        
+
         return true;
     }
 }
