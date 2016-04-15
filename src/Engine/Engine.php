@@ -178,7 +178,7 @@ class Engine implements EngineInterface
         // Store the chosen variant so he will not switch between different states
         $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
 
-        $this->dispatcher->dispatch('phpab.participation.variant_run', [$chosen]);
+        $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $chosen]);
         $chosen->run();
 
         return true;

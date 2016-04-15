@@ -2,9 +2,12 @@
 
 namespace PhpAb\Analytics\Google;
 
+use PhpAb\Event\SubscriberInterface;
+use PhpAb\Test\TestInterface;
+use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
 
-class DataCollector
+class DataCollector implements SubscriberInterface
 {
 
     /**
@@ -13,13 +16,38 @@ class DataCollector
     private $participations = [];
 
     /**
+     * @inheritDoc
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            'phpab.participation.variant_run' => function ($options) {
+            
+                /** @var TestInterface $test */
+                $test = $options[1]->getTest();
+
+                /** @var VariantInterface $chosenVariant */
+                $chosenVariant = $options[2];
+
+                $variants = $test->getVariants();
+
+                // Get the index number of the element
+                $chosenIndex = array_search($chosenVariant->getIdentifier(), array_keys($variants));
+
+                // Call the add method
+                $this->addParticipation($test->getIdentifier(), $chosenIndex);
+            }
+        ];
+    }
+
+    /**
      * @param string $testIdentifier It will look like "Qp0gahJ3RAO3DJ18b0XoUQ"
      * @param int $variationIndex
      * @throws InvalidArgumentException
      *
      * @return void
      */
-    public function onRegisterParticipation($testIdentifier, $variationIndex)
+    public function addParticipation($testIdentifier, $variationIndex)
     {
         Assert::string($testIdentifier, 'Test identifier must be a string');
 

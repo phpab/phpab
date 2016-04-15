@@ -5,16 +5,29 @@ namespace PhpAb\Analytics\Google;
 class DataCollectorTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function testGetSubscribedEvents()
+    {
+        // Arrange
+        $collector = new DataCollector();
+
+        // Act
+        $result = $collector->getSubscribedEvents();
+
+        // Assert
+        $this->assertCount(1, $result);
+        $this->assertArrayHasKey('phpab.participation.variant_run', $result);
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */
-    public function onRegisterParticipationInvalidTestIdentifier()
+    public function addParticipationInvalidTestIdentifier()
     {
         // Arrange
         $expData = new DataCollector();
 
         // Act
-        $expData->onRegisterParticipation(987, 1);
+        $expData->addParticipation(987, 1);
 
         // Assert
         // ..
@@ -23,13 +36,13 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function onRegisterParticipationInvalidVariationIndexRange()
+    public function addParticipationInvalidVariationIndexRange()
     {
         // Arrange
         $expData = new DataCollector();
 
         // Act
-        $expData->onRegisterParticipation('walter', -1);
+        $expData->addParticipation('walter', -1);
 
         // Assert
         // ..
@@ -38,24 +51,24 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function onRegisterParticipationInvalidVariationNotInt()
+    public function addParticipationInvalidVariationNotInt()
     {
         // Arrange
         $expData = new DataCollector();
 
         // Act
-        $expData->onRegisterParticipation('walter', '1');
+        $expData->addParticipation('walter', '1');
 
         // Assert
         // ..
     }
-
+    
     public function testOnRegisterParticipation()
     {
         // Arrange
         $expData = new DataCollector();
-        $expData->onRegisterParticipation('walter', 0);
-        $expData->onRegisterParticipation('bernard', 1);
+        $expData->addParticipation('walter', 0);
+        $expData->addParticipation('bernard', 1);
 
         // Act
         $data = $expData->getTestsData();

@@ -6,7 +6,7 @@ namespace PhpAb\Analytics\Renderer;
  * This class will only work for Universal Analytics Experiments ran as External
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/experiments#pro-server
  */
-class GoogleUAnalytics
+class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 {
 
     /**
@@ -23,7 +23,7 @@ class GoogleUAnalytics
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getScript()
     {
@@ -42,5 +42,14 @@ class GoogleUAnalytics
         $script[] = '</script>';
 
         return implode("\n", $script);
+    }
+
+    /**
+     * @return @inheritDoc
+     */
+    public function getParticipations()
+    {
+
+        return $this->participations;
     }
 }
