@@ -143,7 +143,7 @@ class Engine implements EngineInterface
                 // The user should not participate so let's set participation
                 // to null so he will not participate in the future, too.
                 $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
-                
+
                 $this->participationManager->participate($test->getIdentifier(), null);
 
                 return false;
@@ -156,7 +156,7 @@ class Engine implements EngineInterface
             // If we managed to identifier a Variant by a previously stored
             // participation, do its magic again
             if ($variant instanceof Variant\VariantInterface) {
-                $this->dispatcher->dispatch('phpab.participation.variant_run', [$variant]);
+                $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
                 $variant->run();
 
                 return true;
