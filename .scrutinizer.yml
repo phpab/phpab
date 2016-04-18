@@ -1,17 +1,29 @@
-build:
-    tests:
-        override:
-            -
-                command: 'phpunit'
-                coverage:
-                    file: 'build/logs/clover.xml'
-                    format: 'php-clover'
+filter:
+    excluded_paths: [tests/*, example/*, vendor/*]
+
+before_commands:
+    - 'composer install --dev --prefer-source --no-interaction'
+
 tools:
-    php_analyzer: true
+    external_code_coverage: true
     php_mess_detector: true
-    php_pdepend: true
-    php_cpd: true
-    php_hhvm: true
-    php_cs_fixer:
-        config: { level: psr2 }
+    php_code_sniffer:
+        enabled: true
+        config:
+            standard: PSR2
+        filter:
+            paths: ["src/*", "tests/*"]
     sensiolabs_security_checker: true
+    php_code_coverage: true
+    php_pdepend: true
+    php_loc:
+        enabled: true
+        excluded_dirs: [vendor, tests]
+    php_cpd:
+        enabled: true
+        excluded_dirs: [vendor, tests]
+
+checks:
+    php:
+        code_rating: true
+        duplication: true

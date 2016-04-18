@@ -2,33 +2,58 @@
 
 namespace PhpAb\Storage;
 
-use PhpAb\TestInterface;
-
 /**
- * The interface that should be implemented by all storage devices.
+ * Stores the participation state of the user
  */
 interface StorageInterface
 {
-    /**
-     * Clears the storage.
-     *
-     * @param TestInterface $abTest The test to clear the storage for.
-     */
-    public function clear(TestInterface $abTest);
 
     /**
-     * Reads the value from the storage.
+     * Checks if the test has a participation set.
      *
-     * @param TestInterface $abTest The test to read the value for.
-     * @return string|null The value of the choice
+     * @param string $identifier The tests identifier
+     * @throws InvalidArgumentException
+     * @return bool true if the test participation is defined, false otherwise
      */
-    public function read(TestInterface $abTest);
+    public function has($identifier);
 
     /**
-     * Writes the value to the storage.
+     * Returns the participation value (Variant or false).
      *
-     * @param TestInterface $abTest The test to read the value for.
-     * @param string $choice The value to write.
+     * @param string $identifier The tests identifier name
+     * @throws InvalidArgumentException
+     * @return mixed
      */
-    public function write(TestInterface $abTest, $choice);
+    public function get($identifier);
+
+    /**
+     * Sets participation value for a test
+     * @param string $identifier The tests identifier
+     * @param mixed  $participation The participated variant
+     * @throws InvalidArgumentException
+     */
+    public function set($identifier, $participation);
+
+    /**
+     * Returns all stored tests.
+     *
+     * @return array Attributes
+     */
+    public function all();
+
+    /**
+     * Removes a stored test.
+     *
+     * @param string $identifier
+     * @throws InvalidArgumentException
+     * @return mixed The removed value or null when it does not exist
+     */
+    public function remove($identifier);
+
+    /**
+     * Clears out state for a test.
+     *
+     * @return mixed Whatever data was contained.
+     */
+    public function clear();
 }
