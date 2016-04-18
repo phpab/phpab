@@ -153,7 +153,7 @@ class Engine implements EngineInterface
         // Let's try to recover a previously stored Variant
         if ($testParticipation) {
             $variant = $bag->getTest()->getVariant($testParticipation);
-            // If we managed to identifier a Variant by a previously stored
+            // If we managed to identify a Variant by a previously stored
             // participation, do its magic again
             if ($variant instanceof Variant\VariantInterface) {
                 $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
