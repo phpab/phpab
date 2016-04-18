@@ -266,7 +266,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
     public function testPreviousRunConsistencyInCookie()
     {
-
         // Arrange
         $builder = new MockBuilder();
         $builder->setNamespace('PhpAb\Storage')
