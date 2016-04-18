@@ -7,10 +7,15 @@ use PhpAb\Participation\Manager;
 use PhpAb\Participation\ParticipationManagerInterface;
 use PhpAb\Participation\PercentageFilter;
 use PhpAb\Storage\Runtime;
+use PhpAb\Storage\Cookie;
 use PhpAb\Test\Test;
 use PhpAb\Variant\StaticChooser;
+use PhpAb\Variant\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
+use PhpAb\Analytics\Google\DataCollector;
+use phpmock\MockBuilder;
+use phpmock\functions\FixedValueFunction;
 
 class EngineTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,6 +26,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        \phpmock\Mock::disableAll();
+
         $this->alwaysParticipateFilter = new PercentageFilter(100);
         $this->chooser = new StaticChooser(0);
 
@@ -255,5 +262,64 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertNull($result);
+    }
+
+    public function testPreviousRunConsistencyInCookie()
+    {
+        // Arrange
+        $builder = new MockBuilder();
+        $builder->setNamespace('PhpAb\Storage')
+                ->setName("headers_sent")
+                ->setFunctionProvider(new FixedValueFunction(false));
+        $headersSentMock = $builder->build();
+
+        $builder->setNamespace('PhpAb\Storage')
+                ->setName("setcookie")
+                ->setFunctionProvider(new FixedValueFunction(true));
+        $setcookieMock = $builder->build();
+
+        $headersSentMock->enable();
+        $setcookieMock->enable();
+
+        $_COOKIE['phpab'] = '{"foo_test":"v1","bar_test":"_control"}';
+        $storage = new Cookie('phpab');
+        $manager = new Manager($storage);
+
+        $analyticsData = new DataCollector;
+
+        $dispatcher = new Dispatcher;
+        $dispatcher->addSubscriber($analyticsData);
+
+        $filter = new PercentageFilter(5);
+        $chooser = new RandomChooser();
+
+        $engine = new Engine($manager, $dispatcher, $filter, $chooser);
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+        $test->addVariant(new SimpleVariant('v1'));
+        $test->addVariant(new SimpleVariant('v2'));
+
+        $test2 = new Test('bar_test');
+        $test2->addVariant(new SimpleVariant('_control'));
+        $test2->addVariant(new SimpleVariant('v1'));
+
+        $engine->addTest($test);
+        $engine->addTest($test2);
+
+        $engine->start();
+
+        // Act
+        $testData = $analyticsData->getTestsData();
+
+        // Assert
+        $this->assertSame(
+            [
+                'foo_test' => 1,
+                'bar_test' => 0
+            ],
+            $testData
+        );
+
     }
 }
