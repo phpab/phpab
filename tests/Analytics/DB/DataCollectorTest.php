@@ -4,7 +4,6 @@ namespace PhpAb\Analytics\DB;
 
 class DataCollectorTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testGetSubscribedEvents()
     {
         // Arrange

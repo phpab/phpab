@@ -9,7 +9,6 @@ use Webmozart\Assert\Assert;
 
 class DataCollector implements SubscriberInterface
 {
-
     /**
      * @var array Test identifiers and variation indexes
      */
