@@ -9,6 +9,13 @@
 
 namespace PhpAb\Exception;
 
-class TestException extends \Exception
+use Exception as BaseException;
+
+/**
+ * The base class for exceptions within phpab.
+ *
+ * @package PhpAb
+ */
+class TestException extends BaseException
 {
 }

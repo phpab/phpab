@@ -11,10 +11,14 @@ namespace PhpAb\Event;
 
 /**
  * The Subscriber can listen to multiple events at once.
+ *
+ * @package PhpAb
  */
 interface SubscriberInterface
 {
     /**
+     * Gets a dictionary with all events to subscribe to.
+     *
      * @return array The array of events it subscribes to
      *               The format looks like
      *               [

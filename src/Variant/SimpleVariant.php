@@ -16,16 +16,22 @@ namespace PhpAb\Variant;
  * It can be used for example for
  * - Control-Group
  * - Simple Frontend-Tests
+ *
+ * @package PhpAb
  */
 class SimpleVariant implements VariantInterface
 {
     /**
+     * The identifier of the variant.
+     *
      * @var string
      */
     private $identifier;
 
     /**
-     * @param string   $identifier The Identifier of the Variant
+     * Initializes a new instance of this class.
+     *
+     * @param string $identifier The Identifier of the Variant
      */
     public function __construct($identifier)
     {
@@ -33,7 +39,7 @@ class SimpleVariant implements VariantInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getIdentifier()
     {
@@ -41,7 +47,7 @@ class SimpleVariant implements VariantInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function run()
     {

@@ -11,11 +11,15 @@ namespace PhpAb\Variant;
 
 use PhpAb\Exception\TestExecutionException;
 
+/**
+ * The interface that should be implemented by all variants.
+ *
+ * @package PhpAb
+ */
 interface VariantInterface
 {
     /**
-     * Gets the Identifier for the Variant.
-     *
+     * Gets the Identifier for the variant.
      * This will be stored in storage for participating users.
      *
      * @return string
@@ -23,11 +27,9 @@ interface VariantInterface
     public function getIdentifier();
 
     /**
-     * Run the Variant
+     * Run the variant
      *
      * @throws TestExecutionException
-     *
-     * @return null
      */
     public function run();
 }

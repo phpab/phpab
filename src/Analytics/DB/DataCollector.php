@@ -14,6 +14,11 @@ use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * A data collector that holds information about which tests have been executed.
+ *
+ * @package PhpAb
+ */
 class DataCollector implements SubscriberInterface
 {
     /**
@@ -22,7 +27,7 @@ class DataCollector implements SubscriberInterface
     private $participations = [];
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getSubscribedEvents()
     {
@@ -42,22 +47,23 @@ class DataCollector implements SubscriberInterface
     }
 
     /**
+     * Adds a participation to the data collector.
+     *
      * @param string $testIdentifier
      * @param string $variationIdentifier
      * @throws InvalidArgumentException
-     *
-     * @return void
      */
     public function addParticipation($testIdentifier, $variationIdentifier)
     {
         Assert::string($testIdentifier, 'Test identifier must be a string');
-
         Assert::string($variationIdentifier, 'Variation name must be a string');
 
         $this->participations[$testIdentifier] = $variationIdentifier;
     }
 
     /**
+     * Gets all the data that has been collected.
+     *
      * @return array
      */
     public function getTestsData()

@@ -10,14 +10,16 @@
 namespace PhpAb\Participation;
 
 /**
- * Filters out who should not participate
+ * The interface that should be implemented by filters that decide who should or should not participate.
+ *
+ * @package PhpAb
  */
 interface FilterInterface
 {
     /**
      * Checks if a user should participate in the test
      *
-     * @return boolean
+     * @return boolean Returns true when the user should participate; false otherwise.
      */
     public function shouldParticipate();
 }

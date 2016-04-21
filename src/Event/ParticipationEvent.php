@@ -13,37 +13,43 @@ use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 
 /**
- * Holds information about a participation event which is needed for
- * further processing.
+ * Holds information about a participation event which is needed for further processing.
+ *
+ * @package PhpAb
  */
 class ParticipationEvent
 {
     /**
-     * This Event will be fired once a participation
-     * for a user is registered.
+     * This Event will be fired once a participation for a user is registered.
      */
     const PARTICIPATION = 'phpab.participation';
 
     /**
-     * @var \PhpAb\Test\TestInterface
+     * The test to participate in.
+     *
+     * @var TestInterface
      */
     private $test;
 
     /**
-     * @var \PhpAb\Variant\VariantInterface
+     * The variant that is chosen.
+     *
+     * @var VariantInterface
      */
     private $variant;
 
     /**
+     * A flag indicating whether or not the user already participates in the test.
+     *
      * @var boolean
      */
     private $isNew;
 
     /**
-     * @param \PhpAb\Test\TestInterface       $test The Test the participation was registered for
-     * @param \PhpAb\Variant\VariantInterface $variant The Variant the user is associated with
-     * @param boolean                         $isNew  Indicates weather the user is new or has an old participation
-     *                                                from the storage.
+     * Initializes a new instance of this class.
+     * @param TestInterface $test The Test the participation was registered for
+     * @param VariantInterface $variant The Variant the user is associated with
+     * @param boolean $isNew Indicates weather the user is new or has an old participation from the storage.
      */
     public function __construct(TestInterface $test, VariantInterface $variant, $isNew)
     {

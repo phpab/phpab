@@ -13,6 +13,8 @@ use PhpAb\Variant\VariantInterface;
 
 /**
  * The interface that should be implemented by all tests.
+ *
+ * @package PhpAb
  */
 interface TestInterface
 {

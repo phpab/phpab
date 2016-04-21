@@ -9,6 +9,11 @@
 
 namespace PhpAb\Event;
 
+/**
+ * A simple event dispatcher that triggers the attached listeners.
+ *
+ * @package PhpAb
+ */
 class Dispatcher implements DispatcherInterface
 {
     /**
@@ -22,6 +27,8 @@ class Dispatcher implements DispatcherInterface
     private $listeners = [];
 
     /**
+     * Adds the given callback to this dispatcher so that it listens to the given event name.
+     *
      * @param string   $eventName The name of the event to listen for
      * @param callable $callable  The Callable to execute once the event takes place
      */
@@ -31,7 +38,9 @@ class Dispatcher implements DispatcherInterface
     }
 
     /**
-     * @param \PhpAb\Event\SubscriberInterface $subscriber The subscriber which can subscribe to multiple events
+     * Adds a subscriber to this dispatcher which in its turn adds all the subscribed events.
+     *
+     * @param SubscriberInterface $subscriber The subscriber which can subscribe to multiple events
      */
     public function addSubscriber(SubscriberInterface $subscriber)
     {
@@ -41,7 +50,10 @@ class Dispatcher implements DispatcherInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
+     *
+     * @param string $event The name of the Event which should be dispatched
+     * @param array $options The options that should get passed to the callback
      */
     public function dispatch($event, $options)
     {

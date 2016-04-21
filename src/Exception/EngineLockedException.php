@@ -9,7 +9,11 @@
 
 namespace PhpAb\Exception;
 
+/**
+ * An exception that is thrown when tests are added while the engine is locked.
+ *
+ * @package PhpAb
+ */
 class EngineLockedException extends TestException
 {
-
 }

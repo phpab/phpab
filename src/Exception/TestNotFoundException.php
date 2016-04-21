@@ -9,6 +9,11 @@
 
 namespace PhpAb\Exception;
 
+/**
+ * An exception that is thrown when a test is requested that does not exists.
+ *
+ * @package PhpAb
+ */
 class TestNotFoundException extends TestException
 {
 }

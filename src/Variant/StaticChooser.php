@@ -9,17 +9,34 @@
 
 namespace PhpAb\Variant;
 
+/**
+ * A static choice implementation. The choice has been set by default already.
+ *
+ * @package PhpAb
+ */
 class StaticChooser implements ChooserInterface
 {
+    /**
+     * The index of the variant to use.
+     *
+     * @var int
+     */
     private $choice;
 
+    /**
+     * Initializes a new instance of this class.
+     *
+     * @param int $choice
+     */
     public function __construct($choice)
     {
         $this->choice = $choice;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param VariantInterface[] $variants Variants to choose from
      */
     public function chooseVariant($variants)
     {

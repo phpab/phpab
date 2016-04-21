@@ -11,10 +11,11 @@ namespace PhpAb\Storage;
 
 /**
  * Stores the participation state of the user
+ *
+ * @package PhpAb
  */
 interface StorageInterface
 {
-
     /**
      * Checks if the test has a participation set.
      *
@@ -35,6 +36,7 @@ interface StorageInterface
 
     /**
      * Sets participation value for a test
+     *
      * @param string $identifier The tests identifier
      * @param mixed  $participation The participated variant
      * @throws InvalidArgumentException
@@ -51,7 +53,7 @@ interface StorageInterface
     /**
      * Removes a stored test.
      *
-     * @param string $identifier
+     * @param string $identifier The identifier of the test to remove.
      * @throws InvalidArgumentException
      * @return mixed The removed value or null when it does not exist
      */

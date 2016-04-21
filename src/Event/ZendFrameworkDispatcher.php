@@ -11,6 +11,11 @@ namespace PhpAb\Event;
 
 use Zend\EventManager\EventManager;
 
+/**
+ * A dispatcher that uses the Zend Framework Event manager to dispatch events.
+ *
+ * @package PhpAb
+ */
 class ZendFrameworkDispatcher implements DispatcherInterface
 {
     /**
@@ -41,7 +46,10 @@ class ZendFrameworkDispatcher implements DispatcherInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritDoc}
+     *
+     * @param string $event The name of the Event which should be dispatched
+     * @param array $options The options that should get passed to the callback
      */
     public function dispatch($event, $options)
     {

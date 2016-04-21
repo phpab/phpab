@@ -9,10 +9,17 @@
 
 namespace PhpAb\Variant;
 
+/**
+ * A variant chooser that makes its choice randomly.
+ *
+ * @package PhpAb
+ */
 class RandomChooser implements ChooserInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param VariantInterface[] $variants Variants to choose from
      */
     public function chooseVariant($variants)
     {

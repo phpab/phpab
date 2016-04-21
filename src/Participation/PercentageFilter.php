@@ -9,19 +9,28 @@
 
 namespace PhpAb\Participation;
 
+/**
+ * A filter that acts based on a percentage.
+ *
+ * @package PhpAb
+ */
 class PercentageFilter implements FilterInterface
 {
     /**
+     * The chance of allowing a user to participate in a test.
+     * This is a value between 0 and 100.
+     *
      * @var int
      */
     private $propability;
 
     /**
-     * @param int $propability The probability for the lottery in percent
-     *                         Should be 0 <=> 100
-     *                         0 is lowest probability for participation
-     *                         100 is the highest probability for participation
+     * Initializes a new instance of this class.
      *
+     * @param int $propability The probability for the lottery in percent.
+     * Should be 0 <=> 100
+     * 0 is lowest probability for participation
+     * 100 is the highest probability for participation
      */
     public function __construct($propability)
     {
@@ -40,7 +49,7 @@ class PercentageFilter implements FilterInterface
 
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function shouldParticipate()
     {

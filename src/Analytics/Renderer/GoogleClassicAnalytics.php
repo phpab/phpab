@@ -11,17 +11,22 @@ namespace PhpAb\Analytics\Renderer;
 
 /**
  * This class will only work for Classic Analytics Experiments ran as External
+ *
+ * @package PhpAb
  * @see https://developers.google.com/analytics/devguides/collection/gajs/experiments#cxjs-setchosen
  */
 class GoogleClassicAnalytics extends AbstractGoogleAnalytics
 {
-
     /**
-     * @var array Test identifiers and variation indexes
+     * The map with test identifiers and variation indexes.
+     *
+     * @var array
      */
     private $participations = [];
 
     /**
+     * Initializes a new instance of this class.
+     *
      * @param array $participations
      */
     public function __construct(array $participations)
@@ -30,7 +35,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getScript()
     {
@@ -52,7 +57,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
     }
 
     /**
-     * @return @inheritDoc
+     * {@inheritDoc}
      */
     public function getParticipations()
     {

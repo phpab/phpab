@@ -12,24 +12,37 @@ namespace PhpAb\Test;
 use PhpAb\Participation\FilterInterface;
 use PhpAb\Variant\ChooserInterface;
 
+/**
+ * The combination of a test with options.
+ *
+ * @package PhpAb
+ */
 class Bag
 {
     /**
+     * The test to execute.
+     *
      * @var TestInterface
      */
     private $test;
 
     /**
+     * The options for this test.
+     *
      * @var array
      */
     private $options;
 
     /**
+     * The participation filter that checks if a guest should participate in the test.
+     *
      * @var FilterInterface
      */
     private $participationFilter;
 
     /**
+     * The variant chooser that decides which variant of the test to use.
+     *
      * @var ChooserInterface
      */
     private $variantChooser;

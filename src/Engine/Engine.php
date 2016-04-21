@@ -19,40 +19,55 @@ use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
 
+/**
+ * The engine used to start tests.
+ *
+ * @package PhpAb
+ */
 class Engine implements EngineInterface
 {
     /**
+     * A list with test bags.
+     *
      * @var Bag[]
      */
     public $tests = [];
 
     /**
+     * The participation manager used to check if a user particiaptes.
+     *
      * @var ParticipationManagerInterface
      */
     private $participationManager;
 
     /**
+     * The event dispatcher that dispatches events related to tests.
+     *
      * @var DispatcherInterface
      */
     private $dispatcher;
 
     /**
+     * The default filter that is used when a test bag has no filter set.
+     *
      * @var FilterInterface
      */
     private $filter;
 
     /**
+     * The default variant chooser that is used when a test bag has no variant chooser set.
+     *
      * @var ChooserInterface
      */
     private $chooser;
 
     /**
+     * Initializes a new instance of this class.
+     *
      * @param ParticipationManagerInterface $participationManager Handles the Participation state
      * @param DispatcherInterface $dispatcher Dispatches events
-     * @param FilterInterface|null $filter The default filter to use if no filter is provided
-     *                                     for the test.
-     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided
-     *                                       for the test.
+     * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
+     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
      */
     public function __construct(
         ParticipationManagerInterface $participationManager,
@@ -68,7 +83,7 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getTests()
     {
@@ -81,7 +96,9 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $test The identifier of the test
      */
     public function getTest($test)
     {
@@ -93,7 +110,12 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param TestInterface $test
+     * @param array $options
+     * @param FilterInterface $filter
+     * @param ChooserInterface $chooser
      */
     public function addTest(
         TestInterface $test,
@@ -115,7 +137,7 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function start()
     {

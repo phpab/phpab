@@ -15,6 +15,8 @@ use PhpAb\Variant\VariantInterface;
 
 /**
  * The implementation of a Test.
+ *
+ * @package PhpAb
  */
 class Test implements TestInterface
 {
@@ -49,7 +51,7 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getIdentifier()
     {
@@ -87,7 +89,7 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getVariants()
     {
@@ -95,7 +97,9 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The identifier of the variant to get.
      */
     public function getVariant($identifier)
     {
