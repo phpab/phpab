@@ -1,20 +1,32 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Analytics\Renderer;
 
 /**
  * This class will only work for Universal Analytics Experiments ran as External
+ *
+ * @package PhpAb
  * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/experiments#pro-server
  */
 class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 {
-
     /**
-     * @var array Test identifiers and variation indexes
+     * The map with test identifiers and variation indexes.
+     *
+     * @var array
      */
     private $participations = [];
 
     /**
+     * Initializes a new instance of this class.
+     *
      * @param array $participations
      */
     public function __construct(array $participations)
@@ -23,7 +35,7 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getScript()
     {
@@ -45,7 +57,7 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
     }
 
     /**
-     * @return @inheritDoc
+     * {@inheritDoc}
      */
     public function getParticipations()
     {
