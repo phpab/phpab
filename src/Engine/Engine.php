@@ -104,11 +104,11 @@ class Engine implements EngineInterface
         $filter = $filter ? $filter : $this->filter;
         $chooser = $chooser ? $chooser : $this->chooser;
 
-        if(null === $filter) {
+        if (null === $filter) {
             throw new \RuntimeException('There must be at least one filter. In the Engine or in the TestBag');
         }
 
-        if(null === $chooser) {
+        if (null === $chooser) {
             throw new \RuntimeException('There must be at least one chooser. In the Engine or in the TestBag');
         }
 
