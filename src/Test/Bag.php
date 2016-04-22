@@ -1,28 +1,48 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Test;
 
 use PhpAb\Participation\FilterInterface;
 use PhpAb\Variant\ChooserInterface;
 
+/**
+ * The combination of a test with options.
+ *
+ * @package PhpAb
+ */
 class Bag
 {
     /**
+     * The test to execute.
+     *
      * @var TestInterface
      */
     private $test;
 
     /**
+     * The options for this test.
+     *
      * @var array
      */
     private $options;
 
     /**
+     * The participation filter that checks if a guest should participate in the test.
+     *
      * @var FilterInterface
      */
     private $participationFilter;
 
     /**
+     * The variant chooser that decides which variant of the test to use.
+     *
      * @var ChooserInterface
      */
     private $variantChooser;

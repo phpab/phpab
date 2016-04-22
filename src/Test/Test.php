@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Test;
 
@@ -8,6 +15,8 @@ use PhpAb\Variant\VariantInterface;
 
 /**
  * The implementation of a Test.
+ *
+ * @package PhpAb
  */
 class Test implements TestInterface
 {
@@ -42,7 +51,7 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getIdentifier()
     {
@@ -80,7 +89,7 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getVariants()
     {
@@ -88,7 +97,9 @@ class Test implements TestInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The identifier of the variant to get.
      */
     public function getVariant($identifier)
     {
