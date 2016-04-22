@@ -11,7 +11,7 @@ namespace PhpAb\Exception;
 
 /**
  * An exception that is thrown when an error did occur during execution of a test.
- * 
+ *
  * @package PhpAb
  */
 class TestExecutionException extends TestException

@@ -11,7 +11,7 @@ namespace PhpAb\Exception;
 
 /**
  * An exception that is thrown when a test is added that already exists.
- * 
+ *
  * @package PhpAb
  */
 class TestCollisionException extends TestException
