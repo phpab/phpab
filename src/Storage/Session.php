@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Storage;
 
@@ -7,6 +14,8 @@ use RuntimeException;
 
 /**
  * Stores the participation state of the user in a session.
+ *
+ * @package PhpAb
  */
 class Session implements StorageInterface
 {
@@ -43,7 +52,9 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier
      */
     public function has($identifier)
     {
@@ -55,7 +66,9 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier name
      */
     public function get($identifier)
     {
@@ -67,7 +80,10 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier
+     * @param mixed  $participation The participated variant
      */
     public function set($identifier, $participation)
     {
@@ -75,7 +91,7 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function all()
     {
@@ -87,7 +103,9 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The identifier of the test to remove.
      */
     public function remove($identifier)
     {
@@ -103,7 +121,7 @@ class Session implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function clear()
     {

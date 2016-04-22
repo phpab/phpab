@@ -1,12 +1,26 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Engine;
 
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
+use PhpAb\Participation\FilterInterface;
 use PhpAb\Participation\StorageInterface;
 use PhpAb\Test\TestInterface;
+use PhpAb\Variant\ChooserInterface;
 
+/**
+ * The interface that should be implemented by the engine.
+ *
+ * @package PhpAb
+ */
 interface EngineInterface
 {
     /**
@@ -20,9 +34,7 @@ interface EngineInterface
      * Get a test from the engine
      *
      * @param string $test The identifier of the test
-     *
-     * @throws TestNotFoundException
-     *
+     * @throws TestNotFoundException Thrown when the requested test does not exists.
      * @return TestInterface
      */
     public function getTest($test);
@@ -30,14 +42,18 @@ interface EngineInterface
     /**
      * Adds a test to the Engine
      *
-     * @param \PhpAb\Test\TestInterface $test
-     * @param array                           $options
-     *
-     * @throws TestCollisionException
-     *
-     * @return null
+     * @param TestInterface $test
+     * @param array $options
+     * @param FilterInterface $filter
+     * @param ChooserInterface $chooser
+     * @throws TestCollisionException Thrown when the test already exists.
      */
-    public function addTest(TestInterface $test, $options = []);
+    public function addTest(
+        TestInterface $test,
+        $options = [],
+        FilterInterface $filter = null,
+        ChooserInterface $chooser = null
+    );
 
     /**
      * Starts the tests

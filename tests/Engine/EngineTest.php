@@ -1,14 +1,24 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Engine;
 
 use PhpAb\Event\Dispatcher;
+use PhpAb\Event\DispatcherInterface;
+use PhpAb\Participation\FilterInterface;
 use PhpAb\Participation\Manager;
 use PhpAb\Participation\ParticipationManagerInterface;
 use PhpAb\Participation\PercentageFilter;
 use PhpAb\Storage\Runtime;
 use PhpAb\Storage\Cookie;
 use PhpAb\Test\Test;
+use PhpAb\Variant\ChooserInterface;
 use PhpAb\Variant\StaticChooser;
 use PhpAb\Variant\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
@@ -321,5 +331,49 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             $testData
         );
 
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testNoFilterThrowsException()
+    {
+        // Arrange
+        $engine = new Engine(
+            $this->getMock(ParticipationManagerInterface::class),
+            $this->getMock(DispatcherInterface::class),
+            null, // This is the tested part
+            $this->getMock(ChooserInterface::class)
+        );
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+
+        // Act
+        $engine->addTest($test);
+
+        // Assert
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testNoChooserThrowsException()
+    {
+        // Arrange
+        $engine = new Engine(
+            $this->getMock(ParticipationManagerInterface::class),
+            $this->getMock(DispatcherInterface::class),
+            $this->getMock(FilterInterface::class),
+            null // This is the tested part
+        );
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+
+        // Act
+        $engine->addTest($test);
+
+        // Assert
     }
 }

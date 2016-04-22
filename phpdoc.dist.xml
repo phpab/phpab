@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <title><![CDATA[phpab/phpab]]></title>
+    <parser>
+        <target>docs/api/</target>
+        <encoding>utf8</encoding>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+    </parser>
+    <files>
+        <directory>src/</directory>
+    </files>
+    <transformer>
+        <target>docs/api/</target>
+    </transformer>
+    <transformations>
+        <template name="responsive-twig"/>
+    </transformations>
+</phpdoc>

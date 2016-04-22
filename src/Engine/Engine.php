@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Engine;
 
@@ -12,40 +19,55 @@ use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
 
+/**
+ * The engine used to start tests.
+ *
+ * @package PhpAb
+ */
 class Engine implements EngineInterface
 {
     /**
+     * A list with test bags.
+     *
      * @var Bag[]
      */
     public $tests = [];
 
     /**
+     * The participation manager used to check if a user particiaptes.
+     *
      * @var ParticipationManagerInterface
      */
     private $participationManager;
 
     /**
+     * The event dispatcher that dispatches events related to tests.
+     *
      * @var DispatcherInterface
      */
     private $dispatcher;
 
     /**
+     * The default filter that is used when a test bag has no filter set.
+     *
      * @var FilterInterface
      */
     private $filter;
 
     /**
+     * The default variant chooser that is used when a test bag has no variant chooser set.
+     *
      * @var ChooserInterface
      */
     private $chooser;
 
     /**
+     * Initializes a new instance of this class.
+     *
      * @param ParticipationManagerInterface $participationManager Handles the Participation state
      * @param DispatcherInterface $dispatcher Dispatches events
-     * @param FilterInterface|null $filter The default filter to use if no filter is provided
-     *                                     for the test.
-     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided
-     *                                       for the test.
+     * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
+     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
      */
     public function __construct(
         ParticipationManagerInterface $participationManager,
@@ -61,7 +83,7 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getTests()
     {
@@ -74,7 +96,9 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $test The identifier of the test
      */
     public function getTest($test)
     {
@@ -86,7 +110,12 @@ class Engine implements EngineInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param TestInterface $test
+     * @param array $options
+     * @param FilterInterface $filter
+     * @param ChooserInterface $chooser
      */
     public function addTest(
         TestInterface $test,
@@ -104,11 +133,19 @@ class Engine implements EngineInterface
         $filter = $filter ? $filter : $this->filter;
         $chooser = $chooser ? $chooser : $this->chooser;
 
+        if (null === $filter) {
+            throw new \RuntimeException('There must be at least one filter. In the Engine or in the TestBag');
+        }
+
+        if (null === $chooser) {
+            throw new \RuntimeException('There must be at least one chooser. In the Engine or in the TestBag');
+        }
+
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function start()
     {

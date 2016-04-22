@@ -1,4 +1,11 @@
 <?php
+/**
+ * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
+ *
+ * @link https://github.com/phpab/phpab for the canonical source repository
+ * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
+ * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ */
 
 namespace PhpAb\Storage;
 
@@ -7,22 +14,29 @@ use RuntimeException;
 
 /**
  * Stores the participation state of the user in a session.
+ *
+ * @package PhpAb
  */
 class Cookie implements StorageInterface
 {
-
     /**
-     * @var string Name of cookie
+     * The name of cookie.
+     *
+     * @var string
      */
     protected $cookieName;
 
     /**
-     * @var int Cookie's time to live in seconds
+     * The cookie's time to live in seconds
+     *
+     * @var int
      */
     protected $ttl;
 
     /**
-     * @var mixed null|array Array of which will be saved in cookie
+     * The array of which will be saved in cookie.
+     *
+     * @var null|array
      */
     protected $cookieValues;
 
@@ -53,7 +67,6 @@ class Cookie implements StorageInterface
 
     /**
      * Parses any previous cookie and stores it internally
-     * @return void
      */
     protected function parseExistingCookie()
     {
@@ -78,6 +91,7 @@ class Cookie implements StorageInterface
 
     /**
      * Saves cookie with serialized test values
+     *
      * @return bool
      */
     protected function saveCookie()
@@ -88,7 +102,9 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier
      */
     public function has($identifier)
     {
@@ -102,7 +118,9 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier name
      */
     public function get($identifier)
     {
@@ -114,7 +132,10 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier The tests identifier
+     * @param mixed  $participation The participated variant
      * @throws RuntimeException
      */
     public function set($identifier, $participation)
@@ -137,7 +158,7 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function all()
     {
@@ -147,7 +168,9 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @param string $identifier
      * @throws RuntimeException
      */
     public function remove($identifier)
@@ -174,7 +197,7 @@ class Cookie implements StorageInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      * @throws RuntimeException
      */
     public function clear()
