@@ -41,13 +41,13 @@ class CallbackVariantTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \PhpAb\Exception\TestExecutionException
+     * @expectedException \RuntimeException
      */
     public function testRunClosureThrowsException()
     {
         // Arrange
         $variant = new CallbackVariant('name', function () {
-            throw new TestExecutionException();
+            throw new \RuntimeException;
         });
 
         // Act
