@@ -9,6 +9,12 @@
 
 namespace PhpAb\Analytics\DB;
 
+use PhpAb\Test\Test;
+use PhpAb\Variant\SimpleVariant;
+use PhpAb\Test\Bag;
+use PhpAb\Participation\PercentageFilter;
+use PhpAb\Variant\RandomChooser;
+
 class DataCollectorTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetSubscribedEvents()
@@ -30,10 +36,10 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidTestIdentifier()
     {
         // Arrange
-        $expData = new DataCollector();
+        $dataCollector = new DataCollector();
 
         // Act
-        $expData->addParticipation(987, 1);
+        $dataCollector->addParticipation(987, 1);
 
         // Assert
         // ..
@@ -45,10 +51,10 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationIndexRange()
     {
         // Arrange
-        $expData = new DataCollector();
+        $dataCollector = new DataCollector();
 
         // Act
-        $expData->addParticipation('walter', -1);
+        $dataCollector->addParticipation('walter', -1);
 
         // Assert
         // ..
@@ -60,10 +66,10 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationNotInt()
     {
         // Arrange
-        $expData = new DataCollector();
+        $dataCollector = new DataCollector();
 
         // Act
-        $expData->addParticipation('walter', '1');
+        $dataCollector->addParticipation('walter', '1');
 
         // Assert
         // ..
@@ -72,12 +78,12 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testOnRegisterParticipation()
     {
         // Arrange
-        $expData = new DataCollector();
-        $expData->addParticipation('walter', 'white');
-        $expData->addParticipation('bernard', 'black');
+        $dataCollector = new DataCollector();
+        $dataCollector->addParticipation('walter', 'white');
+        $dataCollector->addParticipation('bernard', 'black');
 
         // Act
-        $data = $expData->getTestsData();
+        $data = $dataCollector->getTestsData();
 
         // Assert
         $this->assertSame(
@@ -86,6 +92,150 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
                 'bernard' => 'black'
             ],
             $data
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsEmptyOptions()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $event = $dataCollector->getSubscribedEvents();
+
+        // Act
+        call_user_func($event['phpab.participation.variant_run'], []);
+
+        // Assert
+        // ..
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoBag()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $event = $dataCollector->getSubscribedEvents();
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo'
+            ]
+        );
+
+        // Assert
+        // ..
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoBagInstance()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $event = $dataCollector->getSubscribedEvents();
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => new \DateTime
+            ]
+        );
+
+        // Assert
+        // ..
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoVariant()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $event = $dataCollector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard'),
+            new PercentageFilter(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag
+            ]
+        );
+
+        // Assert
+        // ..
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoVariantInstance()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $eventCallback = $dataCollector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard'),
+            new PercentageFilter(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $eventCallback['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag,
+                2 => new \DateTime
+            ]
+        );
+
+        // Assert
+        // ..
+    }
+
+    public function testRunEvent()
+    {
+        // Arrange
+        $dataCollector = new DataCollector();
+        $eventCallback = $dataCollector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard'),
+            new PercentageFilter(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $eventCallback['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag,
+                2 => new SimpleVariant('Black')
+            ]
+        );
+
+        $participations = $dataCollector->getTestsData();
+
+        // Assert
+        $this->assertSame(
+            ['Bernard' => 'Black'],
+            $participations
         );
     }
 }
