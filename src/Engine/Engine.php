@@ -133,7 +133,7 @@ class Engine implements EngineInterface
     ) {
 
         if ($this->locked) {
-           throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
+            throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
         }
 
         if (isset($this->tests[$test->getIdentifier()])) {
