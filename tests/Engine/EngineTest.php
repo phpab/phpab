@@ -376,4 +376,27 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Assert
     }
+
+    /**
+     * @expectedException \PhpAb\Exception\EngineLockedException
+     */
+    public function testLockEngine()
+    {
+        // Arrange
+        $engine = new Engine(
+            $this->getMock(ParticipationManagerInterface::class),
+            $this->getMock(DispatcherInterface::class),
+            $this->getMock(FilterInterface::class),
+            null // This is the tested part
+        );
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+
+        // Act
+        $engine->start();
+        $engine->addTest($test);
+
+        // Assert
+    }
 }

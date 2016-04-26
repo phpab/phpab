@@ -10,6 +10,7 @@
 namespace PhpAb\Engine;
 
 use PhpAb\Event\DispatcherInterface;
+use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\FilterInterface;
@@ -60,6 +61,13 @@ class Engine implements EngineInterface
      * @var ChooserInterface
      */
     private $chooser;
+
+    /**
+     * Locks the engine for further manipulaton
+     *
+     * @var boolean
+     */
+    private $locked = false;
 
     /**
      * Initializes a new instance of this class.
@@ -124,6 +132,10 @@ class Engine implements EngineInterface
         ChooserInterface $chooser = null
     ) {
 
+        if ($this->locked) {
+           throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
+        }
+
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
@@ -149,6 +161,9 @@ class Engine implements EngineInterface
      */
     public function start()
     {
+        // Lock the engine for further manipulation
+        $this->locked = true;
+
         foreach ($this->tests as $testBag) {
             $this->handleTestBag($testBag);
         }
