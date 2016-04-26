@@ -18,6 +18,7 @@ use PhpAb\Test\Bag;
 use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * The engine used to start tests.
@@ -133,14 +134,9 @@ class Engine implements EngineInterface
         $filter = $filter ? $filter : $this->filter;
         $chooser = $chooser ? $chooser : $this->chooser;
 
-        if (null === $filter) {
-            throw new \RuntimeException('There must be at least one filter. In the Engine or in the TestBag');
-        }
-
-        if (null === $chooser) {
-            throw new \RuntimeException('There must be at least one chooser. In the Engine or in the TestBag');
-        }
-
+        Assert::notNull($filter, 'There must be at least one filter. In the Engine or in the TestBag');
+        Assert::notNull($chooser, 'There must be at least one chooser. In the Engine or in the TestBag');
+        
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
 
