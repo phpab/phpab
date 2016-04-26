@@ -10,6 +10,7 @@
 namespace PhpAb\Engine;
 
 use PhpAb\Event\DispatcherInterface;
+use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\FilterInterface;
@@ -18,6 +19,7 @@ use PhpAb\Test\Bag;
 use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * The engine used to start tests.
@@ -60,6 +62,13 @@ class Engine implements EngineInterface
      * @var ChooserInterface
      */
     private $chooser;
+
+    /**
+     * Locks the engine for further manipulaton
+     *
+     * @var boolean
+     */
+    private $locked = false;
 
     /**
      * Initializes a new instance of this class.
@@ -124,6 +133,10 @@ class Engine implements EngineInterface
         ChooserInterface $chooser = null
     ) {
 
+        if ($this->locked) {
+            throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
+        }
+
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
@@ -133,13 +146,8 @@ class Engine implements EngineInterface
         $filter = $filter ? $filter : $this->filter;
         $chooser = $chooser ? $chooser : $this->chooser;
 
-        if (null === $filter) {
-            throw new \RuntimeException('There must be at least one filter. In the Engine or in the TestBag');
-        }
-
-        if (null === $chooser) {
-            throw new \RuntimeException('There must be at least one chooser. In the Engine or in the TestBag');
-        }
+        Assert::notNull($filter, 'There must be at least one filter in the Engine or in the TestBag');
+        Assert::notNull($chooser, 'There must be at least one chooser in the Engine or in the TestBag');
 
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
@@ -149,6 +157,14 @@ class Engine implements EngineInterface
      */
     public function start()
     {
+        // Check if already locked
+        if ($this->locked) {
+            throw new EngineLockedException('The engine is already locked and could not be started once again.');
+        }
+
+        // Lock the engine for further manipulation
+        $this->locked = true;
+
         foreach ($this->tests as $testBag) {
             $this->handleTestBag($testBag);
         }
