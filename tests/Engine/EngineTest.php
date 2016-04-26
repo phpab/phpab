@@ -334,7 +334,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function testNoFilterThrowsException()
     {
@@ -356,7 +356,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function testNoChooserThrowsException()
     {
