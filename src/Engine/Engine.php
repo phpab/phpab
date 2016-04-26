@@ -161,6 +161,11 @@ class Engine implements EngineInterface
      */
     public function start()
     {
+        // Check if already locked
+        if ($this->locked) {
+            throw new EngineLockedException('The engine is already locked and could not be started once again.');
+        }
+
         // Lock the engine for further manipulation
         $this->locked = true;
 
