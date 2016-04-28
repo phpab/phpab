@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Google;
+namespace PhpAb\Analytics\DataCollector;
 
 use PhpAb\Event\SubscriberInterface;
 use PhpAb\Test\TestInterface;
@@ -15,11 +15,11 @@ use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
 
 /**
- * A data collector that holds information about which tests have been executed.
+ * A data collector that holds information about which tests have been executed in a format for Google.
  *
  * @package PhpAb
  */
-class DataCollector implements SubscriberInterface
+class Google implements SubscriberInterface
 {
     /**
      * @var array Test identifiers and variation indexes

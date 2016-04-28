@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Renderer;
+namespace PhpAb\Analytics\Renderer\Google;
 
 /**
  * This class will only work for Classic Analytics Experiments ran as External

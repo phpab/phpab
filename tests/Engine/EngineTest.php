@@ -23,7 +23,7 @@ use PhpAb\Variant\StaticChooser;
 use PhpAb\Variant\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use PhpAb\Analytics\Google\DataCollector;
+use PhpAb\Analytics\DataCollector\Google;
 use phpmock\MockBuilder;
 use phpmock\functions\FixedValueFunction;
 
@@ -295,7 +295,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new Cookie('phpab');
         $manager = new Manager($storage);
 
-        $analyticsData = new DataCollector;
+        $analyticsData = new Google();
 
         $dispatcher = new Dispatcher;
         $dispatcher->addSubscriber($analyticsData);
