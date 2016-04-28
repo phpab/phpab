@@ -7,18 +7,19 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Participation;
+namespace PhpAb\Participation\Filter;
 
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
+use PHPUnit_Framework_TestCase;
 
-class PercentageFilterTest extends \PHPUnit_Framework_TestCase
+class PercentageTest extends PHPUnit_Framework_TestCase
 {
     public function testShouldParticipateWithFullPropability()
     {
         // Arrange
-        $lottery = new PercentageFilter(100);
+        $lottery = new Percentage(100);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -30,7 +31,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithZeroPropability()
     {
         // Arrange
-        $lottery = new PercentageFilter(0);
+        $lottery = new Percentage(0);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -50,7 +51,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
         $mock = $builder->build();
         $mock->enable();
 
-        $lottery = new PercentageFilter(23);
+        $lottery = new Percentage(23);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -70,7 +71,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
         $mock = $builder->build();
         $mock->enable();
 
-        $lottery = new PercentageFilter(23);
+        $lottery = new Percentage(23);
 
         // Act
         $participates = $lottery->shouldParticipate();
@@ -85,7 +86,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithOverPercentage()
     {
         // Arrange
-        $lottery = new PercentageFilter(101);
+        $lottery = new Percentage(101);
 
         // Act
         $lottery->shouldParticipate();
@@ -97,7 +98,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldAcceptIntergerOnly()
     {
         // Arrange
-        $lottery = new PercentageFilter('Walter');
+        $lottery = new Percentage('Walter');
 
         // Act
         $lottery->shouldParticipate();
@@ -109,7 +110,7 @@ class PercentageFilterTest extends \PHPUnit_Framework_TestCase
     public function testShouldParticipateWithUnderPercentage()
     {
         // Arrange
-        $lottery = new PercentageFilter(-1);
+        $lottery = new Percentage(-1);
 
         // Act
         $lottery->shouldParticipate();

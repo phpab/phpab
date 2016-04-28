@@ -18,7 +18,7 @@ use PhpAb\Variant\VariantInterface;
  *
  * @package PhpAb
  */
-class Manager implements ParticipationManagerInterface
+class Manager implements ManagerInterface
 {
     /**
      * The storage that is used to get participations from.

@@ -13,8 +13,8 @@ use PhpAb\Event\DispatcherInterface;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
-use PhpAb\Participation\FilterInterface;
-use PhpAb\Participation\ParticipationManagerInterface;
+use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Participation\ManagerInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
@@ -38,7 +38,7 @@ class Engine implements EngineInterface
     /**
      * The participation manager used to check if a user particiaptes.
      *
-     * @var ParticipationManagerInterface
+     * @var ManagerInterface
      */
     private $participationManager;
 
@@ -73,13 +73,13 @@ class Engine implements EngineInterface
     /**
      * Initializes a new instance of this class.
      *
-     * @param ParticipationManagerInterface $participationManager Handles the Participation state
+     * @param ManagerInterface $participationManager Handles the Participation state
      * @param DispatcherInterface $dispatcher Dispatches events
      * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
      * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
      */
     public function __construct(
-        ParticipationManagerInterface $participationManager,
+        ManagerInterface $participationManager,
         DispatcherInterface $dispatcher,
         FilterInterface $filter = null,
         ChooserInterface $chooser = null

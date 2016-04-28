@@ -11,8 +11,7 @@ namespace PhpAb\Engine;
 
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
-use PhpAb\Participation\FilterInterface;
-use PhpAb\Participation\StorageInterface;
+use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\ChooserInterface;
 

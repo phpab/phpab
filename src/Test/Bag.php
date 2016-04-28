@@ -9,7 +9,7 @@
 
 namespace PhpAb\Test;
 
-use PhpAb\Participation\FilterInterface;
+use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Variant\ChooserInterface;
 
 /**
