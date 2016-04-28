@@ -7,13 +7,12 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant;
+namespace PhpAb\Variant\Chooser;
 
 use PhpAb\Variant\VariantInterface;
 
 /**
- * A VariantChooser is a class that chooses from n Variants
- * e.g. by Propability
+ * A VariantChooser is a class that chooses from n Variants e.g. by Propability
  *
  * @package PhpAb
  */

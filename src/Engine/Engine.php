@@ -18,7 +18,7 @@ use PhpAb\Participation\ManagerInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
-use PhpAb\Variant\ChooserInterface;
+use PhpAb\Variant\Chooser\ChooserInterface;
 use Webmozart\Assert\Assert;
 
 /**

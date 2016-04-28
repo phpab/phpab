@@ -13,7 +13,7 @@ use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Test\TestInterface;
-use PhpAb\Variant\ChooserInterface;
+use PhpAb\Variant\Chooser\ChooserInterface;
 
 /**
  * The interface that should be implemented by the engine.
