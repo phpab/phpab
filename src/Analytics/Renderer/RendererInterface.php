@@ -17,13 +17,6 @@ namespace PhpAb\Analytics\Renderer;
 interface RendererInterface
 {
     /**
-     * Gets the JavaScript that should be rendered.
-     *
-     * @return string Returns the JavaScript code that should be rendered.
-     */
-    public function getScript();
-
-    /**
      * Gets the list with tests that the user participates in.
      *
      * @return array Returns the map with participations.

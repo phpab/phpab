@@ -32,6 +32,25 @@ cxApi.setChosenVariation(0, 'bernard')
 </script>", $script);
     }
 
+    public function testGetScriptWithApiClient()
+    {
+        // Arrange
+        $gaRenderer = new GoogleClassicAnalytics([
+            'walter' => 1,
+            'bernard' => 0
+        ]);
+
+        // Act
+        $script = $gaRenderer->getScript(true);
+
+        // Assert
+        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+<script>
+cxApi.setChosenVariation(1, 'walter')
+cxApi.setChosenVariation(0, 'bernard')
+</script>", $script);
+    }
+
     public function testGetScriptEmpty()
     {
         // Arrange

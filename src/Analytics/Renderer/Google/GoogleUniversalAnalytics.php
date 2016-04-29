@@ -37,13 +37,17 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
     /**
      * {@inheritDoc}
      */
-    public function getScript()
+    public function getScript($includeApiClient = false)
     {
         if (empty($this->participations)) {
             return '';
         }
 
         $script = [];
+
+        if (true === $includeApiClient) {
+            $script[] = '<script src="//www.google-analytics.com/cx/api.js"></script>';
+        }
 
         $script[] = '<script>';
 
@@ -53,7 +57,7 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         $script[] = '</script>';
 
-        return implode("\n", $script);
+        return implode(PHP_EOL, $script);
     }
 
     /**
