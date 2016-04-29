@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Participation;
+namespace PhpAb\Participation\Filter;
 
 /**
  * The interface that should be implemented by filters that decide who should or should not participate.

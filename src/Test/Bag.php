@@ -9,8 +9,8 @@
 
 namespace PhpAb\Test;
 
-use PhpAb\Participation\FilterInterface;
-use PhpAb\Variant\ChooserInterface;
+use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Variant\Chooser\ChooserInterface;
 
 /**
  * The combination of a test with options.

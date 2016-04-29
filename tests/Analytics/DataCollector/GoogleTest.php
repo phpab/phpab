@@ -9,13 +9,16 @@
 
 namespace PhpAb\Analytics\Google;
 
-class DataCollectorTest extends \PHPUnit_Framework_TestCase
+use PhpAb\Analytics\DataCollector\Google;
+use PHPUnit_Framework_TestCase;
+
+class GoogleTest extends PHPUnit_Framework_TestCase
 {
 
     public function testGetSubscribedEvents()
     {
         // Arrange
-        $collector = new DataCollector();
+        $collector = new Google();
 
         // Act
         $result = $collector->getSubscribedEvents();
@@ -31,7 +34,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidTestIdentifier()
     {
         // Arrange
-        $expData = new DataCollector();
+        $expData = new Google();
 
         // Act
         $expData->addParticipation(987, 1);
@@ -46,7 +49,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationIndexRange()
     {
         // Arrange
-        $expData = new DataCollector();
+        $expData = new Google();
 
         // Act
         $expData->addParticipation('walter', -1);
@@ -61,7 +64,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationNotInt()
     {
         // Arrange
-        $expData = new DataCollector();
+        $expData = new Google();
 
         // Act
         $expData->addParticipation('walter', '1');
@@ -73,7 +76,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testOnRegisterParticipation()
     {
         // Arrange
-        $expData = new DataCollector();
+        $expData = new Google();
         $expData->addParticipation('walter', 0);
         $expData->addParticipation('bernard', 1);
 

@@ -7,9 +7,11 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Renderer;
+namespace PhpAb\Analytics\Renderer\Google;
 
-class GoogleUniversalAnalyticsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
 {
 
     public function testGetScript()

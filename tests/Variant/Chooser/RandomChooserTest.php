@@ -7,13 +7,15 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant;
+namespace PhpAb\Variant\Chooser;
 
+use PhpAb\Variant\VariantInterface;
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
+use PHPUnit_Framework_TestCase;
 
-class RandomChooserTest extends \PHPUnit_Framework_TestCase
+class RandomChooserTest extends PHPUnit_Framework_TestCase
 {
     public function testChooseVariants()
     {

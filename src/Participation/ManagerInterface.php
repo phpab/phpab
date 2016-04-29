@@ -14,7 +14,7 @@ namespace PhpAb\Participation;
  *
  * @package PhpAb
  */
-interface ParticipationManagerInterface
+interface ManagerInterface
 {
     /**
      * Check if the User participates in a test or a specific variant of the test

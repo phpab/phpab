@@ -7,7 +7,9 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Renderer;
+namespace PhpAb\Analytics\Renderer\Google;
+
+use PhpAb\Analytics\Renderer\RendererInterface;
 
 /**
  * The base class for Google analytics implementations.

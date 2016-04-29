@@ -7,9 +7,11 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant;
+namespace PhpAb\Variant\Chooser;
 
-class StaticChooserTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class StaticChooserTest extends PHPUnit_Framework_TestCase
 {
     public function testChooseStatic()
     {

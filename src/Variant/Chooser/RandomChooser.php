@@ -7,7 +7,9 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant;
+namespace PhpAb\Variant\Chooser;
+
+use PhpAb\Variant\VariantInterface;
 
 /**
  * A variant chooser that makes its choice randomly.
@@ -28,9 +30,9 @@ class RandomChooser implements ChooserInterface
             return null;
         }
 
-        $chosenCount = mt_rand(0, $count-1);
+        $chosenCount = mt_rand(0, $count - 1);
         $keys = array_keys($variants);
-        
+
         return $variants[$keys[$chosenCount]];
     }
 }
