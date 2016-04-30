@@ -10,16 +10,16 @@
 namespace PhpAb\Analytics\Renderer;
 
 /**
- * The interface that should be implemented by analytics providers that require JavaScript to be rendered.
+ * The interface that should be implemented by analytics providers that require rendering.
  *
  * @package PhpAb
  */
-interface JavascriptRendererInterface extends RendererInterface
+interface RendererInterface
 {
     /**
-     * Gets the JavaScript that should be rendered.
+     * Gets the list with tests that the user participates in.
      *
-     * @return string Returns the JavaScript code that should be rendered and the API client.
+     * @return array Returns the map with participations.
      */
-    public function getScript();
+    public function getParticipations();
 }
