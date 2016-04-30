@@ -39,6 +39,7 @@ ga('set', 'bernard', 0);
             'walter' => 1,
             'bernard' => 0
         ]);
+        $gaRenderer->setApiCLientInclusion(true);
 
         // Act
         $script = $gaRenderer->getScript(true);

@@ -19,5 +19,24 @@ use PhpAb\Analytics\Renderer\JavascriptRendererInterface;
  */
 abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
 {
+    /**
+     * @var bool Whether or not to include the Api Client
+     */
+    private $includeApiClient = false;
 
+    /**
+     * @param bool $includeApiClient Whether or not to include the Api Client
+     */
+    public function setApiCLientInclusion($includeApiClient = false)
+    {
+        $this->includeApiClient = true === $includeApiClient;
+    }
+
+    /**
+     * @return bool The value of $includeApiClient
+     */
+    public function getApiCLientInclusion()
+    {
+        return $this->includeApiClient;
+    }
 }

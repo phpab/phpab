@@ -37,7 +37,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
     /**
      * {@inheritDoc}
      */
-    public function getScript($includeApiClient = false)
+    public function getScript()
     {
         if (empty($this->participations)) {
             return '';
@@ -45,7 +45,7 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
 
         $script = [];
 
-        if (true === $includeApiClient) {
+        if (true === $this->getApiCLientInclusion()) {
             $script[] = '<script src="//www.google-analytics.com/cx/api.js"></script>';
         }
 
