@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -18,7 +19,7 @@ use PhpAb\Analytics\Renderer\RendererInterface;
  */
 abstract class AbstractGoogleAnalytics implements RendererInterface
 {
-     /**
+    /**
      * Gets the JavaScript that should be rendered.
      *
      * @param boolean $includeApiClient Whether or not to include the API Client too.
