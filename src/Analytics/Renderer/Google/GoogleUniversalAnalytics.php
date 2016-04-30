@@ -45,6 +45,10 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         $script = [];
 
+        if (true === $this->getApiCLientInclusion()) {
+            $script[] = '<script src="//www.google-analytics.com/cx/api.js"></script>';
+        }
+
         $script[] = '<script>';
 
         foreach ($this->participations as $testIdentifier => $variationIndex) {
@@ -53,7 +57,7 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         $script[] = '</script>';
 
-        return implode("\n", $script);
+        return implode(PHP_EOL, $script);
     }
 
     /**

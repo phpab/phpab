@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,13 +10,33 @@
 
 namespace PhpAb\Analytics\Renderer\Google;
 
-use PhpAb\Analytics\Renderer\RendererInterface;
+use PhpAb\Analytics\Renderer\JavascriptRendererInterface;
 
 /**
  * The base class for Google analytics implementations.
  *
  * @package PhpAb
  */
-abstract class AbstractGoogleAnalytics implements RendererInterface
+abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
 {
+    /**
+     * @var bool Whether or not to include the Api Client
+     */
+    private $includeApiClient = false;
+
+    /**
+     * @param bool $includeApiClient Whether or not to include the Api Client
+     */
+    public function setApiCLientInclusion($includeApiClient = false)
+    {
+        $this->includeApiClient = true === $includeApiClient;
+    }
+
+    /**
+     * @return bool The value of $includeApiClient
+     */
+    public function getApiCLientInclusion()
+    {
+        return $this->includeApiClient;
+    }
 }

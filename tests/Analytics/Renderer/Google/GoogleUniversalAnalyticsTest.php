@@ -32,6 +32,26 @@ ga('set', 'bernard', 0);
 </script>", $script);
     }
 
+    public function testGetScriptWithApiClient()
+    {
+        // Arrange
+        $gaRenderer = new GoogleUniversalAnalytics([
+            'walter' => 1,
+            'bernard' => 0
+        ]);
+        $gaRenderer->setApiCLientInclusion(true);
+
+        // Act
+        $script = $gaRenderer->getScript(true);
+
+        // Assert
+        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+<script>
+ga('set', 'walter', 1);
+ga('set', 'bernard', 0);
+</script>", $script);
+    }
+
     public function testGetScriptEmpty()
     {
         // Arrange
