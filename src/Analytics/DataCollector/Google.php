@@ -33,7 +33,28 @@ class Google implements SubscriberInterface
     {
         return [
             'phpab.participation.variant_run' => function ($options) {
-            
+                Assert::notEmpty($options, 'Array passed to closure cannot be empty.');
+
+                Assert::keyExists($options, 1, 'Second parameter passed to closure must be instance of Bag.');
+
+                Assert::isInstanceOf(
+                    $options[1],
+                    'PhpAb\Test\Bag',
+                    'Second parameter passed to closure must be instance of Bag.'
+                );
+
+                Assert::keyExists(
+                    $options,
+                    2,
+                    'Third parameter passed to closure must be instance of VariantInterface.'
+                );
+
+                Assert::isInstanceOf(
+                    $options[2],
+                    'PhpAb\Variant\VariantInterface',
+                    'Third parameter passed to closure must be instance of VariantInterface.'
+                );
+
                 /** @var TestInterface $test */
                 $test = $options[1]->getTest();
 
