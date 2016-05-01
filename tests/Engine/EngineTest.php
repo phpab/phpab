@@ -274,6 +274,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($result);
     }
 
+    /**
+     * Testing that Engine picks previous test runs values
+     */
     public function testPreviousRunConsistencyInCookie()
     {
         // Arrange
@@ -288,10 +291,18 @@ class EngineTest extends \PHPUnit_Framework_TestCase
                 ->setFunctionProvider(new FixedValueFunction(true));
         $setcookieMock = $builder->build();
 
+        $builder->setNamespace('PhpAb\Storage')
+            ->setName("filter_input_array")
+            ->setFunctionProvider(new FixedValueFunction([
+                'phpab' => '{"foo_test":"v1","bar_test":"_control"}'
+            ]));
+
+        $filterInputArrayMock = $builder->build();
+
         $headersSentMock->enable();
         $setcookieMock->enable();
+        $filterInputArrayMock->enable();
 
-        $_COOKIE['phpab'] = '{"foo_test":"v1","bar_test":"_control"}';
         $storage = new Cookie('phpab');
         $manager = new Manager($storage);
 
