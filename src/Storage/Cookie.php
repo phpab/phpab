@@ -11,6 +11,7 @@ namespace PhpAb\Storage;
 
 use InvalidArgumentException;
 use RuntimeException;
+use Webmozart\Assert\Assert;
 
 /**
  * Stores the participation state of the user in a session.
@@ -50,15 +51,10 @@ class Cookie implements StorageInterface
      */
     public function __construct($cookieName, $ttl = 157766400)
     {
-
         // We cannot typehint for primitive types yet so therefore we check if the cookie name is a (valid) string.
-        if (!is_string($cookieName) || empty($cookieName)) {
-            throw new InvalidArgumentException('The cookie name is invalid.');
-        }
-
-        if (!is_int($ttl)) {
-            throw new InvalidArgumentException('The cookie ttl parameter should be a integer.');
-        }
+        Assert::string($cookieName, 'The cookie name is invalid.');
+        Assert::notEmpty($cookieName, 'The cookie name is invalid.');
+        Assert::integer($ttl, 'The cookie ttl parameter should be a integer.');
 
         $this->cookieName = $cookieName;
 
@@ -74,12 +70,14 @@ class Cookie implements StorageInterface
             return;
         }
 
-        if (empty($_COOKIE) || !isset($_COOKIE[$this->cookieName])) {
+        $cookiesContent = filter_input_array(INPUT_COOKIE);
+
+        if (empty($cookiesContent) || !isset($cookiesContent[$this->cookieName])) {
             $this->cookieValues = [];
             return;
         }
 
-        $deserializedCookie = json_decode($_COOKIE[$this->cookieName], true);
+        $deserializedCookie = json_decode($cookiesContent[$this->cookieName], true);
 
         if (is_null($deserializedCookie)) {
             $this->cookieValues = [];
@@ -108,10 +106,9 @@ class Cookie implements StorageInterface
      */
     public function has($identifier)
     {
-        if (!is_string($identifier) || $identifier === '') {
-            throw new InvalidArgumentException('Test identifier is invalid.');
-        }
-
+        Assert::string($identifier, 'Test identifier is invalid.');
+        Assert::notEmpty($identifier, 'Test identifier is invalid.');
+        
         $this->parseExistingCookie();
 
         return isset($this->cookieValues[$identifier]);
@@ -137,6 +134,8 @@ class Cookie implements StorageInterface
      * @param string $identifier The tests identifier
      * @param mixed  $participation The participated variant
      * @throws RuntimeException
+     *
+     * @return bool
      */
     public function set($identifier, $participation)
     {
