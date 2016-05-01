@@ -7,20 +7,21 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\DB;
+namespace PhpAb\Analytics\DataCollector;
 
-use PhpAb\Test\Test;
-use PhpAb\Variant\SimpleVariant;
 use PhpAb\Test\Bag;
-use PhpAb\Participation\PercentageFilter;
-use PhpAb\Variant\RandomChooser;
+use PhpAb\Test\Test;
+use PhpAb\Participation\Filter\Percentage;
+use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Variant\SimpleVariant;
+use PHPUnit_Framework_TestCase;
 
-class DataCollectorTest extends \PHPUnit_Framework_TestCase
+class GenericTest extends PHPUnit_Framework_TestCase
 {
     public function testGetSubscribedEvents()
     {
         // Arrange
-        $collector = new DataCollector();
+        $collector = new Generic();
 
         // Act
         $result = $collector->getSubscribedEvents();
@@ -36,13 +37,12 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidTestIdentifier()
     {
         // Arrange
-        $dataCollector = new DataCollector();
+        $collector = new Generic();
 
         // Act
-        $dataCollector->addParticipation(987, 1);
+        $collector->addParticipation(987, 1);
 
         // Assert
-        // ..
     }
 
     /**
@@ -51,13 +51,12 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationIndexRange()
     {
         // Arrange
-        $dataCollector = new DataCollector();
+        $collector = new Generic();
 
         // Act
-        $dataCollector->addParticipation('walter', -1);
+        $collector->addParticipation('walter', -1);
 
         // Assert
-        // ..
     }
 
     /**
@@ -66,24 +65,23 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function addParticipationInvalidVariationNotInt()
     {
         // Arrange
-        $dataCollector = new DataCollector();
+        $collector = new Generic();
 
         // Act
-        $dataCollector->addParticipation('walter', '1');
+        $collector->addParticipation('walter', '1');
 
         // Assert
-        // ..
     }
 
     public function testOnRegisterParticipation()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $dataCollector->addParticipation('walter', 'white');
-        $dataCollector->addParticipation('bernard', 'black');
+        $collector = new Generic();
+        $collector->addParticipation('walter', 'white');
+        $collector->addParticipation('bernard', 'black');
 
         // Act
-        $data = $dataCollector->getTestsData();
+        $data = $collector->getTestsData();
 
         // Assert
         $this->assertSame(
@@ -101,14 +99,13 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEventsEmptyOptions()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $event = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $event = $collector->getSubscribedEvents();
 
         // Act
         call_user_func($event['phpab.participation.variant_run'], []);
 
         // Assert
-        // ..
     }
 
     /**
@@ -117,8 +114,8 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEventsNoBag()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $event = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $event = $collector->getSubscribedEvents();
 
         // Act
         call_user_func(
@@ -129,7 +126,6 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         );
 
         // Assert
-        // ..
     }
 
     /**
@@ -138,8 +134,8 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEventsNoBagInstance()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $event = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $event = $collector->getSubscribedEvents();
 
         // Act
         call_user_func(
@@ -151,7 +147,6 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         );
 
         // Assert
-        // ..
     }
 
     /**
@@ -160,11 +155,11 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEventsNoVariant()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $event = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $event = $collector->getSubscribedEvents();
         $bag = new Bag(
             new Test('Bernard'),
-            new PercentageFilter(100),
+            new Percentage(100),
             new RandomChooser
         );
 
@@ -178,7 +173,6 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         );
 
         // Assert
-        // ..
     }
 
     /**
@@ -187,11 +181,11 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEventsNoVariantInstance()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $eventCallback = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $eventCallback = $collector->getSubscribedEvents();
         $bag = new Bag(
             new Test('Bernard'),
-            new PercentageFilter(100),
+            new Percentage(100),
             new RandomChooser
         );
 
@@ -206,17 +200,16 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
         );
 
         // Assert
-        // ..
     }
 
     public function testRunEvent()
     {
         // Arrange
-        $dataCollector = new DataCollector();
-        $eventCallback = $dataCollector->getSubscribedEvents();
+        $collector = new Generic();
+        $eventCallback = $collector->getSubscribedEvents();
         $bag = new Bag(
             new Test('Bernard'),
-            new PercentageFilter(100),
+            new Percentage(100),
             new RandomChooser
         );
 
@@ -230,7 +223,7 @@ class DataCollectorTest extends \PHPUnit_Framework_TestCase
             ]
         );
 
-        $participations = $dataCollector->getTestsData();
+        $participations = $collector->getTestsData();
 
         // Assert
         $this->assertSame(

@@ -7,13 +7,19 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Exception;
+namespace PhpAb\Analytics\Renderer;
 
 /**
- * An exception that is thrown when an error did occur during execution of a test.
+ * The interface that should be implemented by analytics providers that require rendering.
  *
  * @package PhpAb
  */
-class TestExecutionException extends TestException
+interface RendererInterface
 {
+    /**
+     * Gets the list with tests that the user participates in.
+     *
+     * @return array Returns the map with participations.
+     */
+    public function getParticipations();
 }

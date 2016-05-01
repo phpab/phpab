@@ -10,23 +10,16 @@
 namespace PhpAb\Analytics\Renderer;
 
 /**
- * The base class for Google analytics implementations.
+ * The interface that should be implemented by analytics providers that require JavaScript to be rendered.
  *
  * @package PhpAb
  */
-abstract class AbstractGoogleAnalytics
+interface JavascriptRendererInterface extends RendererInterface
 {
     /**
      * Gets the JavaScript that should be rendered.
      *
-     * @return string Returns the JavaScript code that should be rendered.
+     * @return string Returns the JavaScript code that should be rendered and the API client.
      */
-    abstract public function getScript();
-
-    /**
-     * Gets the list with tests that the user participates in.
-     *
-     * @return array Returns the map with participations.
-     */
-    abstract public function getParticipations();
+    public function getScript();
 }

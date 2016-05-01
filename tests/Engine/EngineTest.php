@@ -11,19 +11,19 @@ namespace PhpAb\Engine;
 
 use PhpAb\Event\Dispatcher;
 use PhpAb\Event\DispatcherInterface;
-use PhpAb\Participation\FilterInterface;
+use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Participation\Manager;
-use PhpAb\Participation\ParticipationManagerInterface;
-use PhpAb\Participation\PercentageFilter;
+use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\Runtime;
 use PhpAb\Storage\Cookie;
 use PhpAb\Test\Test;
-use PhpAb\Variant\ChooserInterface;
-use PhpAb\Variant\StaticChooser;
-use PhpAb\Variant\RandomChooser;
+use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Variant\Chooser\StaticChooser;
+use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use PhpAb\Analytics\Google\DataCollector;
+use PhpAb\Analytics\DataCollector\Google;
 use phpmock\MockBuilder;
 use phpmock\functions\FixedValueFunction;
 
@@ -38,14 +38,14 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         \phpmock\Mock::disableAll();
 
-        $this->alwaysParticipateFilter = new PercentageFilter(100);
+        $this->alwaysParticipateFilter = new Percentage(100);
         $this->chooser = new StaticChooser(0);
 
         $this->variant = $this->getMockBuilder(VariantInterface::class)
             ->setMethods(['getIdentifier', 'run'])
             ->getMock();
 
-        $this->manager = $manager = $this->getMockBuilder(ParticipationManagerInterface::class)
+        $this->manager = $manager = $this->getMockBuilder(ManagerInterface::class)
             ->getMock();
     }
 
@@ -204,7 +204,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($storage);
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(new Test('foo'), [], new PercentageFilter(0), $this->chooser);
+        $engine->addTest(new Test('foo'), [], new Percentage(0), $this->chooser);
 
         // Act
         $engine->start();
@@ -224,7 +224,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('yolo'));
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest($test, [], new PercentageFilter(0), $this->chooser);
+        $engine->addTest($test, [], new Percentage(0), $this->chooser);
 
         // Act
         $engine->start();
@@ -295,12 +295,12 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new Cookie('phpab');
         $manager = new Manager($storage);
 
-        $analyticsData = new DataCollector;
+        $analyticsData = new Google();
 
         $dispatcher = new Dispatcher;
         $dispatcher->addSubscriber($analyticsData);
 
-        $filter = new PercentageFilter(5);
+        $filter = new Percentage(5);
         $chooser = new RandomChooser();
 
         $engine = new Engine($manager, $dispatcher, $filter, $chooser);
@@ -334,13 +334,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function testNoFilterThrowsException()
     {
         // Arrange
         $engine = new Engine(
-            $this->getMock(ParticipationManagerInterface::class),
+            $this->getMock(ManagerInterface::class),
             $this->getMock(DispatcherInterface::class),
             null, // This is the tested part
             $this->getMock(ChooserInterface::class)
@@ -356,13 +356,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \InvalidArgumentException
      */
     public function testNoChooserThrowsException()
     {
         // Arrange
         $engine = new Engine(
-            $this->getMock(ParticipationManagerInterface::class),
+            $this->getMock(ManagerInterface::class),
             $this->getMock(DispatcherInterface::class),
             $this->getMock(FilterInterface::class),
             null // This is the tested part
@@ -373,6 +373,52 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->addTest($test);
+
+        // Assert
+    }
+
+    /**
+     * @expectedException \PhpAb\Exception\EngineLockedException
+     */
+    public function testLockEngine()
+    {
+        // Arrange
+        $engine = new Engine(
+            $this->getMock(ManagerInterface::class),
+            $this->getMock(DispatcherInterface::class),
+            $this->getMock(FilterInterface::class),
+            null // This is the tested part
+        );
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+
+        // Act
+        $engine->start();
+        $engine->addTest($test);
+
+        // Assert
+    }
+
+    /**
+     * @expectedException \PhpAb\Exception\EngineLockedException
+     */
+    public function testStartTwice()
+    {
+        // Arrange
+        $engine = new Engine(
+            $this->getMock(ManagerInterface::class),
+            $this->getMock(DispatcherInterface::class),
+            $this->getMock(FilterInterface::class),
+            null // This is the tested part
+        );
+
+        $test = new Test('foo_test');
+        $test->addVariant(new SimpleVariant('_control'));
+
+        // Act
+        $engine->start();
+        $engine->start();
 
         // Assert
     }

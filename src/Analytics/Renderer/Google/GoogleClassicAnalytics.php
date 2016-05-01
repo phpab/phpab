@@ -7,15 +7,15 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Renderer;
+namespace PhpAb\Analytics\Renderer\Google;
 
 /**
- * This class will only work for Universal Analytics Experiments ran as External
+ * This class will only work for Classic Analytics Experiments ran as External
  *
  * @package PhpAb
- * @see https://developers.google.com/analytics/devguides/collection/analyticsjs/experiments#pro-server
+ * @see https://developers.google.com/analytics/devguides/collection/gajs/experiments#cxjs-setchosen
  */
-class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
+class GoogleClassicAnalytics extends AbstractGoogleAnalytics
 {
     /**
      * The map with test identifiers and variation indexes.
@@ -45,15 +45,19 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         $script = [];
 
+        if (true === $this->getApiCLientInclusion()) {
+            $script[] = '<script src="//www.google-analytics.com/cx/api.js"></script>';
+        }
+
         $script[] = '<script>';
 
         foreach ($this->participations as $testIdentifier => $variationIndex) {
-            $script[] = "ga('set', '" . (string) $testIdentifier . "', " . (int) $variationIndex . ");";
+            $script[] = "cxApi.setChosenVariation(" . (int) $variationIndex . ", '" . (string) $testIdentifier . "')";
         }
 
         $script[] = '</script>';
 
-        return implode("\n", $script);
+        return implode(PHP_EOL, $script);
     }
 
     /**

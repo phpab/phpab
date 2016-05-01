@@ -7,13 +7,13 @@ require_once __DIR__.'/../vendor/autoload.php';
 $storage = new \PhpAb\Storage\Session('phpab');
 $manager = new \PhpAb\Participation\Manager($storage);
 
-$analyticsData = new \PhpAb\Analytics\Google\DataCollector();
+$analyticsData = new \PhpAb\Analytics\DataCollector\Google();
 
 $dispatcher = new \PhpAb\Event\Dispatcher();
 $dispatcher->addSubscriber($analyticsData);
 
-$filter = new \PhpAb\Participation\PercentageFilter(50);
-$chooser = new \PhpAb\Variant\RandomChooser();
+$filter = new \PhpAb\Participation\Filter\Percentage(50);
+$chooser = new \PhpAb\Variant\Chooser\RandomChooser();
 
 $engine = new PhpAb\Engine\Engine($manager, $dispatcher, $filter, $chooser);
 
@@ -49,5 +49,5 @@ $engine->addTest($test2);
 // Start testing. Must occur before the EventCycle of the app starts
 $engine->start();
 
-$analytics = new \PhpAb\Analytics\Renderer\GoogleUniversalAnalytics($analyticsData->getTestsData());
+$analytics = new \PhpAb\Analytics\Renderer\Google\GoogleUniversalAnalytics($analyticsData->getTestsData());
 var_dump($analytics->getScript());

@@ -7,15 +7,17 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Renderer;
+namespace PhpAb\Analytics\Renderer\Google;
 
-class GoogleClassicAnalyticsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
 {
 
     public function testGetScript()
     {
         // Arrange
-        $gaRenderer = new GoogleClassicAnalytics([
+        $gaRenderer = new GoogleUniversalAnalytics([
             'walter' => 1,
             'bernard' => 0
         ]);
@@ -25,15 +27,35 @@ class GoogleClassicAnalyticsTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame("<script>
-cxApi.setChosenVariation(1, 'walter')
-cxApi.setChosenVariation(0, 'bernard')
+ga('set', 'walter', 1);
+ga('set', 'bernard', 0);
+</script>", $script);
+    }
+
+    public function testGetScriptWithApiClient()
+    {
+        // Arrange
+        $gaRenderer = new GoogleUniversalAnalytics([
+            'walter' => 1,
+            'bernard' => 0
+        ]);
+        $gaRenderer->setApiCLientInclusion(true);
+
+        // Act
+        $script = $gaRenderer->getScript(true);
+
+        // Assert
+        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+<script>
+ga('set', 'walter', 1);
+ga('set', 'bernard', 0);
 </script>", $script);
     }
 
     public function testGetScriptEmpty()
     {
         // Arrange
-        $gaRenderer = new GoogleClassicAnalytics([]);
+        $gaRenderer = new GoogleUniversalAnalytics([]);
 
         // Act
         $script = $gaRenderer->getScript();
@@ -49,7 +71,7 @@ cxApi.setChosenVariation(0, 'bernard')
             'walter' => 1,
             'bernard' => 0
         ];
-        $gaRenderer = new GoogleClassicAnalytics($data);
+        $gaRenderer = new GoogleUniversalAnalytics($data);
 
         // Act
         $returnedData = $gaRenderer->getParticipations();
