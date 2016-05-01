@@ -18,6 +18,10 @@ use PHPUnit_Framework_TestCase;
 
 class GenericTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Testing that getSubscribedEventst will return an array
+     * containing the closure to be executed on "phpab.participation.variant_run"
+     */
     public function testGetSubscribedEvents()
     {
         // Arrange
@@ -32,9 +36,11 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that addParticipation accepts only string parameters
+     *
      * @expectedException InvalidArgumentException
      */
-    public function addParticipationInvalidTestIdentifier()
+    public function testAddParticipationInvalidTestIdentifier()
     {
         // Arrange
         $collector = new Generic();
@@ -46,29 +52,17 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that addParticipation accepts only string parameters
+     *
      * @expectedException InvalidArgumentException
      */
-    public function addParticipationInvalidVariationIndexRange()
+    public function testAddParticipationInvalidVariationIndexRange()
     {
         // Arrange
         $collector = new Generic();
 
         // Act
         $collector->addParticipation('walter', -1);
-
-        // Assert
-    }
-
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function addParticipationInvalidVariationNotInt()
-    {
-        // Arrange
-        $collector = new Generic();
-
-        // Act
-        $collector->addParticipation('walter', '1');
 
         // Assert
     }
