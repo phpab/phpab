@@ -19,7 +19,7 @@ use PHPUnit_Framework_TestCase;
 class GenericTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Testing that getSubscribedEventst will return an array
+     * Testing that getSubscribedEvents() will return an array
      * containing the closure to be executed on "phpab.participation.variant_run"
      */
     public function testGetSubscribedEvents()
@@ -36,7 +36,7 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Testing that addParticipation accepts only string parameters
+     * Testing that addParticipation() accepts only string parameters
      *
      * @expectedException InvalidArgumentException
      */
@@ -52,7 +52,7 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Testing that addParticipation accepts only string parameters
+     * Testing that addParticipation() accepts only string parameters
      *
      * @expectedException InvalidArgumentException
      */
@@ -67,6 +67,10 @@ class GenericTest extends PHPUnit_Framework_TestCase
         // Assert
     }
 
+    /**
+     * Testing that getTestsData() returns the data injected
+     * via addParticipation()
+     */
     public function testOnRegisterParticipation()
     {
         // Arrange
@@ -88,6 +92,9 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires a non empty array
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetSubscribedEventsEmptyOptions()
@@ -103,6 +110,9 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with size > 1
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetSubscribedEventsNoBag()
@@ -123,6 +133,9 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires a Bag object passed in key 1
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetSubscribedEventsNoBagInstance()
@@ -144,6 +157,9 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with size > 2
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetSubscribedEventsNoVariant()
@@ -170,6 +186,10 @@ class GenericTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with an instance of VariantInterface
+     * in key 2
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetSubscribedEventsNoVariantInstance()
@@ -196,6 +216,10 @@ class GenericTest extends PHPUnit_Framework_TestCase
         // Assert
     }
 
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * fills correctly the participation array
+     */
     public function testRunEvent()
     {
         // Arrange
