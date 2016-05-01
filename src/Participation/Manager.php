@@ -38,38 +38,54 @@ class Manager implements ManagerInterface
     }
 
     /**
+     * Gets the variant the user is participating in for the given test.
+     *
+     * @param TestInterface|string $test The identifier of the test to get the variant for.
+     * @return string|null Returns the identifier of the variant or null if not participating.
+     */
+    public function getParticipatingVariant($test)
+    {
+        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
+
+        if ($this->storage->has($test)) {
+            return $this->storage->get($test);
+        }
+
+        return null;
+    }
+
+    /**
      * {@inheritDoc}
      *
-     * @param string $test The identifier of the test to check.
-     * @param string|null $variant The identifier of the variant to check
+     * @param TestInterface|string $test The identifier of the test to check.
+     * @param VariantInterface|string|null $variant The identifier of the variant to check
+     * @return boolean|string Returns true when the user participates; false otherwise.
      */
     public function participates($test, $variant = null)
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
 
+        if (!$this->storage->has($test)) {
+            return false;
+        }
+
         $storedValue = $this->storage->get($test);
 
-        if (null !== $variant && $storedValue === $variant) {
-            // It was asked explicitly for the variant and it matches
-            return true;
+        // It was asked explicitly for the variant and it matches
+        if (null !== $variant) {
+            return $storedValue === $variant;
         }
 
-        if (null === $variant && $this->storage->has($test)) {
-            // The stored value exists, so we participate at the test
-            // lets return the stored variant
-            return $storedValue;
-        }
-
-        return false;
+        return true;
     }
 
     /**
      * {@inheritDoc}
      *
-     * @param string $test The identifier of the test that should be participated.
-     * @param string|false $variant The identifier of the variant that was chosen for the user
-     * or false if the user should not participate at the test.
+     * @param TestInterface|string $test The identifier of the test that should be participated.
+     * @param VariantInterface|string|null $variant The identifier of the variant that was chosen or
+     * null if the user does not participate in the test.
      */
     public function participate($test, $variant)
     {

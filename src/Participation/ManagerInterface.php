@@ -17,23 +17,28 @@ namespace PhpAb\Participation;
 interface ManagerInterface
 {
     /**
-     * Check if the User participates in a test or a specific variant of the test
+     * Gets the variant the user is participating in for the given test.
      *
-     * @param string $test The identifier of the test to check.
-     * @param string|null $variant The identifier of the variant to check
+     * @param TestInterface|string $test The identifier of the test to get the variant for.
+     * @return string|null Returns the identifier of the variant or null if not participating.
+     */
+    public function getParticipatingVariant($test);
+
+    /**
+     * Check if the user participates in a test or a specific variant of the test
      *
-     * @return boolean|string Returns false if there is no participation.
-     * Returns a string for the participated variant if participating.
-     * Returns true if explicit variant was asked and matches
+     * @param TestInterface|string $test The identifier of the test to check.
+     * @param VariantInterface|string|null $variant The identifier of the variant to check
+     * @return boolean|string Returns true when the user participates; false otherwise.
      */
     public function participates($test, $variant = null);
 
     /**
      * Sets the participation to a test with the participation at a specific variant.
      *
-     * @param string $test The identifier of the test that should be participated.
-     * @param string|false $variant The identifier of the variant that was chosen for the user
-     * or false if the user should not participate at the test.
+     * @param TestInterface|string $test The identifier of the test that should be participated.
+     * @param VariantInterface|string|null $variant The identifier of the variant that was chosen or
+     * null if the user does not participate in the test.
      */
     public function participate($test, $variant);
 }

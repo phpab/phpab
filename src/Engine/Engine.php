@@ -19,6 +19,7 @@ use PhpAb\Test\Bag;
 use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -180,60 +181,58 @@ class Engine implements EngineInterface
     private function handleTestBag(Bag $bag)
     {
         $test = $bag->getTest();
-        $testParticipation = $this->participationManager->participates($test->getIdentifier());
 
-        if (null === $testParticipation) {
-            // is marked as "do not participate"
+        $isParticipating = $this->participationManager->participates($test->getIdentifier());
+        $testParticipation = $this->participationManager->getParticipatingVariant($test->getIdentifier());
+
+        // Check if the user is marked as "do not participate".
+        if ($isParticipating && null === $testParticipation) {
             $this->dispatcher->dispatch('phpab.participation.blocked', [$this, $bag]);
-
-            return false;
+            return;
         }
 
-        if (false === $testParticipation) {
-            // The user does not participate at the test
-            // let him participate
-            if (! $bag->getParticipationFilter()->shouldParticipate()) {
-                // The user should not participate so let's set participation
-                // to null so he will not participate in the future, too.
-                $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
+        // When the user does not participate at the test, let him participate.
+        if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
+            // The user should not participate so let's set participation
+            // to null so he will not participate in the future, too.
+            $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
 
-                $this->participationManager->participate($test->getIdentifier(), null);
-
-                return false;
-            }
+            $this->participationManager->participate($test->getIdentifier(), null);
+            return;
         }
 
         // Let's try to recover a previously stored Variant
-        if ($testParticipation) {
+        if ($isParticipating && $testParticipation !== null) {
             $variant = $bag->getTest()->getVariant($testParticipation);
-            // If we managed to identify a Variant by a previously stored
-            // participation, do its magic again
-            if ($variant instanceof Variant\VariantInterface) {
-                $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
-                $variant->run();
 
-                return true;
+            // If we managed to identify a Variant by a previously stored participation, do its magic again.
+            if ($variant instanceof VariantInterface) {
+                $this->activateVariant($bag, $variant);
+                return;
             }
         }
 
-        // Choose a variant for later usage.
-        // If the user should participate this one will be used
+        // Choose a variant for later usage. If the user should participate this one will be used
         $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
 
+        // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            // The user has a stored participation, but it does not exist any more
             $this->dispatcher->dispatch('phpab.participation.variant_missing', [$this, $bag]);
-            $this->participationManager->participate($test->getIdentifier(), null);
 
-            return false;
+            $this->participationManager->participate($test->getIdentifier(), null);
+            return;
         }
 
         // Store the chosen variant so he will not switch between different states
         $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
 
-        $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $chosen]);
-        $chosen->run();
+        $this->activateVariant($bag, $chosen);
+    }
 
-        return true;
+    private function activateVariant(Bag $bag, VariantInterface $variant)
+    {
+        $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
+
+        $variant->run();
     }
 }
