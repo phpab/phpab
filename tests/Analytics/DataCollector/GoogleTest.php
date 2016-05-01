@@ -7,14 +7,21 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Analytics\Google;
+namespace PhpAb\Analytics\DataCollector;
 
-use PhpAb\Analytics\DataCollector\Google;
+use PhpAb\Test\Bag;
+use PhpAb\Test\Test;
+use PhpAb\Participation\Filter\Percentage;
+use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Variant\SimpleVariant;
 use PHPUnit_Framework_TestCase;
 
 class GoogleTest extends PHPUnit_Framework_TestCase
 {
-
+    /**
+     * Testing that getSubscribedEvents() will return an array
+     * containing the closure to be executed on "phpab.participation.variant_run"
+     */
     public function testGetSubscribedEvents()
     {
         // Arrange
@@ -29,6 +36,8 @@ class GoogleTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that addParticipation() accepts only string parameters
+     *
      * @expectedException InvalidArgumentException
      */
     public function addParticipationInvalidTestIdentifier()
@@ -40,10 +49,11 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $expData->addParticipation(987, 1);
 
         // Assert
-        // ..
     }
 
     /**
+     * Testing that addParticipation() accepts only string parameters
+     *
      * @expectedException InvalidArgumentException
      */
     public function addParticipationInvalidVariationIndexRange()
@@ -59,6 +69,8 @@ class GoogleTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Testing that addParticipation() accepts only integers as second parameter
+     *
      * @expectedException InvalidArgumentException
      */
     public function addParticipationInvalidVariationNotInt()
@@ -70,9 +82,12 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $expData->addParticipation('walter', '1');
 
         // Assert
-        // ..
     }
-    
+
+    /**
+     * Testing that getTestsData() returns the data injected
+     * via addParticipation()
+     */
     public function testOnRegisterParticipation()
     {
         // Arrange
@@ -86,10 +101,174 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         // Assert
         $this->assertSame(
             [
-                'walter' => 0,
-                'bernard' => 1
+            'walter' => 0,
+            'bernard' => 1
             ],
             $data
+        );
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires a non empty array
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsEmptyOptions()
+    {
+        // Arrange
+        $collector = new Google();
+        $event = $collector->getSubscribedEvents();
+
+        // Act
+        call_user_func($event['phpab.participation.variant_run'], []);
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with size > 1
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoBag()
+    {
+        // Arrange
+        $collector = new Google();
+        $event = $collector->getSubscribedEvents();
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo'
+            ]
+        );
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires a Bag object passed in key 1
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoBagInstance()
+    {
+        // Arrange
+        $collector = new Google();
+        $event = $collector->getSubscribedEvents();
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => new \DateTime
+            ]
+        );
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with size > 2
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoVariant()
+    {
+        // Arrange
+        $collector = new Google();
+        $event = $collector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard'),
+            new Percentage(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $event['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag
+            ]
+        );
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * requires an array with an instance of VariantInterface
+     * in key 2
+     *
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetSubscribedEventsNoVariantInstance()
+    {
+        // Arrange
+        $collector = new Google();
+        $eventCallback = $collector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard'),
+            new Percentage(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $eventCallback['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag,
+                2 => new \DateTime
+            ]
+        );
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * fills correctly the participation array
+     *
+     * @group testme
+     */
+    public function testRunEvent()
+    {
+        // Arrange
+        $collector = new Google();
+        $eventCallback = $collector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test(
+                'Bernard',
+                [new SimpleVariant('Black')]
+            ),
+            new Percentage(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $eventCallback['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag,
+                2 => new SimpleVariant('Black')
+            ]
+        );
+
+        $participations = $collector->getTestsData();
+
+        // Assert
+        $this->assertSame(
+            ['Bernard' => 0],
+            $participations
         );
     }
 }
