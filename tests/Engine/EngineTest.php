@@ -110,6 +110,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $this->manager->method('participates')
             ->with('foo')
+            ->willReturn(true);
+
+        $this->manager->method('getParticipatingVariant')
+            ->with('foo')
             ->willReturn('bar');
 
         $this->variant
@@ -137,7 +141,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $this->manager->method('participates')
             ->with('foo')
-            ->willReturn('bar');
+            ->willReturn(false);
 
         $this->variant
             ->expects($this->exactly(0))
@@ -194,7 +198,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('foo');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertTrue($result);
+        $this->assertNull($manager->getParticipatingVariant('foo'));
     }
 
     public function testUserShouldNotParticipate()
@@ -211,7 +216,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('foo');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertTrue($result);
+        $this->assertNull($manager->getParticipatingVariant('foo'));
     }
 
     public function testUserShouldNotParticipateWithExistingVariant()
@@ -231,7 +237,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('foo');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertTrue($result);
     }
 
     public function testUserGetsNewParticipation()
@@ -253,7 +259,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('t1');
 
         // Assert
-        $this->assertEquals('v1', $result);
+        $this->assertTrue($result);
     }
 
     public function testNoVariantAvailableForTest()
@@ -271,7 +277,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $manager->participates('t1');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertTrue($result);
     }
 
     /**
@@ -341,7 +347,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             ],
             $testData
         );
-
     }
 
     /**

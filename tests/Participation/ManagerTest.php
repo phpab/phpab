@@ -45,7 +45,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $result = $manager->participates('foo');
 
         // Assert
-        $this->assertEquals('bar', $result);
+        $this->assertTrue($result);
     }
 
     public function testCheckParticipatesTestObjectSuccess()
@@ -58,7 +58,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $result = $manager->participates('foo');
 
         // Assert
-        $this->assertNull($result);
+        $this->assertTrue($result);
     }
 
     public function testCheckParticipatesTestVariantObjectSuccess()
