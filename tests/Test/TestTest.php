@@ -208,4 +208,24 @@ class TestTest extends PHPUnit_Framework_TestCase
         // Assert
         $this->assertNull($result);
     }
+
+    /**
+     * Testing that options passed in constructor are returned by getOptions
+     */
+    public function testGetOptions()
+    {
+        // Arrange
+        $options = [
+            'key1' => 'val1',
+            'key2' => 'val2'
+        ];
+
+        $test = new Test('identifier', [], $options);
+
+        // Act
+        $result = $test->getOptions();
+
+        // Assert
+        $this->assertSame($options, $result);
+    }
 }

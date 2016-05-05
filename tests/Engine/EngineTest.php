@@ -322,12 +322,12 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         $engine = new Engine($manager, $dispatcher, $filter, $chooser);
 
-        $test = new Test('foo_test');
+        $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'EXPID1']);
         $test->addVariant(new SimpleVariant('_control'));
         $test->addVariant(new SimpleVariant('v1'));
         $test->addVariant(new SimpleVariant('v2'));
 
-        $test2 = new Test('bar_test');
+        $test2 = new Test('bar_test', [], [Google::EXPERIMENT_ID => 'EXPID2']);
         $test2->addVariant(new SimpleVariant('_control'));
         $test2->addVariant(new SimpleVariant('v1'));
 
@@ -342,8 +342,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertSame(
             [
-                'foo_test' => 1,
-                'bar_test' => 0
+                'EXPID1' => 1,
+                'EXPID2' => 0
             ],
             $testData
         );
