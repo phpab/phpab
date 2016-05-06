@@ -25,6 +25,11 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     private $includeApiClient = false;
 
     /**
+     * @var bool Wheter or not to fire an event after Experiments are set
+     */
+    private $includeEventTrigger = true;
+
+    /**
      * @param bool $includeApiClient Whether or not to include the Api Client
      */
     public function setApiClientInclusion($includeApiClient = false)
@@ -38,5 +43,21 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     public function getApiClientInclusion()
     {
         return $this->includeApiClient;
+    }
+
+    /**
+     * @param bool $includeEventTrigger Wheter or not to fire an event after Experiments are set
+     */
+    public function setEventTriggerInclusion($includeEventTrigger = true)
+    {
+        $this->includeEventTrigger = true === $includeEventTrigger;
+    }
+
+    /**
+     * @return bool the value of $includeEventTrigger
+     */
+    public function getEventTriggerInclusion()
+    {
+        return $this->includeEventTrigger;
     }
 }

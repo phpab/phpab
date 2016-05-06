@@ -52,7 +52,12 @@ class GoogleClassicAnalytics extends AbstractGoogleAnalytics
         $script[] = '<script>';
 
         foreach ($this->participations as $testIdentifier => $variationIndex) {
-            $script[] = "cxApi.setChosenVariation(" . (int) $variationIndex . ", '" . (string) $testIdentifier . "')";
+            $script[] = "cxApi.setChosenVariation(" . (int) $variationIndex . ", '" . (string) $testIdentifier . "');";
+        }
+
+        if (true === $this->getEventTriggerInclusion()) {
+            $script[] = "_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'testsAmout', "
+                . count($this->participations) . "]);";
         }
 
         $script[] = '</script>';

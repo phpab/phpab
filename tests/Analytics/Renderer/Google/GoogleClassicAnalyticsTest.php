@@ -27,8 +27,9 @@ class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame("<script>
-cxApi.setChosenVariation(1, 'walter')
-cxApi.setChosenVariation(0, 'bernard')
+cxApi.setChosenVariation(1, 'walter');
+cxApi.setChosenVariation(0, 'bernard');
+_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'testsAmout', 2]);
 </script>", $script);
     }
 
@@ -47,8 +48,30 @@ cxApi.setChosenVariation(0, 'bernard')
         // Assert
         $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
 <script>
-cxApi.setChosenVariation(1, 'walter')
-cxApi.setChosenVariation(0, 'bernard')
+cxApi.setChosenVariation(1, 'walter');
+cxApi.setChosenVariation(0, 'bernard');
+_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'testsAmout', 2]);
+</script>", $script);
+    }
+
+    public function testGetScriptWithApiClientWithoutEvent()
+    {
+        // Arrange
+        $gaRenderer = new GoogleClassicAnalytics([
+            'walter' => 1,
+            'bernard' => 0
+        ]);
+        $gaRenderer->setApiClientInclusion(true);
+        $gaRenderer->setEventTriggerInclusion(false);
+
+        // Act
+        $script = $gaRenderer->getScript(true);
+
+        // Assert
+        $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
+<script>
+cxApi.setChosenVariation(1, 'walter');
+cxApi.setChosenVariation(0, 'bernard');
 </script>", $script);
     }
 
