@@ -150,7 +150,12 @@ class Engine implements EngineInterface
         Assert::notNull($filter, 'There must be at least one filter in the Engine or in the TestBag');
         Assert::notNull($chooser, 'There must be at least one chooser in the Engine or in the TestBag');
 
-        $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
+        $this->tests[$test->getIdentifier()] = new Bag(
+            $test,
+            $filter,
+            $chooser,
+            array_merge($options, $test->getOptions())
+        );
     }
 
     /**

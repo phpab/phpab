@@ -13,6 +13,7 @@ use PhpAb\Event\SubscriberInterface;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\VariantInterface;
 use Webmozart\Assert\Assert;
+use PhpAb\Test\Bag;
 
 /**
  * A data collector that holds information about which tests have been executed in a format for Google.
@@ -21,7 +22,7 @@ use Webmozart\Assert\Assert;
  */
 class Google implements SubscriberInterface
 {
-    const EXPERIMENT_ID = 'experimentId';
+    const EXPERIMENT_ID = 'GAExperimentId';
 
     /**
      * @var array Test identifiers and variation indexes
@@ -57,16 +58,19 @@ class Google implements SubscriberInterface
                     'Third parameter passed to closure must be instance of VariantInterface.'
                 );
 
+                /** @var Bag $bag */
+                $bag = $options[1];
+
                 /** @var TestInterface $test */
-                $test = $options[1]->getTest();
+                $test = $bag->getTest();
 
                 Assert::keyExists(
-                    $test->getOptions(),
+                    $bag->getOptions(),
                     static::EXPERIMENT_ID,
-                    'A Ggoogle Analytics Experiment Id must be set as options.'
+                    'A Google Analytics Experiment Id must be set as options.'
                 );
 
-                $experimentId = $test->getOptions()[static::EXPERIMENT_ID];
+                $experimentId = $bag->getOptions()[static::EXPERIMENT_ID];
 
                 /** @var VariantInterface $chosenVariant */
                 $chosenVariant = $options[2];

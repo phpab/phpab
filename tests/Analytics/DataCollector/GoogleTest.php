@@ -239,7 +239,7 @@ class GoogleTest extends PHPUnit_Framework_TestCase
      * in key 2
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage A Ggoogle Analytics Experiment Id must be set as options.
+     * @expectedExceptionMessage A Google Analytics Experiment Id must be set as options.
      */
     public function testGetSubscribedEventsNoTestOption()
     {
@@ -268,8 +268,6 @@ class GoogleTest extends PHPUnit_Framework_TestCase
     /**
      * Testing that the closure returned by getSubscribedEvents()
      * fills correctly the participation array
-     *
-     * @group testme
      */
     public function testRunEvent()
     {
@@ -279,11 +277,11 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $bag = new Bag(
             new Test(
                 'Bernard',
-                [new SimpleVariant('Black')],
-                [Google::EXPERIMENT_ID => 'EXPID']
+                [new SimpleVariant('Black')]
             ),
             new Percentage(100),
-            new RandomChooser
+            new RandomChooser,
+            [Google::EXPERIMENT_ID => 'EXPID']
         );
 
         // Act
