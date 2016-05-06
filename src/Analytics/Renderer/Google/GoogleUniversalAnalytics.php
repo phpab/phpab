@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -53,10 +54,7 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
 
         foreach ($this->participations as $testIdentifier => $variationIndex) {
             $script[] = "cxApi.setChosenVariation(" . (int) $variationIndex . ", '" . (string) $testIdentifier . "');";
-        }
-
-        if (true === $this->getEventTriggerInclusion()) {
-            $script[] = "ga('send', 'event', 'PhpAb', 'testRun', 'testsAmout', " . count($this->participations) . ");";
+            $script[] = "ga('send', 'event', 'PhpAb', 'testRun', '" . (string) $testIdentifier . "', 1);";
         }
 
         $script[] = '</script>';

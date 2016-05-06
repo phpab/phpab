@@ -277,11 +277,11 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $bag = new Bag(
             new Test(
                 'Bernard',
-                [new SimpleVariant('Black')]
+                [new SimpleVariant('Black')],
+                [Google::EXPERIMENT_ID => 'EXPID']
             ),
             new Percentage(100),
-            new RandomChooser,
-            [Google::EXPERIMENT_ID => 'EXPID']
+            new RandomChooser
         );
 
         // Act
