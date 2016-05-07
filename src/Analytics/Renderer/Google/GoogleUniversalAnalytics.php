@@ -53,8 +53,12 @@ class GoogleUniversalAnalytics extends AbstractGoogleAnalytics
         $script[] = '<script>';
 
         foreach ($this->participations as $testIdentifier => $variationIndex) {
-            $script[] = "cxApi.setChosenVariation(" . (int) $variationIndex . ", '" . (string) $testIdentifier . "');";
-            $script[] = "ga('send', 'event', 'PhpAb', 'testRun', '" . (string) $testIdentifier . "', 1);";
+            $script[] = "(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(".$variationIndex.", '".$testIdentifier."');
+        tracker.send('event', 'PhpAb', '".$testIdentifier."', {'nonInteraction': 1});
+    });
+})();";
         }
 
         $script[] = '</script>';

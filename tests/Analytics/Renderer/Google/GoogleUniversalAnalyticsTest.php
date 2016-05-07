@@ -27,10 +27,18 @@ class GoogleUniversalAnalyticsTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame("<script>
-cxApi.setChosenVariation(1, 'walter');
-ga('send', 'event', 'PhpAb', 'testRun', 'walter', 1);
-cxApi.setChosenVariation(0, 'bernard');
-ga('send', 'event', 'PhpAb', 'testRun', 'bernard', 1);
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(1, 'walter');
+        tracker.send('event', 'PhpAb', 'walter', {'nonInteraction': 1});
+    });
+})();
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(0, 'bernard');
+        tracker.send('event', 'PhpAb', 'bernard', {'nonInteraction': 1});
+    });
+})();
 </script>", $script);
     }
 
@@ -49,10 +57,18 @@ ga('send', 'event', 'PhpAb', 'testRun', 'bernard', 1);
         // Assert
         $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
 <script>
-cxApi.setChosenVariation(1, 'walter');
-ga('send', 'event', 'PhpAb', 'testRun', 'walter', 1);
-cxApi.setChosenVariation(0, 'bernard');
-ga('send', 'event', 'PhpAb', 'testRun', 'bernard', 1);
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(1, 'walter');
+        tracker.send('event', 'PhpAb', 'walter', {'nonInteraction': 1});
+    });
+})();
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(0, 'bernard');
+        tracker.send('event', 'PhpAb', 'bernard', {'nonInteraction': 1});
+    });
+})();
 </script>", $script);
     }
 

@@ -27,10 +27,18 @@ class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame("<script>
-cxApi.setChosenVariation(1, 'walter');
-_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'walter', 1]);
-cxApi.setChosenVariation(0, 'bernard');
-_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(1, 'walter');
+        _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'walter', 1]);
+    });
+})();
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(0, 'bernard');
+        _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
+    });
+})();
 </script>", $script);
     }
 
@@ -49,10 +57,18 @@ _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
         // Assert
         $this->assertSame("<script src=\"//www.google-analytics.com/cx/api.js\"></script>
 <script>
-cxApi.setChosenVariation(1, 'walter');
-_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'walter', 1]);
-cxApi.setChosenVariation(0, 'bernard');
-_gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(1, 'walter');
+        _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'walter', 1]);
+    });
+})();
+(function(){
+    ga(function(tracker) {
+        cxApi.setChosenVariation(0, 'bernard');
+        _gaq.push(['_trackEvent', 'PhpAb', 'testRun', 'bernard', 1]);
+    });
+})();
 </script>", $script);
     }
 
