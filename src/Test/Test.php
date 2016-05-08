@@ -35,12 +35,20 @@ class Test implements TestInterface
     private $variants;
 
     /**
+     * Case specific options
+     *
+     * @var array
+     */
+    private $options = [];
+
+    /**
      * Initializes a new instance of this class.
      *
      * @param string $identifier The identifier
      * @param VariantInterface[] $variants The variants that this test has.
+     * @param array $options Case specific test options.
      */
-    public function __construct($identifier, $variants = [])
+    public function __construct($identifier, $variants = [], array $options = [])
     {
         if (!is_string($identifier) || $identifier === '') {
             throw new InvalidArgumentException('The provided identifier is not a valid identifier.');
@@ -48,6 +56,7 @@ class Test implements TestInterface
 
         $this->identifier = $identifier;
         $this->setVariants($variants);
+        $this->options = $options;
     }
 
     /**
@@ -108,5 +117,15 @@ class Test implements TestInterface
         }
 
         return $this->variants[$identifier];
+    }
+
+    /**
+     * Get the test options
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }

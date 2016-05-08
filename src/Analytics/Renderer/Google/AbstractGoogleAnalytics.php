@@ -27,7 +27,7 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     /**
      * @param bool $includeApiClient Whether or not to include the Api Client
      */
-    public function setApiCLientInclusion($includeApiClient = false)
+    public function setApiClientInclusion($includeApiClient = false)
     {
         $this->includeApiClient = true === $includeApiClient;
     }
@@ -35,7 +35,7 @@ abstract class AbstractGoogleAnalytics implements JavascriptRendererInterface
     /**
      * @return bool The value of $includeApiClient
      */
-    public function getApiCLientInclusion()
+    public function getApiClientInclusion()
     {
         return $this->includeApiClient;
     }

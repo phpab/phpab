@@ -21,6 +21,8 @@ use Webmozart\Assert\Assert;
  */
 class Google implements SubscriberInterface
 {
+    const EXPERIMENT_ID = 'experimentId';
+
     /**
      * @var array Test identifiers and variation indexes
      */
@@ -58,6 +60,14 @@ class Google implements SubscriberInterface
                 /** @var TestInterface $test */
                 $test = $options[1]->getTest();
 
+                Assert::keyExists(
+                    $test->getOptions(),
+                    static::EXPERIMENT_ID,
+                    'A Google Analytics Experiment Id must be set as options.'
+                );
+
+                $experimentId = $test->getOptions()[static::EXPERIMENT_ID];
+
                 /** @var VariantInterface $chosenVariant */
                 $chosenVariant = $options[2];
 
@@ -67,7 +77,7 @@ class Google implements SubscriberInterface
                 $chosenIndex = array_search($chosenVariant->getIdentifier(), array_keys($variants));
 
                 // Call the add method
-                $this->addParticipation($test->getIdentifier(), $chosenIndex);
+                $this->addParticipation($experimentId, $chosenIndex);
             }
         ];
     }

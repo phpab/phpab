@@ -185,7 +185,7 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $collector = new Google();
         $event = $collector->getSubscribedEvents();
         $bag = new Bag(
-            new Test('Bernard'),
+            new Test('Bernard', [], [Google::EXPERIMENT_ID => 'EXPID']),
             new Percentage(100),
             new RandomChooser
         );
@@ -215,7 +215,7 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $collector = new Google();
         $eventCallback = $collector->getSubscribedEvents();
         $bag = new Bag(
-            new Test('Bernard'),
+            new Test('Bernard', [], [Google::EXPERIMENT_ID => 'EXPID']),
             new Percentage(100),
             new RandomChooser
         );
@@ -235,9 +235,39 @@ class GoogleTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing that the closure returned by getSubscribedEvents()
-     * fills correctly the participation array
+     * requires an array with an instance of VariantInterface
+     * in key 2
      *
-     * @group testme
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage A Google Analytics Experiment Id must be set as options.
+     */
+    public function testGetSubscribedEventsNoTestOption()
+    {
+        // Arrange
+        $collector = new Google();
+        $eventCallback = $collector->getSubscribedEvents();
+        $bag = new Bag(
+            new Test('Bernard', []),
+            new Percentage(100),
+            new RandomChooser
+        );
+
+        // Act
+        call_user_func(
+            $eventCallback['phpab.participation.variant_run'],
+            [
+                0 => 'foo',
+                1 => $bag,
+                2 => new SimpleVariant('Black')
+            ]
+        );
+
+        // Assert
+    }
+
+    /**
+     * Testing that the closure returned by getSubscribedEvents()
+     * fills correctly the participation array
      */
     public function testRunEvent()
     {
@@ -247,7 +277,8 @@ class GoogleTest extends PHPUnit_Framework_TestCase
         $bag = new Bag(
             new Test(
                 'Bernard',
-                [new SimpleVariant('Black')]
+                [new SimpleVariant('Black')],
+                [Google::EXPERIMENT_ID => 'EXPID']
             ),
             new Percentage(100),
             new RandomChooser
@@ -267,7 +298,7 @@ class GoogleTest extends PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame(
-            ['Bernard' => 0],
+            ['EXPID' => 0],
             $participations
         );
     }

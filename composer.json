@@ -24,7 +24,7 @@
         },
         {
             "name": "Mariano F.co Benítez Mulet",
-            "email": "nanodevel@gmail.com",
+            "email": "pachicodev@gmail.com",
             "homepage": "https://github.com/pachico",
             "role": "Developer"
         }
@@ -56,6 +56,8 @@
         "symfony/event-dispatcher": "^3.0"
     },
     "suggest": {
-        "symfony/event-dispatcher": "Allows to use the (way better) symfony EventDispatcher with the packages eventsystem."
+        "symfony/event-dispatcher": "Allows to use the (way better) symfony EventDispatcher with the packages eventsystem.",
+        "phpab/analytics-mongodb": "Allows to save test participation in MongoDB.",
+        "phpab/analytics-pdo": "Allows to save test participation using PDO DBAL."
     }
 }
