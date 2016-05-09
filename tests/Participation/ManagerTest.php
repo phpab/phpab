@@ -9,7 +9,8 @@
 
 namespace PhpAb\Participation;
 
-use PhpAb\Storage\Runtime;
+use PhpAb\Storage\Storage;
+use PhpAb\Storage\RuntimeAdapter;
 use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit_Framework_TestCase;
@@ -20,7 +21,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->storage = new Runtime();
+        $this->storage = new Storage(new RuntimeAdapter());
     }
 
     public function testCheckParticipation()

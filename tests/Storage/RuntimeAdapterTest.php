@@ -14,12 +14,12 @@ use PHPUnit_Framework_TestCase;
 class RuntimeTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @covers PhpAb\Storage\Runtime::__construct
+     * @covers PhpAb\Storage\RuntimeAdapter::__construct
      */
     public function testConstructor()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->all();
@@ -29,12 +29,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::has
+     * @covers PhpAb\Storage\RuntimeAdapter::has
      */
     public function testHasWithValidEntry()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('identifier', 'participation');
 
         // Act
@@ -45,12 +45,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::has
+     * @covers PhpAb\Storage\RuntimeAdapter::has
      */
     public function testHasWithInvalidEntry()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->has('identifier');
@@ -60,12 +60,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::has
+     * @covers PhpAb\Storage\RuntimeAdapter::has
      */
     public function testHasWithZeroEntry()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('0', 'participation');
 
         // Act
@@ -76,12 +76,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::get
+     * @covers PhpAb\Storage\RuntimeAdapter::get
      */
     public function testGetValidEntry()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('identifier', 'participation');
 
         // Act
@@ -92,12 +92,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::get
+     * @covers PhpAb\Storage\RuntimeAdapter::get
      */
     public function testGetInvalidEntry()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->get('identifier');
@@ -107,12 +107,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::set
+     * @covers PhpAb\Storage\RuntimeAdapter::set
      */
     public function testSet()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $storage->set('identifier', 'participation');
@@ -122,12 +122,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::all
+     * @covers PhpAb\Storage\RuntimeAdapter::all
      */
     public function testAllWithEmptyStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->all();
@@ -137,12 +137,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::all
+     * @covers PhpAb\Storage\RuntimeAdapter::all
      */
     public function testAllWithFilledStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('identifier1', 'participation1');
         $storage->set('identifier2', 'participation2');
 
@@ -157,12 +157,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::remove
+     * @covers PhpAb\Storage\RuntimeAdapter::remove
      */
     public function testRemoveWithEmptyStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->remove('identifier');
@@ -172,12 +172,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::remove
+     * @covers PhpAb\Storage\RuntimeAdapter::remove
      */
     public function testRemoveWithFilledStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('identifier', 'participation');
 
         // Act
@@ -189,12 +189,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::clear
+     * @covers PhpAb\Storage\RuntimeAdapter::clear
      */
     public function testClearEmptyStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
 
         // Act
         $result = $storage->clear();
@@ -204,12 +204,12 @@ class RuntimeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Storage\Runtime::clear
+     * @covers PhpAb\Storage\RuntimeAdapter::clear
      */
     public function testClearFilledStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new RuntimeAdapter();
         $storage->set('identifier1', 'participation1');
         $storage->set('identifier2', 'participation2');
 

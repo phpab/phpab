@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -9,15 +10,12 @@
 
 namespace PhpAb\Storage;
 
-use InvalidArgumentException;
-use RuntimeException;
-
 /**
  * Stores the participation state of the user only for the current request.
  *
  * @package PhpAb
  */
-class Runtime implements StorageInterface
+class RuntimeAdapter implements AdapterInterface
 {
     /**
      * @var array The data that has been set.
@@ -26,10 +24,12 @@ class Runtime implements StorageInterface
 
     /**
      * Initializes a new instance of this class.
+     *
+     * @param array $data
      */
-    public function __construct()
+    public function __construct(array $data = [])
     {
-        $this->data = [];
+        $this->data = $data;
     }
 
     /**
