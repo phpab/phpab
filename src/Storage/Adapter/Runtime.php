@@ -8,14 +8,14 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Storage;
+namespace PhpAb\Storage\Adapter;
 
 /**
  * Stores the participation state of the user only for the current request.
  *
  * @package PhpAb
  */
-class RuntimeAdapter implements AdapterInterface
+class Runtime implements AdapterInterface
 {
     /**
      * @var array The data that has been set.

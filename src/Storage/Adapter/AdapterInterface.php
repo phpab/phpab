@@ -8,7 +8,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Storage;
+namespace PhpAb\Storage\Adapter;
 
 /**
  * Used by StorageInterface to store user participations

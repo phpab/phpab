@@ -16,14 +16,14 @@ namespace PhpAb\Storage;
 class Storage implements StorageInterface
 {
     /**
-     * @var AdapterInterface
+     * @var Adapter\AdapterInterface
      */
     private $adapter;
 
     /**
-     * @param \PhpAb\Storage\AdapterInterface $adpterInterface
+     * @param \PhpAb\Storage\Adapter\AdapterInterface $adpterInterface
      */
-    public function __construct(AdapterInterface $adpterInterface)
+    public function __construct(Adapter\AdapterInterface $adpterInterface)
     {
         $this->adapter = $adpterInterface;
     }
