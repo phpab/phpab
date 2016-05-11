@@ -9,7 +9,7 @@
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use PhpAb\Storage\Adapter\Runtime;
+use PhpAb\Storage\Adapter\Cookie;
 use PhpAb\Storage\Storage;
 use PhpAb\Participation\Manager;
 use PhpAb\Analytics\DataCollector\Google;
@@ -22,7 +22,7 @@ use PhpAb\Variant\SimpleVariant;
 use PhpAb\Analytics\Renderer\Google\GoogleUniversalAnalytics;
 
 // Create a Storage and its Adapter
-$adapter = new Runtime();
+$adapter = new Cookie('phpab');
 $storage = new Storage($adapter);
 
 // Create a Participation Manager

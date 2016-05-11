@@ -10,6 +10,8 @@
 
 namespace PhpAb\Storage;
 
+use PhpAb\Storage\Adapter\AdapterInterface;
+
 /**
  * {@inheritDoc}
  */
@@ -21,9 +23,9 @@ class Storage implements StorageInterface
     private $adapter;
 
     /**
-     * @param \PhpAb\Storage\Adapter\AdapterInterface $adpterInterface
+     * @param AdapterInterface $adpterInterface
      */
-    public function __construct(Adapter\AdapterInterface $adpterInterface)
+    public function __construct(AdapterInterface $adpterInterface)
     {
         $this->adapter = $adpterInterface;
     }
