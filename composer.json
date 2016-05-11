@@ -32,7 +32,7 @@
     ],
     "require": {
         "php": "~5.5|~7.0",
-        "webmozart/assert": "1.0.2"
+        "webmozart/assert": "1.0.*"
     },
     "autoload": {
         "psr-4": {
