@@ -34,8 +34,6 @@ class Runtime implements AdapterInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @param string $identifier The tests identifier
      */
     public function has($identifier)
     {
@@ -44,8 +42,6 @@ class Runtime implements AdapterInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @param string $identifier The tests identifier name
      */
     public function get($identifier)
     {
@@ -58,13 +54,10 @@ class Runtime implements AdapterInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @param string $identifier The tests identifier
-     * @param mixed  $participation The participated variant
      */
-    public function set($identifier, $participation)
+    public function set($identifier, $value)
     {
-        $this->data[$identifier] = $participation;
+        $this->data[$identifier] = $value;
     }
 
     /**
@@ -77,8 +70,6 @@ class Runtime implements AdapterInterface
 
     /**
      * {@inheritDoc}
-     *
-     * @param string $identifier The identifier of the test to remove.
      */
     public function remove($identifier)
     {

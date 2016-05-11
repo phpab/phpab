@@ -65,7 +65,7 @@ interface AdapterInterface
     /**
      * Clears all the elements
      *
-     * @return All the content that has been cleared
+     * @return array All the content that has been cleared
      */
     public function clear();
 }
