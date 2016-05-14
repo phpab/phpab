@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -18,7 +17,7 @@ use PhpAb\Storage\Adapter\AdapterInterface;
 class Storage implements StorageInterface
 {
     /**
-     * @var Adapter\AdapterInterface
+     * @var AdapterInterface
      */
     private $adapter;
 

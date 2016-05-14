@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -71,7 +70,7 @@ class Cookie implements AdapterInterface
 
         $cookiesContent = filter_input_array(INPUT_COOKIE);
 
-        if (empty($cookiesContent) || !isset($cookiesContent[$this->cookieName])) {
+        if (empty($cookiesContent) || !array_key_exists($this->cookieName, $cookiesContent)) {
             $this->data = [];
             return;
         }
@@ -106,7 +105,7 @@ class Cookie implements AdapterInterface
 
         $this->parseExistingCookie();
 
-        return isset($this->data[$identifier]);
+        return array_key_exists($identifier, $this->data);
     }
 
     /**

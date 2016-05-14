@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *

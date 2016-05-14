@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -63,8 +62,8 @@ $engine->addTest($test2);
 // Pseudo: if($user->isAdmin)
 // If the user is admin, he should not participate at the test
 // $manager->participate('foo_test', null);
-// Pseudo: if($app->inDevelopment() and $GET['phpab']['foo_test])
-// $manager->participate('foo_test', $GET['phpab']['foo_test]);
+// Pseudo: if($app->inDevelopment() and $_GET['phpab']['foo_test])
+// $manager->participate('foo_test', $_GET['phpab']['foo_test]);
 // Start testing. Must occur before the EventCycle of the app starts
 // Start the engine
 $engine->start();

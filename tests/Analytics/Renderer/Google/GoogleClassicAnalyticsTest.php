@@ -13,7 +13,6 @@ use PHPUnit_Framework_TestCase;
 
 class GoogleClassicAnalyticsTest extends PHPUnit_Framework_TestCase
 {
-
     public function testGetScript()
     {
         // Arrange

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
@@ -17,7 +16,6 @@ namespace PhpAb\Storage;
  */
 interface StorageInterface
 {
-
     /**
      * Checks if the test has a participation set.
      *
