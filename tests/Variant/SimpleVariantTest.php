@@ -9,8 +9,6 @@
 
 namespace PhpAb\Variant;
 
-use PhpAb\Exception\TestExecutionException;
-
 class SimpleVariantTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetIdentifier()

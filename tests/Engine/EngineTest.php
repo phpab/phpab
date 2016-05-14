@@ -15,8 +15,8 @@ use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Participation\Manager;
 use PhpAb\Participation\ManagerInterface;
-use PhpAb\Storage\Runtime;
-use PhpAb\Storage\Cookie;
+use PhpAb\Storage\Adapter\Runtime;
+use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
 use PhpAb\Variant\Chooser\ChooserInterface;
 use PhpAb\Variant\Chooser\StaticChooser;
@@ -24,8 +24,6 @@ use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 use PhpAb\Analytics\DataCollector\Google;
-use phpmock\MockBuilder;
-use phpmock\functions\FixedValueFunction;
 
 class EngineTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +50,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testEmptyManager()
     {
         // Arrange
-        $manager = new Manager(new Runtime());
+        $manager = new Manager(new Storage(new Runtime()));
         $engine = new Engine($manager, new Dispatcher());
 
         // Act
@@ -154,10 +152,15 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant($this->variant);
 
         $engine = new Engine($this->manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest(
+            $test,
+            [],
+            $this->alwaysParticipateFilter,
+            $this->chooser
+        );
 
         // Act
-        $result = $engine->start();
+        $engine->start();
 
         // Assert
     }
@@ -165,7 +168,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserParticipatesNonExistingVariant()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new Storage(new Runtime());
         $storage->set('foo', 'bar');
 
         $manager = new Manager($storage);
@@ -173,7 +176,12 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test = new Test('foo');
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest(
+            $test,
+            [],
+            $this->alwaysParticipateFilter,
+            $this->chooser
+        );
 
         // Act
         $engine->start();
@@ -186,12 +194,17 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipateWasStoredInStorage()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new Storage(new Runtime());
         $storage->set('foo', null);
         $manager = new Manager($storage);
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest(
+            new Test('foo'),
+            [],
+            $this->alwaysParticipateFilter,
+            $this->chooser
+        );
 
         // Act
         $engine->start();
@@ -205,11 +218,16 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipate()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(new Test('foo'), [], new Percentage(0), $this->chooser);
+        $engine->addTest(
+            new Test('foo'),
+            [],
+            new Percentage(0),
+            $this->chooser
+        );
 
         // Act
         $engine->start();
@@ -223,14 +241,19 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipateWithExistingVariant()
     {
         // Arrange
-        $storage = new Runtime();
+         $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
         $test = new Test('foo');
         $test->addVariant(new SimpleVariant('yolo'));
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest($test, [], new Percentage(0), $this->chooser);
+        $engine->addTest(
+            $test,
+            [],
+            new Percentage(0),
+            $this->chooser
+        );
 
         // Act
         $engine->start();
@@ -243,7 +266,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserGetsNewParticipation()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
         $test = new Test('t1');
@@ -252,7 +275,12 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('v3'));
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('v1'));
+        $engine->addTest(
+            $test,
+            [],
+            $this->alwaysParticipateFilter,
+            new StaticChooser('v1')
+        );
 
         // Act
         $engine->start();
@@ -265,12 +293,17 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testNoVariantAvailableForTest()
     {
         // Arrange
-        $storage = new Runtime();
+        $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
         $test = new Test('t1');
 
         $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('v1'));
+        $engine->addTest(
+            $test,
+            [],
+            $this->alwaysParticipateFilter,
+            new StaticChooser('v1')
+        );
         $engine->start();
 
         // Act
@@ -283,33 +316,17 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     /**
      * Testing that Engine picks previous test runs values
      */
-    public function testPreviousRunConsistencyInCookie()
+    public function testPreviousRunConsistencyInStorage()
     {
         // Arrange
-        $builder = new MockBuilder();
-        $builder->setNamespace('PhpAb\Storage')
-                ->setName("headers_sent")
-                ->setFunctionProvider(new FixedValueFunction(false));
-        $headersSentMock = $builder->build();
-
-        $builder->setNamespace('PhpAb\Storage')
-                ->setName("setcookie")
-                ->setFunctionProvider(new FixedValueFunction(true));
-        $setcookieMock = $builder->build();
-
-        $builder->setNamespace('PhpAb\Storage')
-            ->setName("filter_input_array")
-            ->setFunctionProvider(new FixedValueFunction([
-                'phpab' => '{"foo_test":"v1","bar_test":"_control"}'
-            ]));
-
-        $filterInputArrayMock = $builder->build();
-
-        $headersSentMock->enable();
-        $setcookieMock->enable();
-        $filterInputArrayMock->enable();
-
-        $storage = new Cookie('phpab');
+        $storage = new Storage(
+            new Runtime(
+                [
+                    'foo_test' => 'v1',
+                    'bar_test' => '_control'
+                ]
+            )
+        );
         $manager = new Manager($storage);
 
         $analyticsData = new Google();
@@ -342,8 +359,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Assert
         $this->assertSame(
             [
-                'EXPID1' => 1,
-                'EXPID2' => 0
+            'EXPID1' => 1,
+            'EXPID2' => 0
             ],
             $testData
         );

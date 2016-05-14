@@ -16,7 +16,6 @@ use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\ManagerInterface;
 use PhpAb\Test\Bag;
-use PhpAb\Variant;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
 use PhpAb\Variant\VariantInterface;
@@ -229,6 +228,12 @@ class Engine implements EngineInterface
         $this->activateVariant($bag, $chosen);
     }
 
+    /**
+     * Runs the Variant and dispatches subscriptions
+     *
+     * @param Bag $bag
+     * @param VariantInterface $variant
+     */
     private function activateVariant(Bag $bag, VariantInterface $variant)
     {
         $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);

@@ -44,22 +44,6 @@ interface StorageInterface
     public function set($identifier, $participation);
 
     /**
-     * Returns all stored tests.
-     *
-     * @return array Attributes
-     */
-    public function all();
-
-    /**
-     * Removes a stored test.
-     *
-     * @param string $identifier The identifier of the test to remove.
-     * @throws InvalidArgumentException
-     * @return mixed The removed value or null when it does not exist
-     */
-    public function remove($identifier);
-
-    /**
      * Clears out state for a test.
      *
      * @return mixed Whatever data was contained.
