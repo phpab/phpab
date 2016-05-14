@@ -53,6 +53,9 @@ class Storage implements StorageInterface
         $this->adapter->set($identifier, $participation);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function clear()
     {
         return $this->adapter->clear();
