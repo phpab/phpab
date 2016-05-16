@@ -31,6 +31,12 @@ class Middleware
         ResponseInterface $response,
         callable $next = null
     ) {
-        return $this->engine->startMiddleware($request, $response);
+        $newResponse = $this->engine->startMiddleware($request, $response);
+
+        if ($next) {
+            return $next($request, $newResponse);
+        }
+
+        return $newResponse;
     }
 }
