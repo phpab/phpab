@@ -19,6 +19,8 @@ use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
 use PhpAb\Variant\VariantInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -168,6 +170,14 @@ class Engine implements EngineInterface
         foreach ($this->tests as $testBag) {
             $this->handleTestBag($testBag);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function startMiddleware(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        // TODO
     }
 
     /**

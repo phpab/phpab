@@ -14,6 +14,8 @@ use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * The interface that should be implemented by the engine.
@@ -60,4 +62,13 @@ interface EngineInterface
      * @return null
      */
     public function start();
+
+    /**
+     * Starts the tests and populates the response object if needed.
+     *
+     * @param ServerRequestInterface $request A PSR-7 compliant request.
+     * @param ResponseInterface $response A PSR-7 compliant response.
+     * @return ResponseInterface Returns the updated response.
+     */
+    public function startMiddleware(ServerRequestInterface $request, ResponseInterface $response);
 }
