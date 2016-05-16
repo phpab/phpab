@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * An interface layer that can be used to hook the engine into a PSR-7 supported application.
+ * A layer that can be used to hook the engine into a PSR-7 supported application.
  *
  * @package PhpAb
  */
