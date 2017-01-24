@@ -150,7 +150,7 @@ class Engine implements EngineInterface
 
             // If we managed to identify a Variant by a previously stored participation, do its magic again.
             if ($variant instanceof VariantInterface) {
-                $this->activateVariant($bag, $variant);
+                $this->executeVariant($variant);
                 return;
             }
         }
@@ -170,16 +170,15 @@ class Engine implements EngineInterface
         // Store the chosen variant so he will not switch between different states
         $subject->participate($test->getIdentifier(), $chosen->getIdentifier());
 
-        $this->activateVariant($bag, $chosen);
+        $this->executeVariant($chosen);
     }
 
     /**
      * Runs the Variant and dispatches subscriptions
      *
-     * @param Bag $bag
      * @param VariantInterface $variant
      */
-    private function activateVariant(Bag $bag, VariantInterface $variant)
+    private function executeVariant(VariantInterface $variant)
     {
         // Events::RUN_VARIANT
 
