@@ -16,7 +16,7 @@ use PhpAb\Variant\VariantInterface;
  *
  * @package PhpAb
  */
-class StaticChooser implements ChooserInterface
+class IdentifierChooser implements ChooserInterface
 {
     /**
      * The index of the variant to use.

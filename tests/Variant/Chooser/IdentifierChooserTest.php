@@ -11,12 +11,12 @@ namespace PhpAb\Variant\Chooser;
 
 use PHPUnit_Framework_TestCase;
 
-class StaticChooserTest extends PHPUnit_Framework_TestCase
+class IdentifierChooserTest extends PHPUnit_Framework_TestCase
 {
     public function testChooseStatic()
     {
         // Arrange
-        $chooser = new StaticChooser(3);
+        $chooser = new IdentifierChooser(3);
 
         // Act
         $result = $chooser->chooseVariant([1,2,3,4,5,6]);
@@ -25,10 +25,25 @@ class StaticChooserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, $result);
     }
 
+    public function testChooseVariantByNamedKey()
+    {
+        // Arrange
+        $chooser = new IdentifierChooser('homer');
+
+        // Act
+        $result = $chooser->chooseVariant([
+            'walter' => 'white',
+            'homer' => 'simpson'
+        ]);
+
+        // Assert
+        $this->assertEquals('simpson', $result);
+    }
+
     public function testChooseStaticFails()
     {
         // Arrange
-        $chooser = new StaticChooser(3);
+        $chooser = new IdentifierChooser(3);
 
         // Act
         $result = $chooser->chooseVariant([1,2]);

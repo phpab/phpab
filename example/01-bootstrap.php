@@ -28,11 +28,6 @@ $manager = new Manager($storage);
 
 $dispatcher->addSubscriber($analyticsData);
 
-// Create a Participation filter
-$filter = new Percentage(50);
-// And a Variant Chooser
-$chooser = new RandomChooser();
-
 // Create a Data Collector
 $analyticsData = new Google();
 
@@ -47,7 +42,7 @@ $test->addVariant(new SimpleVariant('_variant1'));
 $test->addVariant(new SimpleVariant('_variant2'));
 
 // Add the tests to the Engine
-$engine->addTest($test, $filter, $chooser);
+$engine->addTest($test, new Percentage(50), new RandomChooser());
 
 // Pseudo: if($user->isAdmin)
 // If the user is admin, he should not participate at the test

@@ -15,7 +15,7 @@ use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\Adapter\Runtime;
 use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
-use PhpAb\Variant\Chooser\StaticChooser;
+use PhpAb\Variant\Chooser\IdentifierChooser;
 use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
@@ -33,7 +33,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         \phpmock\Mock::disableAll();
 
         $this->alwaysParticipateFilter = new Percentage(100);
-        $this->chooser = new StaticChooser(0);
+        $this->chooser = new IdentifierChooser(0);
 
         $this->variant = $this->getMockBuilder(VariantInterface::class)
             ->setMethods(['getIdentifier', 'run'])
@@ -121,7 +121,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant($this->variant);
 
         $engine = new Engine($this->manager);
-        $engine->addTest($test, $this->alwaysParticipateFilter, new StaticChooser('bar'), []);
+        $engine->addTest($test, $this->alwaysParticipateFilter, new IdentifierChooser('bar'), []);
 
         // Act
         $result = $engine->test($this->manager);
@@ -243,7 +243,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
-            new StaticChooser('v1'),
+            new IdentifierChooser('v1'),
             []
         );
 
@@ -266,7 +266,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
-            new StaticChooser('v1'),
+            new IdentifierChooser('v1'),
             []
         );
         $engine->test($manager);
