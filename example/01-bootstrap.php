@@ -26,11 +26,10 @@ $engine->addSubscriber($analyticsData);
 $test = new Test(
     'foo_test',
         [
-            new SimpleVariant('_control'),
-            new SimpleVariant('_variant1'),
-            new SimpleVariant('_variant2')
-        ],
-        [Google::EXPERIMENT_ID => 'exp1']
+            new SimpleVariant('control'),
+            new SimpleVariant('variant1'),
+            new SimpleVariant('variant2')
+        ]
 );
 
 // Add the tests to the Engine

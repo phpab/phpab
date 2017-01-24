@@ -108,7 +108,12 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $variant = $this->getChosenVariant($subject, $testBag->getTest(), $testBag->getParticipationFilter(), $testBag->getVariantChooser());
+            $variant = $this->getChosenVariant(
+                $subject,
+                $testBag->getTest(),
+                $testBag->getParticipationFilter(),
+                $testBag->getVariantChooser()
+            );
             $variant->run();
         }
     }
@@ -120,11 +125,16 @@ class Engine implements EngineInterface
      *
      * @return VariantInterface
      */
-    private function getChosenVariant(SubjectInterface $subject, TestInterface $test, FilterInterface $filter, ChooserInterface $chooser)
-    {
+    private function getChosenVariant(
+        SubjectInterface $subject,
+        TestInterface $test,
+        FilterInterface $filter,
+        ChooserInterface $chooser
+    ) {
+    
         $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
 
-        if(! $test->getVariants()) {
+        if (! $test->getVariants()) {
             // There are no variants for this test
             return $dummyVariant;
         }
