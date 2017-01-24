@@ -122,8 +122,13 @@ class Engine implements EngineInterface
      */
     private function getChosenVariant(SubjectInterface $subject, TestInterface $test, FilterInterface $filter, ChooserInterface $chooser)
     {
-        $participation = $subject->participates($test);
         $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
+
+        if(! $test->getVariants()) {
+            // There are no variants for this test
+            return $dummyVariant;
+        }
+
 
         // Check if the user is marked as "do not participate".
         if ($subject->participationIsBlocked($test)) {
@@ -131,37 +136,28 @@ class Engine implements EngineInterface
             return $dummyVariant;
         }
 
-        // When the user does not participate at the test, let him participate.
-        if (!$participation && !$filter->shouldParticipate()) {
-            // The user should not participate so let's set participation
-            // to null so he will not participate in the future, too.
-
-            // Events::BLOCK_PARTICIPATION
-
-            $subject->participate($test, null);
-            return $dummyVariant;
-        }
-
         // Let's try to recover a previously stored Variant
-        if ($participation && $participation !== null) {
-            $variant = $test->getVariant($participation);
+        if ($rememberedVariantID = $subject->participates($test)) {
+            $variant = $test->getVariant($rememberedVariantID);
             return $variant;
         }
 
-        // Choose a variant for later usage. If the user should participate this one will be used
-        $chosen = $chooser->chooseVariant($test->getVariants());
+        if ($filter->shouldParticipate()) {
+            // Choose a variant for later usage. If the user should participate this one will be used
+            $chosen = $chooser->chooseVariant($test->getVariants());
 
-        // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
-        if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            // Events::VARIANT_MISSING
+            // Store the chosen variant so he will not switch between different states
+            $subject->participate($test, $chosen);
 
-            $subject->participate($test, null);
-            return $dummyVariant;
+            return $chosen;
         }
 
-        // Store the chosen variant so he will not switch between different states
-        $subject->participate($test, $chosen);
+        // The user should not participate so let's block the participation
+        // so he will not participate in the future, too.
 
-        return $chosen;
+        // Events::BLOCK_PARTICIPATION
+
+        $subject->blockParticipationFor($test);
+        return $dummyVariant;
     }
 }

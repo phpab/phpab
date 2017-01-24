@@ -140,7 +140,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $result = $this->subject->participates($engine->getTest('t1'));
 
         // Assert
-        $this->assertTrue($result);
+        $this->assertFalse($result);
     }
 
     /**

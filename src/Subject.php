@@ -35,18 +35,17 @@ class Subject implements SubjectInterface
      */
     public function participates(TestInterface $test, VariantInterface $variant = null)
     {
-        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
-        $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
+        $testID = $test->getIdentifier();
 
-        if (!$this->storage->has($test)) {
+        if (!$this->storage->has($testID)) {
             return false;
         }
 
-        $storedValue = $this->storage->get($test);
+        $storedValue = $this->storage->get($testID);
 
         // It was asked explicitly for the variant and it matches
         if (null !== $variant) {
-            return $storedValue === $variant;
+            return $storedValue === $variant->getIdentifier();
         }
 
         return true;
@@ -59,12 +58,10 @@ class Subject implements SubjectInterface
      * @param VariantInterface|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */
-    public function participate(TestInterface $test, VariantInterface $variant = null)
+    public function participate(TestInterface $test, VariantInterface $variant)
     {
-        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
-        $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
-
-        $this->storage->set($test, $variant);
+        $testID = $test->getIdentifier();
+        $this->storage->set($testID, $variant->getIdentifier());
     }
 
     public function participationIsBlocked(TestInterface $test)
@@ -72,6 +69,12 @@ class Subject implements SubjectInterface
         $participation = $this->participates($test);
 
         // Check if the user is marked as "do not participate".
-        return $participation && null === $participation;
+        return null === $participation;
+    }
+
+    public function blockParticipationFor(TestInterface $test)
+    {
+        $testID = $test->getIdentifier();
+        $this->storage->set($testID, null);
     }
 }

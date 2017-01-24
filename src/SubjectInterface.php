@@ -20,10 +20,11 @@ interface SubjectInterface
      * Sets the participation to a test with the participation at a specific variant.
      *
      * @param TestInterface|string $test The identifier of the test that should be participated.
-     * @param VariantInterface|null $variant The identifier of the variant that was chosen or
-     * null if the user does not participate in the test.
+     * @param VariantInterface $variant The identifier of the variant that was chosen
      */
-    public function participate(TestInterface $test, VariantInterface $variant = null);
+    public function participate(TestInterface $test, VariantInterface $variant);
 
     public function participationIsBlocked(TestInterface $test);
+
+    public function blockParticipationFor(TestInterface $test);
 }

@@ -61,7 +61,7 @@ class SubjectTest extends PHPUnit_Framework_TestCase
         // Arrange
         $subject = new Subject($this->storage);
         $test = new Test('foo');
-        $subject->participate($test, null);
+        $subject->participate($test, new SimpleVariant('foo'));
 
         // Act
         $result = $subject->participates($test);
