@@ -10,24 +10,20 @@
 namespace PhpAb\Engine;
 
 use PhpAb\Filter\Percentage;
-use PhpAb\Participation\Manager;
-use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Subject;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\Test;
 use PhpAb\Chooser\IdentifierChooser;
-use PhpAb\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use PhpAb\Analytics\DataCollector\Google;
 
 class EngineTest extends \PHPUnit_Framework_TestCase
 {
     private $alwaysParticipateFilter;
     private $chooser;
     private $variant;
-    private $manager;
+    private $subject;
 
     public function setUp()
     {
@@ -40,18 +36,19 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getIdentifier', 'run'])
             ->getMock();
 
-        $this->manager = $manager = $this->getMockBuilder(SubjectInterface::class)
+        $this->manager = $subject = $this->getMockBuilder(SubjectInterface::class)
             ->getMock();
+
+        $this->subject = new Subject(new RuntimeStorage());
     }
 
     public function testEmptyManager()
     {
         // Arrange
-        $manager = new Subject(new RuntimeStorage());
         $engine = new Engine();
 
         // Act
-        $result = $engine->test($manager);
+        $result = $engine->test($this->subject);
 
         // Assert
         $this->assertNull($result);
@@ -100,139 +97,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
     }
 
-    public function testUserParticipatesVariant()
-    {
-        // Arrange
-        $this->manager->method('participates')
-            ->with('foo')
-            ->willReturn(true);
-
-        $this->manager->method('getParticipatingVariant')
-            ->with('foo')
-            ->willReturn('bar');
-
-        $this->variant
-            ->expects($this->once())
-            ->method('run');
-        $this->variant
-            ->method('getIdentifier')
-            ->willReturn('bar');
-
-        $test = new Test('foo', [$this->variant]);
-
-        $engine = new Engine($this->manager);
-        $engine->addTest($test, $this->alwaysParticipateFilter, new IdentifierChooser('bar'), []);
-
-        // Act
-        $result = $engine->test($this->manager);
-
-        // Assert
-        $this->assertNull($result);
-    }
-
-    public function testUserParticipatesNonExistingVariant()
-    {
-        // Arrange
-        $storage = new RuntimeStorage();
-        $storage->set('foo', 'bar');
-
-        $manager = new Subject($storage);
-
-        $test = new Test('foo');
-
-        $engine = new Engine();
-        $engine->addTest(
-            $test,
-            $this->alwaysParticipateFilter,
-            $this->chooser,
-            []
-        );
-
-        // Act
-        $engine->test($manager);
-        $result = $manager->participates('foo', 'bar');
-
-        // Assert
-        $this->assertFalse($result);
-    }
-
-    public function testUserShouldNotParticipateWasStoredInStorage()
-    {
-        // Arrange
-        $storage = new RuntimeStorage();
-        $storage->set('foo', null);
-        $manager = new Subject($storage);
-
-        $engine = new Engine();
-        $engine->addTest(
-            new Test('foo'),
-            $this->alwaysParticipateFilter,
-            $this->chooser,
-            []
-        );
-
-        // Act
-        $engine->test($manager);
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-        $this->assertNull($manager->getParticipatingVariant('foo'));
-    }
-
-    public function testUserShouldNotParticipate()
-    {
-        // Arrange
-        $storage = new RuntimeStorage();
-        $manager = new Subject($storage);
-
-        $engine = new Engine();
-        $engine->addTest(
-            new Test('foo'),
-            new Percentage(0),
-            $this->chooser,
-            []
-        );
-
-        // Act
-        $engine->test($manager);
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-        $this->assertNull($manager->getParticipatingVariant('foo'));
-    }
-
-    public function testUserShouldNotParticipateWithExistingVariant()
-    {
-        // Arrange
-        $storage = new RuntimeStorage();
-        $manager = new Subject($storage);
-
-        $test = new Test('foo', [new SimpleVariant('yolo')]);
-
-        $engine = new Engine();
-        $engine->addTest(
-            $test,
-            new Percentage(0),
-            $this->chooser,
-            []
-        );
-
-        // Act
-        $engine->test($manager);
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-    }
-
     public function testUserGetsNewParticipation()
     {
         // Arrange
-        $storage = new RuntimeStorage();
-        $manager = new Subject($storage);
-
         $test = new Test('t1', [
             new SimpleVariant('v1'),
             new SimpleVariant('v2'),
@@ -248,8 +115,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->test($manager);
-        $result = $manager->participates('t1');
+        $engine->test($this->subject);
+        $result = $this->subject->participates($engine->getTest('t1'));
 
         // Assert
         $this->assertTrue($result);
@@ -258,8 +125,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testNoVariantAvailableForTest()
     {
         // Arrange
-        $storage = new RuntimeStorage();
-        $manager = new Subject($storage);
         $test = new Test('t1');
 
         $engine = new Engine();
@@ -269,10 +134,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             new IdentifierChooser('v1'),
             []
         );
-        $engine->test($manager);
+        $engine->test($this->subject);
 
         // Act
-        $result = $manager->participates('t1');
+        $result = $this->subject->participates($engine->getTest('t1'));
 
         // Assert
         $this->assertTrue($result);

@@ -123,30 +123,28 @@ class Engine implements EngineInterface
     private function runTestBagOnSubject(Bag $bag, SubjectInterface $subject)
     {
         $test = $bag->getTest();
-
-        $isParticipating = $subject->participates($test->getIdentifier());
-        $testParticipation = $subject->getParticipatingVariant($test->getIdentifier());
+        $participation = $subject->participates($test);
 
         // Check if the user is marked as "do not participate".
-        if ($isParticipating && null === $testParticipation) {
+        if ($subject->participationIsBlocked($test)) {
             // Events::PARTICIPATION_BLOCKED
             return;
         }
 
         // When the user does not participate at the test, let him participate.
-        if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
+        if (!$participation && !$bag->getParticipationFilter()->shouldParticipate()) {
             // The user should not participate so let's set participation
             // to null so he will not participate in the future, too.
 
             // Events::BLOCK_PARTICIPATION
 
-            $subject->participate($test->getIdentifier(), null);
+            $subject->participate($test, null);
             return;
         }
 
         // Let's try to recover a previously stored Variant
-        if ($isParticipating && $testParticipation !== null) {
-            $variant = $bag->getTest()->getVariant($testParticipation);
+        if ($participation && $participation !== null) {
+            $variant = $test->getVariant($participation);
 
             // If we managed to identify a Variant by a previously stored participation, do its magic again.
             if ($variant instanceof VariantInterface) {
@@ -163,12 +161,12 @@ class Engine implements EngineInterface
 
             // Events::VARIANT_MISSING
 
-            $subject->participate($test->getIdentifier(), null);
+            $subject->participate($test, null);
             return;
         }
 
         // Store the chosen variant so he will not switch between different states
-        $subject->participate($test->getIdentifier(), $chosen->getIdentifier());
+        $subject->participate($test, $chosen);
 
         $this->executeVariant($chosen);
     }

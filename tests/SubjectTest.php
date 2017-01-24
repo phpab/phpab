@@ -28,8 +28,10 @@ class SubjectTest extends PHPUnit_Framework_TestCase
         // Arrange
         $subject = new Subject($this->storage);
 
+        $test = new Test('foo');
+
         // Act
-        $result = $subject->participates('foo');
+        $result = $subject->participates($test);
 
         // Assert
         $this->assertFalse($result);
@@ -39,10 +41,13 @@ class SubjectTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $subject = new Subject($this->storage);
-        $subject->participate('foo', 'bar');
+        $test = new Test('foo', [
+            new SimpleVariant('bar')
+        ]);
+        $subject->participate($test, $test->getVariant('bar'));
 
         // Act
-        $result = $subject->participates('foo');
+        $result = $subject->participates($test);
 
         // Assert
         $this->assertTrue($result);
@@ -55,36 +60,27 @@ class SubjectTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $subject = new Subject($this->storage);
-        $subject->participate(new Test('foo'), null);
+        $test = new Test('foo');
+        $subject->participate($test, null);
 
         // Act
-        $result = $subject->participates('foo');
+        $result = $subject->participates($test);
 
         // Assert
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesTestVariantObjectSuccess()
+    public function testCheckParticipatesTestVariantSuccess()
     {
         // Arrange
         $subject = new Subject($this->storage);
-        $subject->participate(new Test('foo'), new SimpleVariant('bar'));
+        $test = new Test('foo');
+        $variant = new SimpleVariant('bar');
+
+        $subject->participate($test, $variant);
 
         // Act
-        $result = $subject->participates('foo', 'bar');
-
-        // Assert
-        $this->assertTrue($result);
-    }
-
-    public function testCheckParticipatesVariantSuccess()
-    {
-        // Arrange
-        $subject = new Subject($this->storage);
-        $subject->participate('foo', 'bar');
-
-        // Act
-        $result = $subject->participates('foo', 'bar');
+        $result = $subject->participates($test, $variant);
 
         // Assert
         $this->assertTrue($result);
@@ -94,10 +90,11 @@ class SubjectTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $subject = new Subject($this->storage);
-        $subject->participate('foo', 'yolo');
+        $test = new Test('foo');
+        $subject->participate($test, new SimpleVariant('yolo'));
 
         // Act
-        $result = $subject->participates('foo', 'bar');
+        $result = $subject->participates($test, new SimpleVariant('bar'));
 
         // Assert
         $this->assertFalse($result);

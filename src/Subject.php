@@ -27,30 +27,13 @@ class Subject implements SubjectInterface
     }
 
     /**
-     * Gets the variant the user is participating in for the given test.
-     *
-     * @param TestInterface|string $test The identifier of the test to get the variant for.
-     * @return string|null Returns the identifier of the variant or null if not participating.
-     */
-    public function getParticipatingVariant($test)
-    {
-        $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
-
-        if ($this->storage->has($test)) {
-            return $this->storage->get($test);
-        }
-
-        return null;
-    }
-
-    /**
      * {@inheritDoc}
      *
      * @param TestInterface|string $test The identifier of the test to check.
      * @param VariantInterface|string|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
-    public function participates($test, $variant = null)
+    public function participates(TestInterface $test, VariantInterface $variant = null)
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
@@ -73,10 +56,10 @@ class Subject implements SubjectInterface
      * {@inheritDoc}
      *
      * @param TestInterface|string $test The identifier of the test that should be participated.
-     * @param VariantInterface|string|null $variant The identifier of the variant that was chosen or
+     * @param VariantInterface|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */
-    public function participate($test, $variant)
+    public function participate(TestInterface $test, VariantInterface $variant = null)
     {
         $test = $test instanceof TestInterface ? $test->getIdentifier() : $test;
         $variant = $variant instanceof VariantInterface ? $variant->getIdentifier() : $variant;
@@ -84,4 +67,11 @@ class Subject implements SubjectInterface
         $this->storage->set($test, $variant);
     }
 
+    public function participationIsBlocked(TestInterface $test)
+    {
+        $participation = $this->participates($test);
+
+        // Check if the user is marked as "do not participate".
+        return $participation && null === $participation;
+    }
 }
