@@ -118,8 +118,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             ->method('getIdentifier')
             ->willReturn('bar');
 
-        $test = new Test('foo');
-        $test->addVariant($this->variant);
+        $test = new Test('foo', [$this->variant]);
 
         $engine = new Engine($this->manager);
         $engine->addTest($test, $this->alwaysParticipateFilter, new IdentifierChooser('bar'), []);
@@ -210,8 +209,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new RuntimeStorage();
         $manager = new Subject($storage);
 
-        $test = new Test('foo');
-        $test->addVariant(new SimpleVariant('yolo'));
+        $test = new Test('foo', [new SimpleVariant('yolo')]);
 
         $engine = new Engine();
         $engine->addTest(
@@ -235,10 +233,11 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new RuntimeStorage();
         $manager = new Subject($storage);
 
-        $test = new Test('t1');
-        $test->addVariant(new SimpleVariant('v1'));
-        $test->addVariant(new SimpleVariant('v2'));
-        $test->addVariant(new SimpleVariant('v3'));
+        $test = new Test('t1', [
+            new SimpleVariant('v1'),
+            new SimpleVariant('v2'),
+            new SimpleVariant('v3')
+        ]);
 
         $engine = new Engine();
         $engine->addTest(
@@ -287,8 +286,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $engine = new Engine();
 
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $test = new Test('foo_test', [new SimpleVariant('_control')]);
 
         // Act
         $engine->test($this->getMock(SubjectInterface::class));

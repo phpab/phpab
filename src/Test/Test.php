@@ -74,7 +74,7 @@ class Test implements TestInterface
      *
      * @param VariantInterface $variant The variant to add to this test.
      */
-    public function addVariant(VariantInterface $variant)
+    private function addVariant(VariantInterface $variant)
     {
         if (array_key_exists($variant->getIdentifier(), $this->variants)) {
             throw new DuplicateVariantException('A variant with this identifier has already been added.');
@@ -88,7 +88,7 @@ class Test implements TestInterface
      *
      * @param VariantInterface[] $variants The variants to set.
      */
-    public function setVariants($variants)
+    private function setVariants($variants)
     {
         $this->variants = [];
 

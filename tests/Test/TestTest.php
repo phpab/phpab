@@ -70,52 +70,32 @@ class TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PhpAb\Test\Test::addVariant
-     */
-    public function testAddVariant()
-    {
-        // Arrange
-        $variant = new SimpleVariant('identifier');
-        $test = new Test('identifier');
-
-        // Act
-        $test->addVariant($variant);
-
-        // Assert
-        $this->assertEquals([
-            'identifier' => $variant
-        ], $test->getVariants());
-    }
-
-    /**
-     * @covers PhpAb\Test\Test::addVariant
+     * @test
      * @expectedException PhpAb\Exception\DuplicateVariantException
      * @expectedExceptionMessage A variant with this identifier has already been added.
      */
-    public function testAddVariantWithDuplicateIdentifier()
+    public function add_two_variants_with_the_same_id_should_throw_an_exception()
     {
         // Arrange
         $variant = new SimpleVariant('identifier');
-        $test = new Test('identifier');
 
         // Act
-        $test->addVariant($variant);
-        $test->addVariant($variant);
+        $test = new Test('identifier', [$variant, $variant]);
 
         // Assert
         // ...
     }
 
     /**
-     * @covers PhpAb\Test\Test::setVariants
+     * @test
      */
     public function testSetVariantsWithEmptyArray()
     {
         // Arrange
-        $test = new Test('identifier');
+        $variants = [];
 
         // Act
-        $test->setVariants([]);
+        $test = new Test('identifier', $variants);
 
         // Assert
         $this->assertEquals([], $test->getVariants());
@@ -128,10 +108,9 @@ class TestTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
-        $test = new Test('identifier');
 
         // Act
-        $test->setVariants([$variant1]);
+        $test = new Test('identifier', [$variant1]);
 
         // Assert
         $this->assertEquals([
@@ -147,10 +126,9 @@ class TestTest extends PHPUnit_Framework_TestCase
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
         $variant2 = new SimpleVariant('identifier2');
-        $test = new Test('identifier');
 
         // Act
-        $test->setVariants([$variant1, $variant2]);
+        $test = new Test('identifier', [$variant1, $variant2]);
 
         // Assert
         $this->assertEquals([
@@ -169,10 +147,9 @@ class TestTest extends PHPUnit_Framework_TestCase
         // Arrange
         $variant1 = new SimpleVariant('identifier1');
         $variant2 = new SimpleVariant('identifier1');
-        $test = new Test('identifier');
 
         // Act
-        $test->setVariants([$variant1, $variant2]);
+        $test = new Test('identifier', [$variant1, $variant2]);
 
         // Assert
         // ...
