@@ -12,6 +12,7 @@ namespace PhpAb\Engine;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Participation\ManagerInterface;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
 
@@ -57,7 +58,9 @@ interface EngineInterface
     /**
      * Starts the tests
      *
+     * @param ManagerInterface $manager
+     *
      * @return null
      */
-    public function start();
+    public function test(ManagerInterface $manager);
 }

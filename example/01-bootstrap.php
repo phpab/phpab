@@ -37,7 +37,7 @@ $chooser = new RandomChooser();
 $analyticsData = new Google();
 
 // Create the Engine
-$engine = new Engine($manager, $filter, $chooser);
+$engine = new Engine();
 $engine->addSubscriber($analyticsData);
 
 // Create a tests and its variants
@@ -46,15 +46,8 @@ $test->addVariant(new SimpleVariant('_control'));
 $test->addVariant(new SimpleVariant('_variant1'));
 $test->addVariant(new SimpleVariant('_variant2'));
 
-// Create a second test and its variants
-$test2 = new Test('bar_test', [], [Google::EXPERIMENT_ID => 'exp2']);
-$test2->addVariant(new SimpleVariant('_control'));
-$test2->addVariant(new SimpleVariant('_variant1'));
-$test2->addVariant(new SimpleVariant('_variant2'));
-
 // Add the tests to the Engine
-$engine->addTest($test);
-$engine->addTest($test2);
+$engine->addTest($test, $filter, $chooser);
 
 // Pseudo: if($user->isAdmin)
 // If the user is admin, he should not participate at the test
@@ -63,7 +56,7 @@ $engine->addTest($test2);
 // $manager->participate('foo_test', $_GET['phpab']['foo_test]);
 // Start testing. Must occur before the EventCycle of the app starts
 // Start the engine
-$engine->start();
+$engine->test($manager);
 
 // Create the Analytics object and pass the Data Collector data to it
 $analytics = new GoogleUniversalAnalytics($analyticsData->getTestsData());

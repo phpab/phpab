@@ -36,29 +36,11 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     public $tests = [];
 
     /**
-     * The participation manager used to check if a user participates.
-     *
-     * @var ManagerInterface
-     */
-    private $participationManager;
-
-    /**
      * Locks the engine for further manipulaton
      *
      * @var boolean
      */
     private $locked = false;
-
-    /**
-     * Initializes a new instance of this class.
-     *
-     * @param ManagerInterface $participationManager Handles the Participation state
-     */
-    public function __construct(
-        ManagerInterface $participationManager
-    ) {
-        $this->participationManager = $participationManager;
-    }
 
     /**
      * {@inheritDoc}
@@ -116,7 +98,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function start()
+    public function test(ManagerInterface $manager)
     {
         // Check if already locked
         if ($this->locked) {
@@ -127,7 +109,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->runTestBagOnSubject($testBag);
+            $this->runTestBagOnSubject($testBag, $manager);
         }
     }
 
@@ -135,13 +117,14 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * Process the test bag
      *
      * @param Bag $bag
+     * @param ManagerInterface $manager
      */
-    private function runTestBagOnSubject(Bag $bag)
+    private function runTestBagOnSubject(Bag $bag, ManagerInterface $manager)
     {
         $test = $bag->getTest();
 
-        $isParticipating = $this->participationManager->participates($test->getIdentifier());
-        $testParticipation = $this->participationManager->getParticipatingVariant($test->getIdentifier());
+        $isParticipating = $manager->participates($test->getIdentifier());
+        $testParticipation = $manager->getParticipatingVariant($test->getIdentifier());
 
         // Check if the user is marked as "do not participate".
         if ($isParticipating && null === $testParticipation) {
@@ -155,7 +138,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
             // to null so he will not participate in the future, too.
             $this->dispatch('phpab.participation.block', [$this, $bag]);
 
-            $this->participationManager->participate($test->getIdentifier(), null);
+            $manager->participate($test->getIdentifier(), null);
             return;
         }
 
@@ -177,12 +160,12 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
             $this->dispatch('phpab.participation.variant_missing', [$this, $bag]);
 
-            $this->participationManager->participate($test->getIdentifier(), null);
+            $manager->participate($test->getIdentifier(), null);
             return;
         }
 
         // Store the chosen variant so he will not switch between different states
-        $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
+        $manager->participate($test->getIdentifier(), $chosen->getIdentifier());
 
         $this->activateVariant($bag, $chosen);
     }

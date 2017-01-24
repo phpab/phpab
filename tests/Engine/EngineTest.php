@@ -9,7 +9,6 @@
 
 namespace PhpAb\Engine;
 
-use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Participation\Manager;
 use PhpAb\Participation\ManagerInterface;
@@ -48,10 +47,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $manager = new Manager(new Storage(new Runtime()));
-        $engine = new Engine($manager);
+        $engine = new Engine();
 
         // Act
-        $result = $engine->start();
+        $result = $engine->test($manager);
 
         // Assert
         $this->assertNull($result);
@@ -63,7 +62,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test1 = new Test('foo');
         $test2 = new Test('bar');
 
-        $engine = new Engine($this->manager);
+        $engine = new Engine();
 
         // Act
         $engine->addTest($test1, $this->alwaysParticipateFilter, $this->chooser, []);
@@ -125,41 +124,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine->addTest($test, $this->alwaysParticipateFilter, new StaticChooser('bar'), []);
 
         // Act
-        $result = $engine->start();
+        $result = $engine->test($this->manager);
 
         // Assert
         $this->assertNull($result);
-    }
-
-    public function testUserDoesNotParticipateVariant()
-    {
-        // Arrange
-        $this->manager->method('participates')
-            ->with('foo')
-            ->willReturn(false);
-
-        $this->variant
-            ->expects($this->exactly(0))
-            ->method('run');
-        $this->variant
-            ->method('getIdentifier')
-            ->willReturn('notParticipated');
-
-        $test = new Test('foo');
-        $test->addVariant($this->variant);
-
-        $engine = new Engine($this->manager);
-        $engine->addTest(
-            $test,
-            $this->alwaysParticipateFilter,
-            $this->chooser,
-            []
-        );
-
-        // Act
-        $engine->start();
-
-        // Assert
     }
 
     public function testUserParticipatesNonExistingVariant()
@@ -172,7 +140,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         $test = new Test('foo');
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
@@ -181,7 +149,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->start();
+        $engine->test($manager);
         $result = $manager->participates('foo', 'bar');
 
         // Assert
@@ -195,7 +163,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage->set('foo', null);
         $manager = new Manager($storage);
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             new Test('foo'),
             $this->alwaysParticipateFilter,
@@ -204,7 +172,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->start();
+        $engine->test($manager);
         $result = $manager->participates('foo');
 
         // Assert
@@ -218,7 +186,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             new Test('foo'),
             new Percentage(0),
@@ -227,7 +195,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->start();
+        $engine->test($manager);
         $result = $manager->participates('foo');
 
         // Assert
@@ -238,13 +206,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipateWithExistingVariant()
     {
         // Arrange
-         $storage = new Storage(new Runtime());
+        $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
         $test = new Test('foo');
         $test->addVariant(new SimpleVariant('yolo'));
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             $test,
             new Percentage(0),
@@ -253,7 +221,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->start();
+        $engine->test($manager);
         $result = $manager->participates('foo');
 
         // Assert
@@ -271,7 +239,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('v2'));
         $test->addVariant(new SimpleVariant('v3'));
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
@@ -280,7 +248,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         );
 
         // Act
-        $engine->start();
+        $engine->test($manager);
         $result = $manager->participates('t1');
 
         // Assert
@@ -294,14 +262,14 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($storage);
         $test = new Test('t1');
 
-        $engine = new Engine($manager);
+        $engine = new Engine();
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
             new StaticChooser('v1'),
             []
         );
-        $engine->start();
+        $engine->test($manager);
 
         // Act
         $result = $manager->participates('t1');
@@ -330,7 +298,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $filter = new Percentage(5);
         $chooser = new RandomChooser();
 
-        $engine = new Engine($manager, $filter, $chooser);
+        $engine = new Engine();
         $engine->addSubscriber($analyticsData);
 
         $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'EXPID1']);
@@ -342,10 +310,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test2->addVariant(new SimpleVariant('_control'));
         $test2->addVariant(new SimpleVariant('v1'));
 
-        $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
-        $engine->addTest($test2, $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test, $filter, $chooser);
+        $engine->addTest($test2, $filter, $chooser);
 
-        $engine->start();
+        $engine->test($manager);
 
         // Act
         $testData = $analyticsData->getTestsData();
@@ -366,15 +334,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testLockEngine()
     {
         // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class)
-        );
+        $engine = new Engine();
 
         $test = new Test('foo_test');
         $test->addVariant(new SimpleVariant('_control'));
 
         // Act
-        $engine->start();
+        $engine->test($this->getMock(ManagerInterface::class));
         $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
 
         // Assert
@@ -386,18 +352,11 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testStartTwice()
     {
         // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
-        );
-
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $engine = new Engine();
 
         // Act
-        $engine->start();
-        $engine->start();
+        $engine->test($this->getMock(ManagerInterface::class));
+        $engine->test($this->getMock(ManagerInterface::class));
 
         // Assert
     }
