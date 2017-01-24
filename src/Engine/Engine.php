@@ -44,20 +44,6 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     private $participationManager;
 
     /**
-     * The default filter that is used when a test bag has no filter set.
-     *
-     * @var FilterInterface
-     */
-    private $filter;
-
-    /**
-     * The default variant chooser that is used when a test bag has no variant chooser set.
-     *
-     * @var ChooserInterface
-     */
-    private $chooser;
-
-    /**
      * Locks the engine for further manipulaton
      *
      * @var boolean
@@ -68,18 +54,11 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * Initializes a new instance of this class.
      *
      * @param ManagerInterface $participationManager Handles the Participation state
-     * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
-     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
      */
     public function __construct(
-        ManagerInterface $participationManager,
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        ManagerInterface $participationManager
     ) {
-
         $this->participationManager = $participationManager;
-        $this->filter = $filter;
-        $this->chooser = $chooser;
     }
 
     /**
@@ -113,15 +92,15 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * {@inheritDoc}
      *
      * @param TestInterface $test
-     * @param array $options
      * @param FilterInterface $filter
      * @param ChooserInterface $chooser
+     * @param array $options
      */
     public function addTest(
         TestInterface $test,
-        $options = [],
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        FilterInterface $filter,
+        ChooserInterface $chooser,
+        $options = []
     ) {
 
         if ($this->locked) {
@@ -131,15 +110,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
-
-        // If no filter/chooser is set use the ones from
-        // the engine.
-        $filter = $filter ? $filter : $this->filter;
-        $chooser = $chooser ? $chooser : $this->chooser;
-
-        Assert::notNull($filter, 'There must be at least one filter in the Engine or in the TestBag');
-        Assert::notNull($chooser, 'There must be at least one chooser in the Engine or in the TestBag');
-
+        
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
 

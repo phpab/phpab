@@ -16,7 +16,6 @@ use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\Adapter\Runtime;
 use PhpAb\Storage\Storage;
 use PhpAb\Test\Test;
-use PhpAb\Variant\Chooser\ChooserInterface;
 use PhpAb\Variant\Chooser\StaticChooser;
 use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
@@ -67,8 +66,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($this->manager);
 
         // Act
-        $engine->addTest($test1, [], $this->alwaysParticipateFilter, $this->chooser);
-        $engine->addTest($test2, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test1, $this->alwaysParticipateFilter, $this->chooser, []);
+        $engine->addTest($test2, $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Assert
         $this->assertSame($test1, $engine->getTest('foo'));
@@ -95,10 +94,10 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $engine = new Engine($this->manager);
-        $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Act
-        $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
     }
 
     public function testUserParticipatesVariant()
@@ -123,7 +122,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant($this->variant);
 
         $engine = new Engine($this->manager);
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('bar'));
+        $engine->addTest($test, $this->alwaysParticipateFilter, new StaticChooser('bar'), []);
 
         // Act
         $result = $engine->start();
@@ -152,9 +151,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($this->manager);
         $engine->addTest(
             $test,
-            [],
             $this->alwaysParticipateFilter,
-            $this->chooser
+            $this->chooser,
+            []
         );
 
         // Act
@@ -176,9 +175,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             $test,
-            [],
             $this->alwaysParticipateFilter,
-            $this->chooser
+            $this->chooser,
+            []
         );
 
         // Act
@@ -199,9 +198,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             new Test('foo'),
-            [],
             $this->alwaysParticipateFilter,
-            $this->chooser
+            $this->chooser,
+            []
         );
 
         // Act
@@ -222,9 +221,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             new Test('foo'),
-            [],
             new Percentage(0),
-            $this->chooser
+            $this->chooser,
+            []
         );
 
         // Act
@@ -248,9 +247,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             $test,
-            [],
             new Percentage(0),
-            $this->chooser
+            $this->chooser,
+            []
         );
 
         // Act
@@ -275,9 +274,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             $test,
-            [],
             $this->alwaysParticipateFilter,
-            new StaticChooser('v1')
+            new StaticChooser('v1'),
+            []
         );
 
         // Act
@@ -298,9 +297,9 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine($manager);
         $engine->addTest(
             $test,
-            [],
             $this->alwaysParticipateFilter,
-            new StaticChooser('v1')
+            new StaticChooser('v1'),
+            []
         );
         $engine->start();
 
@@ -343,8 +342,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test2->addVariant(new SimpleVariant('_control'));
         $test2->addVariant(new SimpleVariant('v1'));
 
-        $engine->addTest($test);
-        $engine->addTest($test2);
+        $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test2, $this->alwaysParticipateFilter, $this->chooser);
 
         $engine->start();
 
@@ -362,57 +361,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNoFilterThrowsException()
-    {
-        // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            null, // This is the tested part
-            $this->getMock(ChooserInterface::class)
-        );
-
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
-
-        // Act
-        $engine->addTest($test);
-
-        // Assert
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testNoChooserThrowsException()
-    {
-        // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
-        );
-
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
-
-        // Act
-        $engine->addTest($test);
-
-        // Assert
-    }
-
-    /**
      * @expectedException \PhpAb\Exception\EngineLockedException
      */
     public function testLockEngine()
     {
         // Arrange
         $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
+            $this->getMock(ManagerInterface::class)
         );
 
         $test = new Test('foo_test');
@@ -420,7 +375,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         // Act
         $engine->start();
-        $engine->addTest($test);
+        $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
 
         // Assert
     }

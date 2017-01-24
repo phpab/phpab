@@ -42,16 +42,16 @@ interface EngineInterface
      * Adds a test to the Engine
      *
      * @param TestInterface $test
-     * @param array $options
      * @param FilterInterface $filter
      * @param ChooserInterface $chooser
+     * @param array $options
      * @throws TestCollisionException Thrown when the test already exists.
      */
     public function addTest(
         TestInterface $test,
-        $options = [],
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        FilterInterface $filter,
+        ChooserInterface $chooser,
+        $options = []
     );
 
     /**
