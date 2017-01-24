@@ -17,36 +17,53 @@ namespace PhpAb\Storage;
 interface StorageInterface
 {
     /**
-     * Checks if the test has a participation set.
+     * Returns if a string identified element exists
      *
-     * @param string $identifier The tests identifier
-     * @throws InvalidArgumentException
-     * @return bool true if the test participation is defined, false otherwise
+     * @param string $identifier Element identifier
+     *
+     * @return bool If element exists
      */
     public function has($identifier);
 
     /**
-     * Returns the participation value (Variant or false).
+     * Returns the value of a string identified element
      *
-     * @param string $identifier The tests identifier name
-     * @throws InvalidArgumentException
-     * @return mixed
+     * @param mixed $identifier Element identifier
+     *
+     * @return mixed The value of element
      */
     public function get($identifier);
 
     /**
-     * Sets participation value for a test
+     * Sets the value of a string identified element
      *
-     * @param string $identifier The tests identifier
-     * @param mixed  $participation The participated variant
-     * @throws InvalidArgumentException
+     * @param string $identifier Element identifier
+     * @param mixed $value Value of element to be set
+     *
+     * @return bool If elemnt has been successfuly set
      */
-    public function set($identifier, $participation);
+    public function set($identifier, $value);
 
     /**
-     * Clears out state for a test.
+     * Returns the content of all the elements
      *
-     * @return mixed Whatever data was contained.
+     * @return array Content of all elements
+     */
+    public function all();
+
+    /**
+     * Remove the content of a string identified element
+     *
+     * @param string $identifier Element identifier
+     *
+     * @return mixed value that has been removed
+     */
+    public function remove($identifier);
+
+    /**
+     * Clears all the elements
+     *
+     * @return array All the content that has been cleared
      */
     public function clear();
 }

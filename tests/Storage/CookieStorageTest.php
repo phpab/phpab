@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Storage\Adapter;
+namespace PhpAb\Storage;
 
 use PHPUnit_Framework_TestCase;
 use phpmock\MockBuilder;
@@ -18,7 +18,7 @@ use phpmock\functions\FixedValueFunction;
  * During the execution of some of these tests,
  * global functions might be overwritten
  */
-class CookieTest extends PHPUnit_Framework_TestCase
+class CookieStorageTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var array Default test results used for test suite
@@ -101,7 +101,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testConstructorExceptionNameNotString()
     {
         // Arrange
-        new Cookie(123);
+        new CookieStorage(123);
 
         // Act
 
@@ -116,7 +116,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testConstructorExceptionNameEmpty()
     {
         // Arrange
-        new Cookie('');
+        new CookieStorage('');
 
         // Act
 
@@ -131,7 +131,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testConstructorExceptionTtlNotInt()
     {
         // Arrange
-        new Cookie('chars', 'bar');
+        new CookieStorage('chars', 'bar');
 
         // Act
 
@@ -146,7 +146,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testHasException()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->has([123]);
@@ -155,13 +155,13 @@ class CookieTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that parseExistingCookie() will set an empty array if cookie is empty
+     * Test that parseExistingCookieStorage() will set an empty array if cookie is empty
      */
     public function testParseExistingCookieEmpty()
     {
         // Arrange
         $this->setFilterInputArrayReturnValue([]);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $values = $cookie->all();
@@ -171,13 +171,13 @@ class CookieTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that parseExistingCookie() will set an empty array if cookie is not an array
+     * Test that parseExistingCookieStorage() will set an empty array if cookie is not an array
      */
     public function testParseExistingCookieNotArray()
     {
         // Arrange
         $this->setFilterInputArrayReturnValue(['chars' => 'this is not a proper serialized array']);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $values = $cookie->all();
@@ -187,13 +187,13 @@ class CookieTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that parseExistingCookie() will set an empty array if cookie is a wrong json object
+     * Test that parseExistingCookieStorage() will set an empty array if cookie is a wrong json object
      */
     public function testParseExistingCookieNonValidJson()
     {
         // Arrange
         $this->setFilterInputArrayReturnValue(['chars' => '{"walter": "white","bernard"}']);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $values = $cookie->all();
@@ -208,7 +208,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testHas()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $hasValues1 = $cookie->has('walter');
@@ -227,7 +227,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testGetException()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->get([123]);
@@ -241,7 +241,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testGet()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $getVal1 = $cookie->get('walter');
@@ -260,7 +260,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testSetExceptionIdentifierNotString()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->set(123, 'black');
@@ -276,7 +276,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testSetExceptionParticipationEmpty()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->set('walter', '');
@@ -290,7 +290,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testSet()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->set('walter', 'black');
@@ -307,7 +307,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->set('walter', 'black');
@@ -321,7 +321,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testAll()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         // Arrange
@@ -336,7 +336,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testRemoveExceptionIdentifierNotString()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->remove(123);
@@ -351,7 +351,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->remove('foo');
@@ -364,7 +364,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     {
 
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         //
@@ -382,7 +382,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     {
         // Arrange
         $this->setMockHeadersSentReturnValue(true);
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->clear();
@@ -396,7 +396,7 @@ class CookieTest extends PHPUnit_Framework_TestCase
     public function testClear()
     {
         // Arrange
-        $cookie = new Cookie('chars');
+        $cookie = new CookieStorage('chars');
 
         // Act
         $cookie->clear();

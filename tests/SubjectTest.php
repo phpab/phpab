@@ -9,8 +9,7 @@
 
 namespace PhpAb;
 
-use PhpAb\Storage\Storage;
-use PhpAb\Storage\Adapter\Runtime;
+use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit_Framework_TestCase;
@@ -21,7 +20,7 @@ class SubjectTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->storage = new Storage(new Runtime());
+        $this->storage = new RuntimeStorage();
     }
 
     public function testCheckParticipation()

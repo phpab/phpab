@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Storage\Adapter;
+namespace PhpAb\Storage;
 
 use InvalidArgumentException;
 use RuntimeException;
@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
  *
  * @package PhpAb
  */
-class Cookie implements AdapterInterface
+class CookieStorage implements StorageInterface
 {
     /**
      * The name of cookie.

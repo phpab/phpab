@@ -12,8 +12,7 @@ namespace PhpAb\Engine;
 use PhpAb\Filter\Percentage;
 use PhpAb\Participation\Manager;
 use PhpAb\Participation\ManagerInterface;
-use PhpAb\Storage\Adapter\Runtime;
-use PhpAb\Storage\Storage;
+use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Subject;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\Test;
@@ -48,7 +47,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testEmptyManager()
     {
         // Arrange
-        $manager = new Subject(new Storage(new Runtime()));
+        $manager = new Subject(new RuntimeStorage());
         $engine = new Engine();
 
         // Act
@@ -135,7 +134,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserParticipatesNonExistingVariant()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $storage->set('foo', 'bar');
 
         $manager = new Subject($storage);
@@ -161,7 +160,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipateWasStoredInStorage()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $storage->set('foo', null);
         $manager = new Subject($storage);
 
@@ -185,7 +184,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipate()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $manager = new Subject($storage);
 
         $engine = new Engine();
@@ -208,7 +207,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserShouldNotParticipateWithExistingVariant()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $manager = new Subject($storage);
 
         $test = new Test('foo');
@@ -233,7 +232,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testUserGetsNewParticipation()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $manager = new Subject($storage);
 
         $test = new Test('t1');
@@ -260,7 +259,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testNoVariantAvailableForTest()
     {
         // Arrange
-        $storage = new Storage(new Runtime());
+        $storage = new RuntimeStorage();
         $manager = new Subject($storage);
         $test = new Test('t1');
 
