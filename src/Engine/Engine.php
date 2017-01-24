@@ -16,7 +16,6 @@ use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Filter\FilterInterface;
-use PhpAb\Participation\ManagerInterface;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
