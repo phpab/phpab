@@ -154,7 +154,6 @@ class Engine implements EngineInterface
 
         // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-
             // Events::VARIANT_MISSING
 
             $subject->participate($test, null);
