@@ -44,13 +44,6 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     private $participationManager;
 
     /**
-     * The event dispatcher that dispatches events related to tests.
-     *
-     * @var DispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
      * The default filter that is used when a test bag has no filter set.
      *
      * @var FilterInterface
