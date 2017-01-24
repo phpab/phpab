@@ -17,6 +17,7 @@ use PhpAb\SubjectInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Chooser\ChooserInterface;
+use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 
 /**
@@ -107,7 +108,7 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->runTestBagOnSubject($testBag, $subject);
+            $this->getChosenVariant($testBag, $subject)->run();
         }
     }
 
@@ -116,16 +117,19 @@ class Engine implements EngineInterface
      *
      * @param Bag $bag
      * @param SubjectInterface $subject
+     *
+     * @return VariantInterface
      */
-    private function runTestBagOnSubject(Bag $bag, SubjectInterface $subject)
+    private function getChosenVariant(Bag $bag, SubjectInterface $subject)
     {
         $test = $bag->getTest();
         $participation = $subject->participates($test);
+        $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
 
         // Check if the user is marked as "do not participate".
         if ($subject->participationIsBlocked($test)) {
             // Events::PARTICIPATION_BLOCKED
-            return;
+            return $dummyVariant;
         }
 
         // When the user does not participate at the test, let him participate.
@@ -136,17 +140,13 @@ class Engine implements EngineInterface
             // Events::BLOCK_PARTICIPATION
 
             $subject->participate($test, null);
-            return;
+            return $dummyVariant;
         }
 
         // Let's try to recover a previously stored Variant
         if ($participation && $participation !== null) {
             $variant = $test->getVariant($participation);
-
-            if($variant instanceof VariantInterface) {
-                $variant->run();
-                return;
-            }
+            return $variant;
         }
 
         // Choose a variant for later usage. If the user should participate this one will be used
@@ -158,12 +158,12 @@ class Engine implements EngineInterface
             // Events::VARIANT_MISSING
 
             $subject->participate($test, null);
-            return;
+            return $dummyVariant;
         }
 
         // Store the chosen variant so he will not switch between different states
         $subject->participate($test, $chosen);
 
-        $chosen->run();
+        return $chosen;
     }
 }
