@@ -9,6 +9,7 @@
 
 namespace PhpAb\Engine;
 
+use PhpAb\Event\Dispatcher;
 use PhpAb\Event\DispatcherInterface;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
@@ -26,7 +27,7 @@ use Webmozart\Assert\Assert;
  *
  * @package PhpAb
  */
-class Engine implements EngineInterface
+class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
 {
     /**
      * A list with test bags.
@@ -74,19 +75,16 @@ class Engine implements EngineInterface
      * Initializes a new instance of this class.
      *
      * @param ManagerInterface $participationManager Handles the Participation state
-     * @param DispatcherInterface $dispatcher Dispatches events
      * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
      * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
      */
     public function __construct(
         ManagerInterface $participationManager,
-        DispatcherInterface $dispatcher,
         FilterInterface $filter = null,
         ChooserInterface $chooser = null
     ) {
 
         $this->participationManager = $participationManager;
-        $this->dispatcher = $dispatcher;
         $this->filter = $filter;
         $this->chooser = $chooser;
     }
@@ -186,7 +184,7 @@ class Engine implements EngineInterface
 
         // Check if the user is marked as "do not participate".
         if ($isParticipating && null === $testParticipation) {
-            $this->dispatcher->dispatch('phpab.participation.blocked', [$this, $bag]);
+            $this->dispatch('phpab.participation.blocked', [$this, $bag]);
             return;
         }
 
@@ -194,7 +192,7 @@ class Engine implements EngineInterface
         if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
             // The user should not participate so let's set participation
             // to null so he will not participate in the future, too.
-            $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
+            $this->dispatch('phpab.participation.block', [$this, $bag]);
 
             $this->participationManager->participate($test->getIdentifier(), null);
             return;
@@ -216,7 +214,7 @@ class Engine implements EngineInterface
 
         // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            $this->dispatcher->dispatch('phpab.participation.variant_missing', [$this, $bag]);
+            $this->dispatch('phpab.participation.variant_missing', [$this, $bag]);
 
             $this->participationManager->participate($test->getIdentifier(), null);
             return;
@@ -236,7 +234,7 @@ class Engine implements EngineInterface
      */
     private function activateVariant(Bag $bag, VariantInterface $variant)
     {
-        $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
+        $this->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
 
         $variant->run();
     }

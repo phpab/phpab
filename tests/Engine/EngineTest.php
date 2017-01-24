@@ -51,7 +51,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $manager = new Manager(new Storage(new Runtime()));
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
 
         // Act
         $result = $engine->start();
@@ -66,7 +66,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test1 = new Test('foo');
         $test2 = new Test('bar');
 
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine($this->manager);
 
         // Act
         $engine->addTest($test1, [], $this->alwaysParticipateFilter, $this->chooser);
@@ -84,7 +84,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testGetTestNotFound()
     {
         // Arrange
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine($this->manager);
 
         // Act
         $engine->getTest('foo');
@@ -96,7 +96,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testAlreadyExistsWithSameName()
     {
         // Arrange
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine($this->manager);
         $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
 
         // Act
@@ -124,7 +124,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test = new Test('foo');
         $test->addVariant($this->variant);
 
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine($this->manager);
         $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('bar'));
 
         // Act
@@ -151,7 +151,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test = new Test('foo');
         $test->addVariant($this->variant);
 
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine($this->manager);
         $engine->addTest(
             $test,
             [],
@@ -175,7 +175,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
 
         $test = new Test('foo');
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             $test,
             [],
@@ -198,7 +198,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage->set('foo', null);
         $manager = new Manager($storage);
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             new Test('foo'),
             [],
@@ -221,7 +221,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new Storage(new Runtime());
         $manager = new Manager($storage);
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             new Test('foo'),
             [],
@@ -247,7 +247,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test = new Test('foo');
         $test->addVariant(new SimpleVariant('yolo'));
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             $test,
             [],
@@ -274,7 +274,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('v2'));
         $test->addVariant(new SimpleVariant('v3'));
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             $test,
             [],
@@ -297,7 +297,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager($storage);
         $test = new Test('t1');
 
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine($manager);
         $engine->addTest(
             $test,
             [],
@@ -328,16 +328,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             )
         );
         $manager = new Manager($storage);
-
         $analyticsData = new Google();
-
-        $dispatcher = new Dispatcher;
-        $dispatcher->addSubscriber($analyticsData);
 
         $filter = new Percentage(5);
         $chooser = new RandomChooser();
 
-        $engine = new Engine($manager, $dispatcher, $filter, $chooser);
+        $engine = new Engine($manager, $filter, $chooser);
+        $engine->addSubscriber($analyticsData);
 
         $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'EXPID1']);
         $test->addVariant(new SimpleVariant('_control'));
@@ -374,7 +371,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $engine = new Engine(
             $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
             null, // This is the tested part
             $this->getMock(ChooserInterface::class)
         );
@@ -396,7 +392,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $engine = new Engine(
             $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
             $this->getMock(FilterInterface::class),
             null // This is the tested part
         );
@@ -418,7 +413,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $engine = new Engine(
             $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
             $this->getMock(FilterInterface::class),
             null // This is the tested part
         );
@@ -441,7 +435,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $engine = new Engine(
             $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
             $this->getMock(FilterInterface::class),
             null // This is the tested part
         );
