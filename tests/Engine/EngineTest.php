@@ -9,8 +9,6 @@
 
 namespace PhpAb\Engine;
 
-use PhpAb\Event\Dispatcher;
-use PhpAb\Event\DispatcherInterface;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Participation\Manager;
