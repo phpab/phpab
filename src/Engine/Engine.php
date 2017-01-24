@@ -11,6 +11,7 @@ namespace PhpAb\Engine;
 
 use PhpAb\Event\Dispatcher;
 use PhpAb\Event\DispatcherInterface;
+use PhpAb\Events;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
@@ -128,7 +129,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
 
         // Check if the user is marked as "do not participate".
         if ($isParticipating && null === $testParticipation) {
-            $this->dispatch('phpab.participation.blocked', [$this, $bag]);
+            $this->dispatch(Events::PARTICIPATION_BLOCKED, [$this, $bag]);
             return;
         }
 
@@ -136,7 +137,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
             // The user should not participate so let's set participation
             // to null so he will not participate in the future, too.
-            $this->dispatch('phpab.participation.block', [$this, $bag]);
+            $this->dispatch(Events::BLOCK_PARTICIPATION, [$this, $bag]);
 
             $manager->participate($test->getIdentifier(), null);
             return;
@@ -158,7 +159,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
 
         // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            $this->dispatch('phpab.participation.variant_missing', [$this, $bag]);
+            $this->dispatch(Events::VARIANT_MISSING, [$this, $bag]);
 
             $manager->participate($test->getIdentifier(), null);
             return;
@@ -178,7 +179,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      */
     private function activateVariant(Bag $bag, VariantInterface $variant)
     {
-        $this->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
+        $this->dispatch(Events::RUN_VARIANT, [$this, $bag, $variant]);
 
         $variant->run();
     }
