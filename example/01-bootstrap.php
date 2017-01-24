@@ -12,7 +12,6 @@ use PhpAb\Storage\Adapter\Cookie;
 use PhpAb\Storage\Storage;
 use PhpAb\Participation\Manager;
 use PhpAb\Analytics\DataCollector\Google;
-use PhpAb\Event\Dispatcher;
 use PhpAb\Participation\Filter\Percentage;
 use PhpAb\Variant\Chooser\RandomChooser;
 use PhpAb\Engine\Engine;
@@ -27,12 +26,6 @@ $storage = new Storage($adapter);
 // Create a Participation Manager
 $manager = new Manager($storage);
 
-// Create a Data Collector
-$analyticsData = new Google();
-
-// Create a Dispatcher
-$dispatcher = new Dispatcher();
-// And append it as a subscriber
 $dispatcher->addSubscriber($analyticsData);
 
 // Create a Participation filter
@@ -40,8 +33,12 @@ $filter = new Percentage(50);
 // And a Variant Chooser
 $chooser = new RandomChooser();
 
+// Create a Data Collector
+$analyticsData = new Google();
+
 // Create the Engine
-$engine = new Engine($manager, $dispatcher, $filter, $chooser);
+$engine = new Engine($manager, $filter, $chooser);
+$engine->addSubscriber($analyticsData);
 
 // Create a tests and its variants
 $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'exp1']);
