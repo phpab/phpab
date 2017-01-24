@@ -108,21 +108,20 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->getChosenVariant($testBag, $subject)->run();
+            $variant = $this->getChosenVariant($subject, $testBag->getTest(), $testBag->getParticipationFilter(), $testBag->getVariantChooser());
+            $variant->run();
         }
     }
 
     /**
      * Process the test bag
      *
-     * @param Bag $bag
      * @param SubjectInterface $subject
      *
      * @return VariantInterface
      */
-    private function getChosenVariant(Bag $bag, SubjectInterface $subject)
+    private function getChosenVariant(SubjectInterface $subject, TestInterface $test, FilterInterface $filter, ChooserInterface $chooser)
     {
-        $test = $bag->getTest();
         $participation = $subject->participates($test);
         $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
 
@@ -133,7 +132,7 @@ class Engine implements EngineInterface
         }
 
         // When the user does not participate at the test, let him participate.
-        if (!$participation && !$bag->getParticipationFilter()->shouldParticipate()) {
+        if (!$participation && !$filter->shouldParticipate()) {
             // The user should not participate so let's set participation
             // to null so he will not participate in the future, too.
 
@@ -150,7 +149,7 @@ class Engine implements EngineInterface
         }
 
         // Choose a variant for later usage. If the user should participate this one will be used
-        $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
+        $chosen = $chooser->chooseVariant($test->getVariants());
 
         // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
