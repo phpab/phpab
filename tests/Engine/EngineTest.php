@@ -281,56 +281,6 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Testing that Engine picks previous test runs values
-     */
-    public function testPreviousRunConsistencyInStorage()
-    {
-        // Arrange
-        $storage = new Storage(
-            new Runtime(
-                [
-                    'foo_test' => 'v1',
-                    'bar_test' => '_control'
-                ]
-            )
-        );
-        $manager = new Subject($storage);
-        $analyticsData = new Google();
-
-        $filter = new Percentage(5);
-        $chooser = new RandomChooser();
-
-        $engine = new Engine();
-        $engine->addSubscriber($analyticsData);
-
-        $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'EXPID1']);
-        $test->addVariant(new SimpleVariant('_control'));
-        $test->addVariant(new SimpleVariant('v1'));
-        $test->addVariant(new SimpleVariant('v2'));
-
-        $test2 = new Test('bar_test', [], [Google::EXPERIMENT_ID => 'EXPID2']);
-        $test2->addVariant(new SimpleVariant('_control'));
-        $test2->addVariant(new SimpleVariant('v1'));
-
-        $engine->addTest($test, $filter, $chooser);
-        $engine->addTest($test2, $filter, $chooser);
-
-        $engine->test($manager);
-
-        // Act
-        $testData = $analyticsData->getTestsData();
-
-        // Assert
-        $this->assertSame(
-            [
-            'EXPID1' => 1,
-            'EXPID2' => 0
-            ],
-            $testData
-        );
-    }
-
-    /**
      * @expectedException \PhpAb\Exception\EngineLockedException
      */
     public function testLockEngine()
