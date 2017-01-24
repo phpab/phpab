@@ -11,6 +11,7 @@ namespace PhpAb\Test;
 
 use InvalidArgumentException;
 use PhpAb\Exception\DuplicateVariantException;
+use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 
 /**

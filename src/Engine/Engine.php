@@ -9,9 +9,6 @@
 
 namespace PhpAb\Engine;
 
-use PhpAb\Event\Dispatcher;
-use PhpAb\Event\DispatcherInterface;
-use PhpAb\Events;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
@@ -146,9 +143,8 @@ class Engine implements EngineInterface
         if ($participation && $participation !== null) {
             $variant = $test->getVariant($participation);
 
-            // If we managed to identify a Variant by a previously stored participation, do its magic again.
-            if ($variant instanceof VariantInterface) {
-                $this->executeVariant($variant);
+            if($variant instanceof VariantInterface) {
+                $variant->run();
                 return;
             }
         }
@@ -168,18 +164,6 @@ class Engine implements EngineInterface
         // Store the chosen variant so he will not switch between different states
         $subject->participate($test, $chosen);
 
-        $this->executeVariant($chosen);
-    }
-
-    /**
-     * Runs the Variant and dispatches subscriptions
-     *
-     * @param VariantInterface $variant
-     */
-    private function executeVariant(VariantInterface $variant)
-    {
-        // Events::RUN_VARIANT
-
-        $variant->run();
+        $chosen->run();
     }
 }

@@ -36,7 +36,7 @@ interface TestInterface
      * Get a single variant for this test
      *
      * @param string $identifier The identifier of the variant to get.
-     * @return VariantInterface|null
+     * @return VariantInterface
      */
     public function getVariant($identifier);
 }
