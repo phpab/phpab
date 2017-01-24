@@ -127,7 +127,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->handleTestBag($testBag);
+            $this->runTestBagOnSubject($testBag);
         }
     }
 
@@ -135,10 +135,8 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * Process the test bag
      *
      * @param Bag $bag
-     *
-     * @return bool true if the variant got executed, false otherwise
      */
-    private function handleTestBag(Bag $bag)
+    private function runTestBagOnSubject(Bag $bag)
     {
         $test = $bag->getTest();
 
