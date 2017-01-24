@@ -20,7 +20,6 @@ use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
 use PhpAb\Variant\VariantInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * The engine used to start tests.
@@ -110,7 +109,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
-        
+
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
 
