@@ -118,7 +118,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * Process the test bag
      *
      * @param Bag $bag
-     * @param SubjectInterface $manager
+     * @param SubjectInterface $subject
      */
     private function runTestBagOnSubject(Bag $bag, SubjectInterface $subject)
     {
