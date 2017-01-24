@@ -27,7 +27,7 @@ use PhpAb\Variant\VariantInterface;
  *
  * @package PhpAb
  */
-class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
+class Engine implements EngineInterface
 {
     /**
      * A list with test bags.
@@ -129,7 +129,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
 
         // Check if the user is marked as "do not participate".
         if ($isParticipating && null === $testParticipation) {
-            $this->dispatch(Events::PARTICIPATION_BLOCKED, [$this, $bag]);
+            // Events::PARTICIPATION_BLOCKED
             return;
         }
 
@@ -137,7 +137,8 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
             // The user should not participate so let's set participation
             // to null so he will not participate in the future, too.
-            $this->dispatch(Events::BLOCK_PARTICIPATION, [$this, $bag]);
+
+            // Events::BLOCK_PARTICIPATION
 
             $subject->participate($test->getIdentifier(), null);
             return;
@@ -159,7 +160,8 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
 
         // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            $this->dispatch(Events::VARIANT_MISSING, [$this, $bag]);
+
+            // Events::VARIANT_MISSING
 
             $subject->participate($test->getIdentifier(), null);
             return;
@@ -179,7 +181,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      */
     private function activateVariant(Bag $bag, VariantInterface $variant)
     {
-        $this->dispatch(Events::RUN_VARIANT, [$this, $bag, $variant]);
+        // Events::RUN_VARIANT
 
         $variant->run();
     }
