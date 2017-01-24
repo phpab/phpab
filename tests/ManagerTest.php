@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Participation;
+namespace PhpAb;
 
 use PhpAb\Storage\Storage;
 use PhpAb\Storage\Adapter\Runtime;
@@ -15,7 +15,7 @@ use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit_Framework_TestCase;
 
-class ManagerTest extends PHPUnit_Framework_TestCase
+class SubjectTest extends PHPUnit_Framework_TestCase
 {
     private $storage;
 
@@ -27,10 +27,10 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     public function testCheckParticipation()
     {
         // Arrange
-        $manager = new Manager($this->storage);
+        $subject = new Subject($this->storage);
 
         // Act
-        $result = $manager->participates('foo');
+        $result = $subject->participates('foo');
 
         // Assert
         $this->assertFalse($result);
@@ -39,24 +39,27 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     public function testCheckParticipatesTestSuccess()
     {
         // Arrange
-        $manager = new Manager($this->storage);
-        $manager->participate('foo', 'bar');
+        $subject = new Subject($this->storage);
+        $subject->participate('foo', 'bar');
 
         // Act
-        $result = $manager->participates('foo');
+        $result = $subject->participates('foo');
 
         // Assert
         $this->assertTrue($result);
     }
 
-    public function testCheckParticipatesTestObjectSuccess()
+    /**
+     * @test
+     */
+    public function check_if_subject_participates_in_a_chosen_test()
     {
         // Arrange
-        $manager = new Manager($this->storage);
-        $manager->participate(new Test('foo'), null);
+        $subject = new Subject($this->storage);
+        $subject->participate(new Test('foo'), null);
 
         // Act
-        $result = $manager->participates('foo');
+        $result = $subject->participates('foo');
 
         // Assert
         $this->assertTrue($result);
@@ -65,11 +68,11 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     public function testCheckParticipatesTestVariantObjectSuccess()
     {
         // Arrange
-        $manager = new Manager($this->storage);
-        $manager->participate(new Test('foo'), new SimpleVariant('bar'));
+        $subject = new Subject($this->storage);
+        $subject->participate(new Test('foo'), new SimpleVariant('bar'));
 
         // Act
-        $result = $manager->participates('foo', 'bar');
+        $result = $subject->participates('foo', 'bar');
 
         // Assert
         $this->assertTrue($result);
@@ -78,11 +81,11 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     public function testCheckParticipatesVariantSuccess()
     {
         // Arrange
-        $manager = new Manager($this->storage);
-        $manager->participate('foo', 'bar');
+        $subject = new Subject($this->storage);
+        $subject->participate('foo', 'bar');
 
         // Act
-        $result = $manager->participates('foo', 'bar');
+        $result = $subject->participates('foo', 'bar');
 
         // Assert
         $this->assertTrue($result);
@@ -91,11 +94,11 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     public function testCheckParticipatesVariantFail()
     {
         // Arrange
-        $manager = new Manager($this->storage);
-        $manager->participate('foo', 'yolo');
+        $subject = new Subject($this->storage);
+        $subject->participate('foo', 'yolo');
 
         // Act
-        $result = $manager->participates('foo', 'bar');
+        $result = $subject->participates('foo', 'bar');
 
         // Assert
         $this->assertFalse($result);

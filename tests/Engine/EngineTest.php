@@ -14,6 +14,8 @@ use PhpAb\Participation\Manager;
 use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\Adapter\Runtime;
 use PhpAb\Storage\Storage;
+use PhpAb\Subject;
+use PhpAb\SubjectInterface;
 use PhpAb\Test\Test;
 use PhpAb\Variant\Chooser\IdentifierChooser;
 use PhpAb\Variant\Chooser\RandomChooser;
@@ -39,14 +41,14 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['getIdentifier', 'run'])
             ->getMock();
 
-        $this->manager = $manager = $this->getMockBuilder(ManagerInterface::class)
+        $this->manager = $manager = $this->getMockBuilder(SubjectInterface::class)
             ->getMock();
     }
 
     public function testEmptyManager()
     {
         // Arrange
-        $manager = new Manager(new Storage(new Runtime()));
+        $manager = new Subject(new Storage(new Runtime()));
         $engine = new Engine();
 
         // Act
@@ -136,7 +138,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $storage = new Storage(new Runtime());
         $storage->set('foo', 'bar');
 
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
 
         $test = new Test('foo');
 
@@ -161,7 +163,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $storage = new Storage(new Runtime());
         $storage->set('foo', null);
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
 
         $engine = new Engine();
         $engine->addTest(
@@ -184,7 +186,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
 
         $engine = new Engine();
         $engine->addTest(
@@ -207,7 +209,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
 
         $test = new Test('foo');
         $test->addVariant(new SimpleVariant('yolo'));
@@ -232,7 +234,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
 
         $test = new Test('t1');
         $test->addVariant(new SimpleVariant('v1'));
@@ -259,7 +261,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     {
         // Arrange
         $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
         $test = new Test('t1');
 
         $engine = new Engine();
@@ -292,7 +294,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
                 ]
             )
         );
-        $manager = new Manager($storage);
+        $manager = new Subject($storage);
         $analyticsData = new Google();
 
         $filter = new Percentage(5);
@@ -340,7 +342,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test->addVariant(new SimpleVariant('_control'));
 
         // Act
-        $engine->test($this->getMock(ManagerInterface::class));
+        $engine->test($this->getMock(SubjectInterface::class));
         $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
 
         // Assert
@@ -355,8 +357,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine();
 
         // Act
-        $engine->test($this->getMock(ManagerInterface::class));
-        $engine->test($this->getMock(ManagerInterface::class));
+        $engine->test($this->getMock(SubjectInterface::class));
+        $engine->test($this->getMock(SubjectInterface::class));
 
         // Assert
     }

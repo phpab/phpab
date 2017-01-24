@@ -13,6 +13,7 @@ use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\ManagerInterface;
+use PhpAb\SubjectInterface;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
 
@@ -58,9 +59,7 @@ interface EngineInterface
     /**
      * Starts the tests
      *
-     * @param ManagerInterface $manager
-     *
-     * @return null
+     * @param SubjectInterface $subject The subject which is tested (mostly the user)
      */
-    public function test(ManagerInterface $manager);
+    public function test(SubjectInterface $subject);
 }

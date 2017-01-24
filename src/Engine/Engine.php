@@ -17,6 +17,7 @@ use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
 use PhpAb\Participation\Filter\FilterInterface;
 use PhpAb\Participation\ManagerInterface;
+use PhpAb\SubjectInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
 use PhpAb\Variant\Chooser\ChooserInterface;
@@ -99,7 +100,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     /**
      * {@inheritDoc}
      */
-    public function test(ManagerInterface $manager)
+    public function test(SubjectInterface $subject)
     {
         // Check if already locked
         if ($this->locked) {
@@ -110,7 +111,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->runTestBagOnSubject($testBag, $manager);
+            $this->runTestBagOnSubject($testBag, $subject);
         }
     }
 
@@ -118,14 +119,14 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
      * Process the test bag
      *
      * @param Bag $bag
-     * @param ManagerInterface $manager
+     * @param SubjectInterface $manager
      */
-    private function runTestBagOnSubject(Bag $bag, ManagerInterface $manager)
+    private function runTestBagOnSubject(Bag $bag, SubjectInterface $subject)
     {
         $test = $bag->getTest();
 
-        $isParticipating = $manager->participates($test->getIdentifier());
-        $testParticipation = $manager->getParticipatingVariant($test->getIdentifier());
+        $isParticipating = $subject->participates($test->getIdentifier());
+        $testParticipation = $subject->getParticipatingVariant($test->getIdentifier());
 
         // Check if the user is marked as "do not participate".
         if ($isParticipating && null === $testParticipation) {
@@ -139,7 +140,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
             // to null so he will not participate in the future, too.
             $this->dispatch(Events::BLOCK_PARTICIPATION, [$this, $bag]);
 
-            $manager->participate($test->getIdentifier(), null);
+            $subject->participate($test->getIdentifier(), null);
             return;
         }
 
@@ -161,12 +162,12 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
         if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
             $this->dispatch(Events::VARIANT_MISSING, [$this, $bag]);
 
-            $manager->participate($test->getIdentifier(), null);
+            $subject->participate($test->getIdentifier(), null);
             return;
         }
 
         // Store the chosen variant so he will not switch between different states
-        $manager->participate($test->getIdentifier(), $chosen->getIdentifier());
+        $subject->participate($test->getIdentifier(), $chosen->getIdentifier());
 
         $this->activateVariant($bag, $chosen);
     }
