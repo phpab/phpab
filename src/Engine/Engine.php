@@ -36,7 +36,7 @@ class Engine extends Dispatcher implements EngineInterface, DispatcherInterface
     public $tests = [];
 
     /**
-     * The participation manager used to check if a user particiaptes.
+     * The participation manager used to check if a user participates.
      *
      * @var ManagerInterface
      */
