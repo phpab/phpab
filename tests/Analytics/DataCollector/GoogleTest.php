@@ -11,8 +11,8 @@ namespace PhpAb\Analytics\DataCollector;
 
 use PhpAb\Test\Bag;
 use PhpAb\Test\Test;
-use PhpAb\Participation\Filter\Percentage;
-use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Filter\Percentage;
+use PhpAb\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PHPUnit_Framework_TestCase;
 

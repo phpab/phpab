@@ -15,12 +15,12 @@ use PhpAb\Events;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
-use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Filter\FilterInterface;
 use PhpAb\Participation\ManagerInterface;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
-use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Chooser\ChooserInterface;
 use PhpAb\Variant\VariantInterface;
 
 /**

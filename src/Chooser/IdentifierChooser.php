@@ -7,17 +7,34 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant\Chooser;
+namespace PhpAb\Chooser;
 
 use PhpAb\Variant\VariantInterface;
 
 /**
- * A variant chooser that makes its choice randomly.
+ * A static choice implementation. The choice has been set by default already.
  *
  * @package PhpAb
  */
-class RandomChooser implements ChooserInterface
+class IdentifierChooser implements ChooserInterface
 {
+    /**
+     * The index of the variant to use.
+     *
+     * @var int
+     */
+    private $choice;
+
+    /**
+     * Initializes a new instance of this class.
+     *
+     * @param int $choice
+     */
+    public function __construct($choice)
+    {
+        $this->choice = $choice;
+    }
+
     /**
      * {@inheritDoc}
      *
@@ -25,14 +42,10 @@ class RandomChooser implements ChooserInterface
      */
     public function chooseVariant($variants)
     {
-        $count = count($variants);
-        if (0 === $count) {
-            return null;
+        if (array_key_exists($this->choice, $variants)) {
+            return $variants[$this->choice];
         }
 
-        $chosenCount = mt_rand(0, $count - 1);
-        $keys = array_keys($variants);
-
-        return $variants[$keys[$chosenCount]];
+        return null;
     }
 }

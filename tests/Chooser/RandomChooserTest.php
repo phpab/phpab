@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant\Chooser;
+namespace PhpAb\Chooser;
 
 use PhpAb\Variant\VariantInterface;
 use phpmock\functions\FixedValueFunction;

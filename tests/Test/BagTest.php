@@ -9,8 +9,8 @@
 
 namespace PhpAb\Test;
 
-use PhpAb\Participation\Filter\FilterInterface;
-use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Filter\FilterInterface;
+use PhpAb\Chooser\ChooserInterface;
 use PHPUnit_Framework_TestCase;
 
 class BagTest extends PHPUnit_Framework_TestCase

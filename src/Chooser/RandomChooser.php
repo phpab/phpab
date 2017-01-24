@@ -7,22 +7,32 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Variant\Chooser;
+namespace PhpAb\Chooser;
 
 use PhpAb\Variant\VariantInterface;
 
 /**
- * A VariantChooser is a class that chooses from n Variants e.g. by Propability
+ * A variant chooser that makes its choice randomly.
  *
  * @package PhpAb
  */
-interface ChooserInterface
+class RandomChooser implements ChooserInterface
 {
     /**
-     * Chooses the Variant from an array of Variants
+     * {@inheritDoc}
      *
      * @param VariantInterface[] $variants Variants to choose from
-     * @return VariantInterface|null the chosen Variant or null if none given
      */
-    public function chooseVariant($variants);
+    public function chooseVariant($variants)
+    {
+        $count = count($variants);
+        if (0 === $count) {
+            return null;
+        }
+
+        $chosenCount = mt_rand(0, $count - 1);
+        $keys = array_keys($variants);
+
+        return $variants[$keys[$chosenCount]];
+    }
 }

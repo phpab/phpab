@@ -7,7 +7,7 @@
  * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
-namespace PhpAb\Participation\Filter;
+namespace PhpAb\Filter;
 
 use InvalidArgumentException;
 

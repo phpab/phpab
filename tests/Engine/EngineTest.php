@@ -9,7 +9,7 @@
 
 namespace PhpAb\Engine;
 
-use PhpAb\Participation\Filter\Percentage;
+use PhpAb\Filter\Percentage;
 use PhpAb\Participation\Manager;
 use PhpAb\Participation\ManagerInterface;
 use PhpAb\Storage\Adapter\Runtime;
@@ -17,8 +17,8 @@ use PhpAb\Storage\Storage;
 use PhpAb\Subject;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\Test;
-use PhpAb\Variant\Chooser\IdentifierChooser;
-use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Chooser\IdentifierChooser;
+use PhpAb\Chooser\RandomChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 use PhpAb\Analytics\DataCollector\Google;

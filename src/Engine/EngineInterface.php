@@ -11,11 +11,11 @@ namespace PhpAb\Engine;
 
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
-use PhpAb\Participation\Filter\FilterInterface;
+use PhpAb\Filter\FilterInterface;
 use PhpAb\Participation\ManagerInterface;
 use PhpAb\SubjectInterface;
 use PhpAb\Test\TestInterface;
-use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Chooser\ChooserInterface;
 
 /**
  * The interface that should be implemented by the engine.
