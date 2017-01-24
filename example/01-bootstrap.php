@@ -23,10 +23,15 @@ $engine = new Engine();
 $engine->addSubscriber($analyticsData);
 
 // Create a tests and its variants
-$test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'exp1']);
-$test->addVariant(new SimpleVariant('_control'));
-$test->addVariant(new SimpleVariant('_variant1'));
-$test->addVariant(new SimpleVariant('_variant2'));
+$test = new Test(
+    'foo_test',
+        [
+            new SimpleVariant('_control'),
+            new SimpleVariant('_variant1'),
+            new SimpleVariant('_variant2')
+        ],
+        [Google::EXPERIMENT_ID => 'exp1']
+);
 
 // Add the tests to the Engine
 $engine->addTest($test, new Percentage(50), new RandomChooser());
