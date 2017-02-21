@@ -122,6 +122,9 @@ class Engine implements EngineInterface
      * Process the test bag
      *
      * @param SubjectInterface $subject
+     * @param TestInterface $test
+     * @param FilterInterface $filter
+     * @param ChooserInterface $chooser
      *
      * @return VariantInterface
      */
