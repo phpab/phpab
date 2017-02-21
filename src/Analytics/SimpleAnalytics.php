@@ -7,14 +7,14 @@ class SimpleAnalytics implements AnalyticsInterface
     /**
      * @var array
      */
-    private $particioations = [];
+    private $participations = [];
 
     /**
      * {@inheritDoc}
      */
     public function registerParticipation(Participation $participation)
     {
-        $this->particioations[] = $participation;
+        $this->participations[] = $participation;
     }
 
     /**
@@ -22,6 +22,6 @@ class SimpleAnalytics implements AnalyticsInterface
      */
     public function getParticipations()
     {
-        return $this->particioations;
+        return $this->participations;
     }
 }

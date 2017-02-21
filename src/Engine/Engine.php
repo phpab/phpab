@@ -123,21 +123,23 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
+            // Check if the user is marked as "do not participate".
+            if (! $subject->participationIsBlocked($testBag->getTest())) {
+                /**
+                 * @var VariantInterface $variant
+                 */
+                $variant = $this->determineChosenVariant(
+                    $subject,
+                    $testBag->getTest(),
+                    $testBag->getParticipationFilter(),
+                    $testBag->getVariantChooser()
+                );
 
-            /**
- * @var VariantInterface $variant
-*/
-            $variant = $this->determineChosenVariant(
-                $subject,
-                $testBag->getTest(),
-                $testBag->getParticipationFilter(),
-                $testBag->getVariantChooser()
-            );
+                // Run the variant
+                $variant->run();
 
-            // Run the variant
-            $variant->run();
-
-            $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant));
+                $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant));
+            }
         }
     }
 
@@ -159,12 +161,6 @@ class Engine implements EngineInterface
     ) {
     
         $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
-
-        // Check if the user is marked as "do not participate".
-        if ($subject->participationIsBlocked($test)) {
-            // Events::PARTICIPATION_BLOCKED
-            return $dummyVariant;
-        }
 
         if ($subject->participates($test)) {
             $variant = $subject->getVariant($test);

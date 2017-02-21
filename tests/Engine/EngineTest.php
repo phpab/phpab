@@ -9,7 +9,6 @@
 
 namespace PhpAb\Engine;
 
-use Guzzle\Tests\Service\Mock\Command\Sub\Sub;
 use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Analytics\SimpleAnalytics;
 use PhpAb\Chooser\RandomChooser;
