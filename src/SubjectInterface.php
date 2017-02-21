@@ -24,7 +24,21 @@ interface SubjectInterface
      */
     public function participate(TestInterface $test, VariantInterface $variant);
 
+    /**
+     * Check if the participation is blocked for a given test
+     *
+     * @param \PhpAb\Test\TestInterface $test
+     *
+     * @return boolean
+     */
     public function participationIsBlocked(TestInterface $test);
 
+    /**
+     * Block the participation for a given test
+     *
+     * @param \PhpAb\Test\TestInterface $test
+     *
+     * @return null
+     */
     public function blockParticipationFor(TestInterface $test);
 }

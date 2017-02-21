@@ -64,6 +64,9 @@ class Subject implements SubjectInterface
         $this->storage->set($testID, $variant->getIdentifier());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function participationIsBlocked(TestInterface $test)
     {
         $participation = $this->participates($test);
@@ -72,6 +75,9 @@ class Subject implements SubjectInterface
         return null === $participation;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function blockParticipationFor(TestInterface $test)
     {
         $testID = $test->getIdentifier();
