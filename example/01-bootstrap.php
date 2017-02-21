@@ -19,7 +19,7 @@ use PhpAb\Variant\SimpleVariant;
 $user = new \PhpAb\Subject(new \PhpAb\Storage\CookieStorage('phpab'));
 
 // Create the Engine
-$engine = new Engine();
+$engine = new Engine(new \PhpAb\Analytics\SimpleAnalytics());
 
 // Create a tests and its variants
 $test = new Test(
