@@ -20,7 +20,6 @@ $user = new \PhpAb\Subject(new \PhpAb\Storage\CookieStorage('phpab'));
 
 // Create the Engine
 $engine = new Engine();
-$engine->addSubscriber($analyticsData);
 
 // Create a tests and its variants
 $test = new Test(
