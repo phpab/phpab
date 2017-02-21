@@ -122,7 +122,7 @@ class Engine implements EngineInterface
         foreach ($this->tests as $testBag) {
 
             /** @var VariantInterface $variant */
-            $variant = $this->getChosenVariant(
+            $variant = $this->determineChosenVariant(
                 $subject,
                 $testBag->getTest(),
                 $testBag->getParticipationFilter(),
@@ -146,7 +146,7 @@ class Engine implements EngineInterface
      *
      * @return VariantInterface
      */
-    private function getChosenVariant(
+    private function determineChosenVariant(
         SubjectInterface $subject,
         TestInterface $test,
         FilterInterface $filter,
@@ -154,12 +154,6 @@ class Engine implements EngineInterface
     ) {
     
         $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
-
-        if (! $test->getVariants()) {
-            // There are no variants for this test
-            return $dummyVariant;
-        }
-
 
         // Check if the user is marked as "do not participate".
         if ($subject->participationIsBlocked($test)) {
@@ -173,7 +167,7 @@ class Engine implements EngineInterface
             return $variant;
         }
 
-        if ($filter->shouldParticipate()) {
+        if ($filter->shouldParticipate() && $test->getVariants()) {
             // Choose a variant for later usage. If the user should participate this one will be used
             $chosen = $chooser->chooseVariant($test->getVariants());
 
@@ -181,6 +175,12 @@ class Engine implements EngineInterface
             $subject->participate($test, $chosen);
 
             return $chosen;
+        }
+
+        if ($filter->shouldParticipate() && !$test->getVariants()) {
+            // There are no variants for this test
+            $subject->participate($test);
+            return $dummyVariant;
         }
 
         // The user should not participate so let's block the participation

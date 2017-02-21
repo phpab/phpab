@@ -56,7 +56,7 @@ class SubjectTest extends TestCase
     /**
      * @test
      */
-    public function check_if_subject_participates_in_a_chosen_test()
+    public function check_if_subject_participates_in_a_given_test()
     {
         // Arrange
         $subject = new Subject($this->storage);
@@ -68,6 +68,22 @@ class SubjectTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function block_participation_for_a_given_test()
+    {
+        // Arrange
+        $subject = new Subject($this->storage);
+        $test = new Test('foo');
+
+        // Act
+        $subject->blockParticipationFor($test);
+
+        // Assert
+        $this->assertTrue($subject->participationIsBlocked($test));
     }
 
     public function testCheckParticipatesTestVariantSuccess()

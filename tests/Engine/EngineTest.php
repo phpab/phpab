@@ -10,6 +10,7 @@
 namespace PhpAb\Engine;
 
 use PhpAb\Analytics\SimpleAnalytics;
+use PhpAb\Chooser\RandomChooser;
 use PhpAb\Filter\Percentage;
 use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Subject;
@@ -37,11 +38,6 @@ class EngineTest extends TestCase
         $this->variant = $this->getMockBuilder(VariantInterface::class)
             ->setMethods(['getIdentifier', 'run'])
             ->getMock();
-
-        $this->manager = $subject = $this->getMockBuilder(SubjectInterface::class)
-            ->getMock();
-
-        $this->subject = new Subject(new RuntimeStorage());
     }
 
     public function testEmptyManager()
@@ -50,7 +46,7 @@ class EngineTest extends TestCase
         $engine = new Engine(new SimpleAnalytics());
 
         // Act
-        $result = $engine->test($this->subject);
+        $result = $engine->test(new Subject(new RuntimeStorage()));
 
         // Assert
         $this->assertNull($result);
@@ -99,7 +95,10 @@ class EngineTest extends TestCase
         $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
     }
 
-    public function testUserGetsNewParticipation()
+    /**
+     * @test
+     */
+    public function user_gets_new_participation()
     {
         // Arrange
         $test = new Test('t1', [
@@ -116,15 +115,20 @@ class EngineTest extends TestCase
             []
         );
 
+        $subject = new Subject(new RuntimeStorage());
+
         // Act
-        $engine->test($this->subject);
-        $result = $this->subject->participates($engine->getTest('t1'));
+        $engine->test($subject);
+        $result = $subject->participates($engine->getTest('t1'));
 
         // Assert
         $this->assertTrue($result);
     }
 
-    public function testNoVariantAvailableForTest()
+    /**
+     * @test
+     */
+    public function subject_can_participate_in_a_test_even_if_the_test_has_no_variants()
     {
         // Arrange
         $test = new Test('t1');
@@ -133,16 +137,19 @@ class EngineTest extends TestCase
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
-            new IdentifierChooser('v1'),
+            new RandomChooser(),
             []
         );
-        $engine->test($this->subject);
+
+        $subject = new Subject(new RuntimeStorage());
 
         // Act
-        $result = $this->subject->participates($engine->getTest('t1'));
+        $engine->test($subject);
+
+        $result = $subject->participates($test);
 
         // Assert
-        $this->assertFalse($result);
+        $this->assertTrue($result);
     }
 
     /**
@@ -175,5 +182,25 @@ class EngineTest extends TestCase
         $engine->test($this->createMock(SubjectInterface::class));
 
         // Assert
+    }
+
+    /**
+     * @test
+     */
+    public function it_blocks_a_test_correctly()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+        $subject = new Subject(new RuntimeStorage());
+
+        $test = new Test('t1');
+
+        $engine->addTest($test, new Percentage(0), new RandomChooser());
+
+        // Act
+        $engine->test($subject);
+
+        // Assert
+        $this->assertTrue($subject->participationIsBlocked($test));
     }
 }
