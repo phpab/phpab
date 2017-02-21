@@ -61,4 +61,11 @@ interface EngineInterface
      * @param SubjectInterface $subject The subject which is tested (mostly the user)
      */
     public function test(SubjectInterface $subject);
+
+    /**
+     * @throws \RuntimeException
+     *
+     * @return \PhpAb\Analytics\AnalyticsInterface
+     */
+    public function getAnalytics();
 }

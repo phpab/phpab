@@ -9,6 +9,7 @@
 
 namespace PhpAb\Engine;
 
+use PhpAb\Analytics\SimpleAnalytics;
 use PhpAb\Filter\Percentage;
 use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Subject;
@@ -45,7 +46,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testEmptyManager()
     {
         // Arrange
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
         $result = $engine->test($this->subject);
@@ -60,7 +61,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test1 = new Test('foo');
         $test2 = new Test('bar');
 
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
         $engine->addTest($test1, $this->alwaysParticipateFilter, $this->chooser, []);
@@ -78,7 +79,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testGetTestNotFound()
     {
         // Arrange
-        $engine = new Engine($this->manager);
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
         $engine->getTest('foo');
@@ -90,7 +91,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testAlreadyExistsWithSameName()
     {
         // Arrange
-        $engine = new Engine($this->manager);
+        $engine = new Engine(new SimpleAnalytics());
         $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Act
@@ -106,7 +107,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
             new SimpleVariant('v3')
         ]);
 
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
@@ -127,7 +128,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         // Arrange
         $test = new Test('t1');
 
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
         $engine->addTest(
             $test,
             $this->alwaysParticipateFilter,
@@ -149,7 +150,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testLockEngine()
     {
         // Arrange
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
 
         $test = new Test('foo_test', [new SimpleVariant('_control')]);
 
@@ -166,7 +167,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testStartTwice()
     {
         // Arrange
-        $engine = new Engine();
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
         $engine->test($this->getMock(SubjectInterface::class));

@@ -9,6 +9,8 @@
 
 namespace PhpAb\Engine;
 
+use PhpAb\Analytics\AnalyticsInterface;
+use PhpAb\Analytics\Participation;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
@@ -40,6 +42,16 @@ class Engine implements EngineInterface
      * @var boolean
      */
     private $locked = false;
+
+    /**
+     * @var \PhpAb\Analytics\AnalyticsInterface
+     */
+    private $analytics;
+
+    public function __construct(AnalyticsInterface $analytics)
+    {
+        $this->analytics = $analytics;
+    }
 
     /**
      * {@inheritDoc}
@@ -108,13 +120,19 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
+
+            /** @var VariantInterface $variant */
             $variant = $this->getChosenVariant(
                 $subject,
                 $testBag->getTest(),
                 $testBag->getParticipationFilter(),
                 $testBag->getVariantChooser()
             );
+
+            // Run the variant
             $variant->run();
+
+            $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant));
         }
     }
 
@@ -171,6 +189,19 @@ class Engine implements EngineInterface
         // Events::BLOCK_PARTICIPATION
 
         $subject->blockParticipationFor($test);
+
         return $dummyVariant;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAnalytics()
+    {
+        if(! $this->locked) {
+            throw new \RuntimeException('Getting the analytics before testing a user does not work.');
+        }
+
+        return $this->analytics;
     }
 }
