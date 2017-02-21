@@ -9,6 +9,7 @@
 
 namespace PhpAb\Engine;
 
+use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Analytics\SimpleAnalytics;
 use PhpAb\Chooser\RandomChooser;
 use PhpAb\Filter\Percentage;
@@ -202,5 +203,34 @@ class EngineTest extends TestCase
 
         // Assert
         $this->assertTrue($subject->participationIsBlocked($test));
+    }
+
+    /**
+     * @test
+     */
+    public function get_analytics()
+    {
+        // Arrange
+        $subject = new Subject(new RuntimeStorage());
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->test($subject);
+
+        // Assert
+        $this->assertInstanceOf(AnalyticsInterface::class, $engine->getAnalytics());
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function get_analytics_before_engine_was_started()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->getAnalytics();
     }
 }
