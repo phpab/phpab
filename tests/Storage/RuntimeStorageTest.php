@@ -9,9 +9,9 @@
 
 namespace PhpAb\Storage;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RuntimeStorageTest extends PHPUnit_Framework_TestCase
+class RuntimeStorageTest extends TestCase
 {
     /**
      * @covers PhpAb\Storage\RuntimeStorage::__construct

@@ -12,9 +12,9 @@ namespace PhpAb;
 use PhpAb\Storage\RuntimeStorage;
 use PhpAb\Test\Test;
 use PhpAb\Variant\SimpleVariant;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class SubjectTest extends PHPUnit_Framework_TestCase
+class SubjectTest extends TestCase
 {
     private $storage;
 

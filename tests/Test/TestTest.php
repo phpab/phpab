@@ -10,9 +10,9 @@
 namespace PhpAb\Test;
 
 use PhpAb\Variant\SimpleVariant;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class TestTest extends PHPUnit_Framework_TestCase
+class TestTest extends TestCase
 {
     /**
      * @covers PhpAb\Test\Test::__construct

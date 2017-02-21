@@ -9,9 +9,9 @@
 
 namespace PhpAb\Chooser;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class IdentifierChooserTest extends PHPUnit_Framework_TestCase
+class IdentifierChooserTest extends TestCase
 {
     public function testChooseStatic()
     {

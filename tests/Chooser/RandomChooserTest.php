@@ -13,9 +13,9 @@ use PhpAb\Variant\VariantInterface;
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class RandomChooserTest extends PHPUnit_Framework_TestCase
+class RandomChooserTest extends TestCase
 {
     public function testChooseVariants()
     {
@@ -28,9 +28,9 @@ class RandomChooserTest extends PHPUnit_Framework_TestCase
         $mock->enable();
 
         // Arrange
-        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
-        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
-        $variant3 = $this->getMock(VariantInterface::class, [], ['v3']);
+        $variant1 = $this->createMock(VariantInterface::class, [], ['v1']);
+        $variant2 = $this->createMock(VariantInterface::class, [], ['v2']);
+        $variant3 = $this->createMock(VariantInterface::class, [], ['v3']);
 
         $chooser = new RandomChooser();
 
@@ -56,8 +56,8 @@ class RandomChooserTest extends PHPUnit_Framework_TestCase
         $mock->enable();
 
         // Arrange
-        $variant1 = $this->getMock(VariantInterface::class, [], ['v1']);
-        $variant2 = $this->getMock(VariantInterface::class, [], ['v2']);
+        $variant1 = $this->createMock(VariantInterface::class, [], ['v1']);
+        $variant2 = $this->createMock(VariantInterface::class, [], ['v2']);
 
         $chooser = new RandomChooser();
 

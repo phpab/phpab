@@ -9,7 +9,9 @@
 
 namespace PhpAb\Variant;
 
-class SimpleVariantTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SimpleVariantTest extends TestCase
 {
     public function testGetIdentifier()
     {

@@ -10,8 +10,9 @@
 namespace PhpAb\Variant;
 
 use PhpAb\Exception\TestExecutionException;
+use PHPUnit\Framework\TestCase;
 
-class CallbackVariantTest extends \PHPUnit_Framework_TestCase
+class CallbackVariantTest extends TestCase
 {
     public function testGetIdentifier()
     {

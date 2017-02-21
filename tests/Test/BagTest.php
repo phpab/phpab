@@ -11,9 +11,9 @@ namespace PhpAb\Test;
 
 use PhpAb\Filter\FilterInterface;
 use PhpAb\Chooser\ChooserInterface;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class BagTest extends PHPUnit_Framework_TestCase
+class BagTest extends TestCase
 {
     private $test;
     private $participationFilter;
@@ -21,9 +21,9 @@ class BagTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->test = $this->getMock(TestInterface::class);
-        $this->participationFilter = $this->getMock(FilterInterface::class);
-        $this->variantChooser = $this->getMock(ChooserInterface::class);
+        $this->test = $this->createMock(TestInterface::class);
+        $this->participationFilter = $this->createMock(FilterInterface::class);
+        $this->variantChooser = $this->createMock(ChooserInterface::class);
     }
 
     public function testGetTest()

@@ -18,8 +18,9 @@ use PhpAb\Test\Test;
 use PhpAb\Chooser\IdentifierChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
+use PHPUnit\Framework\TestCase;
 
-class EngineTest extends \PHPUnit_Framework_TestCase
+class EngineTest extends TestCase
 {
     private $alwaysParticipateFilter;
     private $chooser;
@@ -155,7 +156,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $test = new Test('foo_test', [new SimpleVariant('_control')]);
 
         // Act
-        $engine->test($this->getMock(SubjectInterface::class));
+        $engine->test($this->createMock(SubjectInterface::class));
         $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
 
         // Assert
@@ -170,8 +171,8 @@ class EngineTest extends \PHPUnit_Framework_TestCase
         $engine = new Engine(new SimpleAnalytics());
 
         // Act
-        $engine->test($this->getMock(SubjectInterface::class));
-        $engine->test($this->getMock(SubjectInterface::class));
+        $engine->test($this->createMock(SubjectInterface::class));
+        $engine->test($this->createMock(SubjectInterface::class));
 
         // Assert
     }

@@ -12,9 +12,9 @@ namespace PhpAb\Filter;
 use phpmock\functions\FixedValueFunction;
 use phpmock\Mock;
 use phpmock\MockBuilder;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-class PercentageTest extends PHPUnit_Framework_TestCase
+class PercentageTest extends TestCase
 {
     public function testShouldParticipateWithFullPropability()
     {

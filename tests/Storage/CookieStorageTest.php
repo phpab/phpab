@@ -9,7 +9,7 @@
 
 namespace PhpAb\Storage;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use phpmock\MockBuilder;
 use phpmock\Mock;
 use phpmock\functions\FixedValueFunction;
@@ -18,7 +18,7 @@ use phpmock\functions\FixedValueFunction;
  * During the execution of some of these tests,
  * global functions might be overwritten
  */
-class CookieStorageTest extends PHPUnit_Framework_TestCase
+class CookieStorageTest extends TestCase
 {
     /**
      * @var array Default test results used for test suite
