@@ -9,6 +9,7 @@
 
 namespace PhpAb\Engine;
 
+use Guzzle\Tests\Service\Mock\Command\Sub\Sub;
 use PhpAb\Analytics\AnalyticsInterface;
 use PhpAb\Analytics\SimpleAnalytics;
 use PhpAb\Chooser\RandomChooser;
@@ -53,11 +54,14 @@ class EngineTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function testAddTest()
+    /**
+     * @test
+     */
+    public function add_tests()
     {
         // Arrange
-        $test1 = new Test('foo');
-        $test2 = new Test('bar');
+        $test1 = new Test('foo', [new SimpleVariant('v1')]);
+        $test2 = new Test('bar', [new SimpleVariant('v1')]);
 
         $engine = new Engine(new SimpleAnalytics());
 
@@ -90,10 +94,10 @@ class EngineTest extends TestCase
     {
         // Arrange
         $engine = new Engine(new SimpleAnalytics());
-        $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
+        $engine->addTest(new Test('foo', [new SimpleVariant('v1')]), $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Act
-        $engine->addTest(new Test('foo'), $this->alwaysParticipateFilter, $this->chooser, []);
+        $engine->addTest(new Test('foo', [new SimpleVariant('v1')]), $this->alwaysParticipateFilter, $this->chooser, []);
     }
 
     /**
@@ -129,10 +133,29 @@ class EngineTest extends TestCase
     /**
      * @test
      */
+    public function remembered_participation()
+    {
+        $variant = new SimpleVariant('v1');
+        $test = new Test('t1', [$variant]);
+        $subject = new Subject(new RuntimeStorage());
+
+        $engine = new Engine(new SimpleAnalytics());
+        $engine->addTest($test, new Percentage(0), new RandomChooser());
+
+        $subject->participate($test, $variant);
+
+        $engine->test($subject);
+
+        $this->assertTrue($subject->participates($test));
+    }
+
+    /**
+     * @test
+     */
     public function subject_can_participate_in_a_test_even_if_the_test_has_no_variants()
     {
         // Arrange
-        $test = new Test('t1');
+        $test = new Test('t1', [new SimpleVariant('v1')]);
 
         $engine = new Engine(new SimpleAnalytics());
         $engine->addTest(
@@ -194,7 +217,7 @@ class EngineTest extends TestCase
         $engine = new Engine(new SimpleAnalytics());
         $subject = new Subject(new RuntimeStorage());
 
-        $test = new Test('t1');
+        $test = new Test('t1', [new SimpleVariant('v1')]);
 
         $engine->addTest($test, new Percentage(0), new RandomChooser());
 
@@ -232,5 +255,18 @@ class EngineTest extends TestCase
 
         // Act
         $engine->getAnalytics();
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function adding_test_without_variant_throws_exeption()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->addTest(new Test('t1'), new Percentage(100), new RandomChooser());
     }
 }

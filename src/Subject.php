@@ -37,7 +37,7 @@ class Subject implements SubjectInterface
     {
         $testID = $test->getIdentifier();
 
-        if (!$this->storage->has($testID)) {
+        if (! $this->storage->has($testID)) {
             return false;
         }
 
@@ -58,11 +58,9 @@ class Subject implements SubjectInterface
      * @param VariantInterface|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */
-    public function participate(TestInterface $test, VariantInterface $variant = null)
+    public function participate(TestInterface $test, VariantInterface $variant)
     {
-        // if no variant is given just participate in the test
-        $participation = null === $variant ? true : $variant->getIdentifier();
-        $this->storage->set($test->getIdentifier(), $participation);
+        $this->storage->set($test->getIdentifier(), $variant->getIdentifier());
     }
 
     /**
@@ -80,5 +78,10 @@ class Subject implements SubjectInterface
     public function blockParticipationFor(TestInterface $test)
     {
         $this->storage->set($test->getIdentifier(), false);
+    }
+
+    public function getVariant(TestInterface $test)
+    {
+        return $test->getVariant($this->storage->get($test->getIdentifier()));
     }
 }

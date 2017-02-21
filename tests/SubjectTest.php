@@ -116,7 +116,20 @@ class SubjectTest extends TestCase
         $this->assertFalse($result);
     }
 
-    // More to come
+    /**
+     * @test
+     */
+    public function get_variant_for_test()
+    {
+        $subject = new Subject($this->storage);
+        $variant = new SimpleVariant('yolo');
+
+        $test = new Test('foo', [$variant]);
+
+        $subject->participate($test, $variant);
+
+        $this->assertEquals($variant, $subject->getVariant($test));
+    }
 
     public function tearDown()
     {

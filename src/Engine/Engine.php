@@ -94,13 +94,16 @@ class Engine implements EngineInterface
         ChooserInterface $chooser,
         $options = []
     ) {
-
         if ($this->locked) {
             throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
         }
 
         if (isset($this->tests[$test->getIdentifier()])) {
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
+        }
+
+        if(! $test->getVariants()) {
+            throw new \RuntimeException('The test "'.$test->getIdentifier().'" must have at least one variant.');
         }
 
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
@@ -161,9 +164,8 @@ class Engine implements EngineInterface
             return $dummyVariant;
         }
 
-        // Let's try to recover a previously stored Variant
-        if ($rememberedVariantID = $subject->participates($test)) {
-            $variant = $test->getVariant($rememberedVariantID);
+        if ($subject->participates($test)) {
+            $variant = $subject->getVariant($test);
             return $variant;
         }
 
@@ -175,12 +177,6 @@ class Engine implements EngineInterface
             $subject->participate($test, $chosen);
 
             return $chosen;
-        }
-
-        if ($filter->shouldParticipate() && !$test->getVariants()) {
-            // There are no variants for this test
-            $subject->participate($test);
-            return $dummyVariant;
         }
 
         // The user should not participate so let's block the participation

@@ -12,6 +12,7 @@ interface SubjectInterface
      *
      * @param TestInterface|string $test The identifier of the test to check.
      * @param VariantInterface|string|null $variant The identifier of the variant to check
+     *
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
     public function participates(TestInterface $test, VariantInterface $variant = null);
@@ -23,7 +24,7 @@ interface SubjectInterface
      * @param VariantInterface|null $variant The identifier of the variant that was chosen.
      *                                       null if the subject should just participate in the test
      */
-    public function participate(TestInterface $test, VariantInterface $variant = null);
+    public function participate(TestInterface $test, VariantInterface $variant);
 
     /**
      * Check if the participation is blocked for a given test
@@ -42,4 +43,11 @@ interface SubjectInterface
      * @return null
      */
     public function blockParticipationFor(TestInterface $test);
+
+    /**
+     * @param \PhpAb\Test\TestInterface $test
+     *
+     * @return VariantInterface|false
+     */
+    public function getVariant(TestInterface $test);
 }
