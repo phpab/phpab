@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Variant;
@@ -17,8 +17,11 @@ class CallbackVariantTest extends TestCase
     public function testGetIdentifier()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function () {
-        });
+        $variant = new CallbackVariant(
+            'name',
+            function () {
+            }
+        );
 
         // Act
         $identifier = $variant->getIdentifier();
@@ -31,10 +34,13 @@ class CallbackVariantTest extends TestCase
     {
         // Arrange
         $action = null;
-        $variant = new CallbackVariant('name', function () use ($action) {
-            $action = 'Walter';
-            return $action;
-        });
+        $variant = new CallbackVariant(
+            'name',
+            function () use ($action) {
+                $action = 'Walter';
+                return $action;
+            }
+        );
 
         // Act
         // Assert
@@ -47,9 +53,12 @@ class CallbackVariantTest extends TestCase
     public function testRunClosureThrowsException()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function () {
-            throw new \RuntimeException;
-        });
+        $variant = new CallbackVariant(
+            'name',
+            function () {
+                throw new \RuntimeException;
+            }
+        );
 
         // Act
         $variant->run();
@@ -58,9 +67,12 @@ class CallbackVariantTest extends TestCase
     public function testRunReturnsNull()
     {
         // Arrange
-        $variant = new CallbackVariant('name', function () {
-            return 'Walter';
-        });
+        $variant = new CallbackVariant(
+            'name',
+            function () {
+                return 'Walter';
+            }
+        );
 
         // Act
         $result = $variant->run();

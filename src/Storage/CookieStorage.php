@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Storage;
@@ -42,9 +42,10 @@ class CookieStorage implements StorageInterface
     /**
      * Initializes a new instance of this class.
      *
-     * @param string $cookieName   The name the cookie.
-     * @param int   $ttl           How long should the cookie last in browser. Default 5 years
-     *                             Setting a negative number will make cookie expire after current session
+     * @param  string $cookieName The name the cookie.
+     * @param  int    $ttl        How long should the cookie last in browser. Default 5 years
+     *                            Setting a negative number will make cookie expire after
+     *                            current session
      * @throws InvalidArgumentException
      */
     public function __construct($cookieName, $ttl = 157766400)

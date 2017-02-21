@@ -2,7 +2,6 @@
 
 namespace PhpAb\Analytics;
 
-
 /**
  * Collects some participation data
  */

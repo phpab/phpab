@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Test;
@@ -50,10 +50,10 @@ class Bag
     /**
      * Initializes a new instance of this class.
      *
-     * @param TestInterface $test The test
-     * @param FilterInterface $participationFilter
+     * @param TestInterface    $test                The test
+     * @param FilterInterface  $participationFilter
      * @param ChooserInterface $variantChooser
-     * @param array $options Additional options
+     * @param array            $options             Additional options
      */
     public function __construct(
         TestInterface $test,

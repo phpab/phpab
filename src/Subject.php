@@ -29,8 +29,8 @@ class Subject implements SubjectInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface|string $test The identifier of the test to check.
-     * @param VariantInterface|string|null $variant The identifier of the variant to check
+     * @param  TestInterface|string         $test    The identifier of the test to check.
+     * @param  VariantInterface|string|null $variant The identifier of the variant to check
      * @return boolean|string Returns true when the user participates; false otherwise.
      */
     public function participates(TestInterface $test, VariantInterface $variant = null)
@@ -54,7 +54,7 @@ class Subject implements SubjectInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface|string $test The identifier of the test that should be participated.
+     * @param TestInterface|string  $test    The identifier of the test that should be participated.
      * @param VariantInterface|null $variant The identifier of the variant that was chosen or
      * null if the user does not participate in the test.
      */

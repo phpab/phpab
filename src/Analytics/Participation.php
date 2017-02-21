@@ -20,7 +20,7 @@ class Participation
     /**
      * Participation constructor.
      *
-     * @param \PhpAb\Test\TestInterface $test The test the participation is for
+     * @param \PhpAb\Test\TestInterface       $test    The test the participation is for
      * @param \PhpAb\Variant\VariantInterface $variant The variant chosen for this test
      */
     public function __construct(TestInterface $test, VariantInterface $variant)

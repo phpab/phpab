@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Chooser;
@@ -22,8 +22,8 @@ class RandomChooserTest extends TestCase
         // Override mt_rand
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
-                ->setName('mt_rand')
-                ->setFunctionProvider(new FixedValueFunction(2));
+            ->setName('mt_rand')
+            ->setFunctionProvider(new FixedValueFunction(2));
         $mock = $builder->build();
         $mock->enable();
 
@@ -35,11 +35,13 @@ class RandomChooserTest extends TestCase
         $chooser = new RandomChooser();
 
         // Act
-        $chosen = $chooser->chooseVariant([
+        $chosen = $chooser->chooseVariant(
+            [
             $variant1,
             $variant2,
             $variant3,
-        ]);
+            ]
+        );
 
         // Assert
         $this->assertSame($variant3, $chosen);
@@ -62,10 +64,12 @@ class RandomChooserTest extends TestCase
         $chooser = new RandomChooser();
 
         // Act
-        $chosen = $chooser->chooseVariant([
+        $chosen = $chooser->chooseVariant(
+            [
             'Walter' => $variant1,
             'White' => $variant2,
-        ]);
+            ]
+        );
 
         // Assert
         $this->assertSame($variant1, $chosen);

@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Engine;
@@ -106,11 +106,14 @@ class EngineTest extends TestCase
     public function user_gets_new_participation()
     {
         // Arrange
-        $test = new Test('t1', [
+        $test = new Test(
+            't1',
+            [
             new SimpleVariant('v1'),
             new SimpleVariant('v2'),
             new SimpleVariant('v3')
-        ]);
+            ]
+        );
 
         $engine = new Engine(new SimpleAnalytics());
         $engine->addTest(

@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Engine;
@@ -33,7 +33,7 @@ interface EngineInterface
     /**
      * Get a test from the engine
      *
-     * @param string $test The identifier of the test
+     * @param  string $test The identifier of the test
      * @throws TestNotFoundException Thrown when the requested test does not exists.
      * @return TestInterface
      */
@@ -42,10 +42,10 @@ interface EngineInterface
     /**
      * Adds a test to the Engine
      *
-     * @param TestInterface $test
-     * @param FilterInterface $filter
-     * @param ChooserInterface $chooser
-     * @param array $options
+     * @param  TestInterface    $test
+     * @param  FilterInterface  $filter
+     * @param  ChooserInterface $chooser
+     * @param  array            $options
      * @throws TestCollisionException Thrown when the test already exists.
      */
     public function addTest(

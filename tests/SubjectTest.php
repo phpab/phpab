@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb;
@@ -41,9 +41,12 @@ class SubjectTest extends TestCase
     {
         // Arrange
         $subject = new Subject($this->storage);
-        $test = new Test('foo', [
+        $test = new Test(
+            'foo',
+            [
             new SimpleVariant('bar')
-        ]);
+            ]
+        );
         $subject->participate($test, $test->getVariant('bar'));
 
         // Act

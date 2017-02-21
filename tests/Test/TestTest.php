@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Test;
@@ -56,17 +56,23 @@ class TestTest extends TestCase
     {
         // Arrange
         $variant = new SimpleVariant('identifier');
-        $test = new Test('identifier', [
+        $test = new Test(
+            'identifier',
+            [
             $variant,
-        ]);
+            ]
+        );
 
         // Act
         $result = $test->getVariants();
 
         // Assert
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'identifier' => $variant
-        ], $result);
+            ],
+            $result
+        );
     }
 
     /**
@@ -113,9 +119,12 @@ class TestTest extends TestCase
         $test = new Test('identifier', [$variant1]);
 
         // Assert
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'identifier1' => $variant1,
-        ], $test->getVariants());
+            ],
+            $test->getVariants()
+        );
     }
 
     /**
@@ -131,10 +140,13 @@ class TestTest extends TestCase
         $test = new Test('identifier', [$variant1, $variant2]);
 
         // Assert
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'identifier1' => $variant1,
             'identifier2' => $variant2,
-        ], $test->getVariants());
+            ],
+            $test->getVariants()
+        );
     }
 
     /**

@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Engine;
@@ -83,10 +83,10 @@ class Engine implements EngineInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface $test
-     * @param FilterInterface $filter
+     * @param TestInterface    $test
+     * @param FilterInterface  $filter
      * @param ChooserInterface $chooser
-     * @param array $options
+     * @param array            $options
      */
     public function addTest(
         TestInterface $test,
@@ -102,7 +102,7 @@ class Engine implements EngineInterface
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
 
-        if(! $test->getVariants()) {
+        if (! $test->getVariants()) {
             throw new \RuntimeException('The test "'.$test->getIdentifier().'" must have at least one variant.');
         }
 
@@ -124,7 +124,9 @@ class Engine implements EngineInterface
 
         foreach ($this->tests as $testBag) {
 
-            /** @var VariantInterface $variant */
+            /**
+ * @var VariantInterface $variant
+*/
             $variant = $this->determineChosenVariant(
                 $subject,
                 $testBag->getTest(),
@@ -143,8 +145,8 @@ class Engine implements EngineInterface
      * Process the test bag
      *
      * @param SubjectInterface $subject
-     * @param TestInterface $test
-     * @param FilterInterface $filter
+     * @param TestInterface    $test
+     * @param FilterInterface  $filter
      * @param ChooserInterface $chooser
      *
      * @return VariantInterface
@@ -194,7 +196,7 @@ class Engine implements EngineInterface
      */
     public function getAnalytics()
     {
-        if(! $this->locked) {
+        if (! $this->locked) {
             throw new \RuntimeException('Getting the analytics before testing a user does not work.');
         }
 

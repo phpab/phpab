@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Test;
@@ -45,9 +45,9 @@ class Test implements TestInterface
     /**
      * Initializes a new instance of this class.
      *
-     * @param string $identifier The identifier
-     * @param VariantInterface[] $variants The variants that this test has.
-     * @param array $options Case specific test options.
+     * @param string             $identifier The identifier
+     * @param VariantInterface[] $variants   The variants that this test has.
+     * @param array              $options    Case specific test options.
      */
     public function __construct($identifier, $variants = [], array $options = [])
     {
