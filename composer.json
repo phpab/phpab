@@ -51,13 +51,6 @@
         "scrutinizer/ocular": "^1.3",
         "phpunit/phpunit": "^5",
         "squizlabs/php_codesniffer": "^2.5",
-        "php-mock/php-mock": "^1.0",
-        "zendframework/zend-eventmanager": "^3.0",
-        "symfony/event-dispatcher": "^3.0"
-    },
-    "suggest": {
-        "symfony/event-dispatcher": "Allows to use the (way better) symfony EventDispatcher with the packages eventsystem.",
-        "phpab/analytics-mongodb": "Allows to save test participation in MongoDB.",
-        "phpab/analytics-pdo": "Allows to save test participation using PDO DBAL."
+        "php-mock/php-mock": "^2.0"
     }
 }
