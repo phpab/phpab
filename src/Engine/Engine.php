@@ -138,7 +138,7 @@ class Engine implements EngineInterface
                 // Run the variant
                 $variant->run();
 
-                $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant));
+                $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant, $testBag->getOptions()));
             }
         }
     }
