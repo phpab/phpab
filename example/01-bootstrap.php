@@ -36,3 +36,6 @@ $engine->addTest($test, new Percentage(50), new RandomChooser());
 
 // Start the engine
 $engine->test($user);
+
+// Now you can get the analysis of the test participations
+$results = $engine->getAnalytics()->getParticipations();
