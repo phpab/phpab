@@ -2,24 +2,25 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Engine;
 
-use PhpAb\Event\DispatcherInterface;
+use PhpAb\Analytics\AnalyticsInterface;
+use PhpAb\Analytics\Participation;
 use PhpAb\Exception\EngineLockedException;
 use PhpAb\Exception\TestCollisionException;
 use PhpAb\Exception\TestNotFoundException;
-use PhpAb\Participation\Filter\FilterInterface;
-use PhpAb\Participation\ManagerInterface;
+use PhpAb\Filter\FilterInterface;
+use PhpAb\SubjectInterface;
 use PhpAb\Test\Bag;
 use PhpAb\Test\TestInterface;
-use PhpAb\Variant\Chooser\ChooserInterface;
+use PhpAb\Chooser\ChooserInterface;
+use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * The engine used to start tests.
@@ -36,34 +37,6 @@ class Engine implements EngineInterface
     public $tests = [];
 
     /**
-     * The participation manager used to check if a user particiaptes.
-     *
-     * @var ManagerInterface
-     */
-    private $participationManager;
-
-    /**
-     * The event dispatcher that dispatches events related to tests.
-     *
-     * @var DispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * The default filter that is used when a test bag has no filter set.
-     *
-     * @var FilterInterface
-     */
-    private $filter;
-
-    /**
-     * The default variant chooser that is used when a test bag has no variant chooser set.
-     *
-     * @var ChooserInterface
-     */
-    private $chooser;
-
-    /**
      * Locks the engine for further manipulaton
      *
      * @var boolean
@@ -71,24 +44,13 @@ class Engine implements EngineInterface
     private $locked = false;
 
     /**
-     * Initializes a new instance of this class.
-     *
-     * @param ManagerInterface $participationManager Handles the Participation state
-     * @param DispatcherInterface $dispatcher Dispatches events
-     * @param FilterInterface|null $filter The default filter to use if no filter is provided for the test.
-     * @param ChooserInterface|null $chooser The default chooser to use if no chooser is provided for the test.
+     * @var \PhpAb\Analytics\AnalyticsInterface
      */
-    public function __construct(
-        ManagerInterface $participationManager,
-        DispatcherInterface $dispatcher,
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
-    ) {
+    private $analytics;
 
-        $this->participationManager = $participationManager;
-        $this->dispatcher = $dispatcher;
-        $this->filter = $filter;
-        $this->chooser = $chooser;
+    public function __construct(AnalyticsInterface $analytics)
+    {
+        $this->analytics = $analytics;
     }
 
     /**
@@ -121,18 +83,17 @@ class Engine implements EngineInterface
     /**
      * {@inheritDoc}
      *
-     * @param TestInterface $test
-     * @param array $options
-     * @param FilterInterface $filter
+     * @param TestInterface    $test
+     * @param FilterInterface  $filter
      * @param ChooserInterface $chooser
+     * @param array            $options
      */
     public function addTest(
         TestInterface $test,
-        $options = [],
-        FilterInterface $filter = null,
-        ChooserInterface $chooser = null
+        FilterInterface $filter,
+        ChooserInterface $chooser,
+        $options = []
     ) {
-
         if ($this->locked) {
             throw new EngineLockedException('The engine has been processed already. You cannot add other tests.');
         }
@@ -141,13 +102,9 @@ class Engine implements EngineInterface
             throw new TestCollisionException('Duplicate test for identifier '.$test->getIdentifier());
         }
 
-        // If no filter/chooser is set use the ones from
-        // the engine.
-        $filter = $filter ? $filter : $this->filter;
-        $chooser = $chooser ? $chooser : $this->chooser;
-
-        Assert::notNull($filter, 'There must be at least one filter in the Engine or in the TestBag');
-        Assert::notNull($chooser, 'There must be at least one chooser in the Engine or in the TestBag');
+        if (! $test->getVariants()) {
+            throw new \RuntimeException('The test "'.$test->getIdentifier().'" must have at least one variant.');
+        }
 
         $this->tests[$test->getIdentifier()] = new Bag($test, $filter, $chooser, $options);
     }
@@ -155,7 +112,7 @@ class Engine implements EngineInterface
     /**
      * {@inheritDoc}
      */
-    public function start()
+    public function test(SubjectInterface $subject)
     {
         // Check if already locked
         if ($this->locked) {
@@ -166,78 +123,79 @@ class Engine implements EngineInterface
         $this->locked = true;
 
         foreach ($this->tests as $testBag) {
-            $this->handleTestBag($testBag);
+            // Check if the user is marked as "do not participate".
+            if (! $subject->participationIsBlocked($testBag->getTest())) {
+                /**
+                 * @var VariantInterface $variant
+                 */
+                $variant = $this->determineChosenVariant(
+                    $subject,
+                    $testBag->getTest(),
+                    $testBag->getParticipationFilter(),
+                    $testBag->getVariantChooser()
+                );
+
+                // Run the variant
+                $variant->run();
+
+                $this->analytics->registerParticipation(new Participation($testBag->getTest(), $variant, $testBag->getOptions()));
+            }
         }
     }
 
     /**
      * Process the test bag
      *
-     * @param Bag $bag
+     * @param SubjectInterface $subject
+     * @param TestInterface    $test
+     * @param FilterInterface  $filter
+     * @param ChooserInterface $chooser
      *
-     * @return bool true if the variant got executed, false otherwise
+     * @return VariantInterface
      */
-    private function handleTestBag(Bag $bag)
-    {
-        $test = $bag->getTest();
+    private function determineChosenVariant(
+        SubjectInterface $subject,
+        TestInterface $test,
+        FilterInterface $filter,
+        ChooserInterface $chooser
+    ) {
+    
+        $dummyVariant = new SimpleVariant(''); // dummy variant to comply with the interface
 
-        $isParticipating = $this->participationManager->participates($test->getIdentifier());
-        $testParticipation = $this->participationManager->getParticipatingVariant($test->getIdentifier());
-
-        // Check if the user is marked as "do not participate".
-        if ($isParticipating && null === $testParticipation) {
-            $this->dispatcher->dispatch('phpab.participation.blocked', [$this, $bag]);
-            return;
+        if ($subject->participates($test)) {
+            $variant = $subject->getVariant($test);
+            return $variant;
         }
 
-        // When the user does not participate at the test, let him participate.
-        if (!$isParticipating && !$bag->getParticipationFilter()->shouldParticipate()) {
-            // The user should not participate so let's set participation
-            // to null so he will not participate in the future, too.
-            $this->dispatcher->dispatch('phpab.participation.block', [$this, $bag]);
+        if ($filter->shouldParticipate() && $test->getVariants()) {
+            // Choose a variant for later usage. If the user should participate this one will be used
+            $chosen = $chooser->chooseVariant($test->getVariants());
 
-            $this->participationManager->participate($test->getIdentifier(), null);
-            return;
+            // Store the chosen variant so he will not switch between different states
+            $subject->participate($test, $chosen);
+
+            return $chosen;
         }
 
-        // Let's try to recover a previously stored Variant
-        if ($isParticipating && $testParticipation !== null) {
-            $variant = $bag->getTest()->getVariant($testParticipation);
+        // The user should not participate so let's block the participation
+        // so he will not participate in the future, too.
 
-            // If we managed to identify a Variant by a previously stored participation, do its magic again.
-            if ($variant instanceof VariantInterface) {
-                $this->activateVariant($bag, $variant);
-                return;
-            }
-        }
+        // Events::BLOCK_PARTICIPATION
 
-        // Choose a variant for later usage. If the user should participate this one will be used
-        $chosen = $bag->getVariantChooser()->chooseVariant($test->getVariants());
+        $subject->blockParticipationFor($test);
 
-        // Check if user participation should be blocked. Or maybe the variant does not exists anymore?
-        if (null === $chosen || !$test->getVariant($chosen->getIdentifier())) {
-            $this->dispatcher->dispatch('phpab.participation.variant_missing', [$this, $bag]);
-
-            $this->participationManager->participate($test->getIdentifier(), null);
-            return;
-        }
-
-        // Store the chosen variant so he will not switch between different states
-        $this->participationManager->participate($test->getIdentifier(), $chosen->getIdentifier());
-
-        $this->activateVariant($bag, $chosen);
+        return $dummyVariant;
     }
 
     /**
-     * Runs the Variant and dispatches subscriptions
-     *
-     * @param Bag $bag
-     * @param VariantInterface $variant
+     * @inheritDoc
      */
-    private function activateVariant(Bag $bag, VariantInterface $variant)
+    public function getAnalytics()
     {
-        $this->dispatcher->dispatch('phpab.participation.variant_run', [$this, $bag, $variant]);
+        if (! $this->locked) {
+            throw new \RuntimeException('Getting the analytics before testing a user does not work.');
+        }
 
-        $variant->run();
+        return $this->analytics;
     }
 }

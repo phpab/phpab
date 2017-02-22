@@ -2,9 +2,9 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Variant;
@@ -33,8 +33,8 @@ class CallbackVariant implements VariantInterface
     /**
      * Initializes a new instance of this class.
      *
-     * @param string $identifier The Identifier of the Variant
-     * @param callable $callback The Callable to execute on run
+     * @param string   $identifier The Identifier of the Variant
+     * @param callable $callback   The Callable to execute on run
      */
     public function __construct($identifier, callable $callback)
     {

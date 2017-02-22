@@ -2,75 +2,71 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Engine;
 
-use PhpAb\Event\Dispatcher;
-use PhpAb\Event\DispatcherInterface;
-use PhpAb\Participation\Filter\FilterInterface;
-use PhpAb\Participation\Filter\Percentage;
-use PhpAb\Participation\Manager;
-use PhpAb\Participation\ManagerInterface;
-use PhpAb\Storage\Adapter\Runtime;
-use PhpAb\Storage\Storage;
+use PhpAb\Analytics\AnalyticsInterface;
+use PhpAb\Analytics\SimpleAnalytics;
+use PhpAb\Chooser\RandomChooser;
+use PhpAb\Filter\Percentage;
+use PhpAb\Storage\RuntimeStorage;
+use PhpAb\Subject;
+use PhpAb\SubjectInterface;
 use PhpAb\Test\Test;
-use PhpAb\Variant\Chooser\ChooserInterface;
-use PhpAb\Variant\Chooser\StaticChooser;
-use PhpAb\Variant\Chooser\RandomChooser;
+use PhpAb\Chooser\IdentifierChooser;
 use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
-use PhpAb\Analytics\DataCollector\Google;
+use PHPUnit\Framework\TestCase;
 
-class EngineTest extends \PHPUnit_Framework_TestCase
+class EngineTest extends TestCase
 {
     private $alwaysParticipateFilter;
     private $chooser;
     private $variant;
-    private $manager;
+    private $subject;
 
     public function setUp()
     {
         \phpmock\Mock::disableAll();
 
         $this->alwaysParticipateFilter = new Percentage(100);
-        $this->chooser = new StaticChooser(0);
+        $this->chooser = new IdentifierChooser(0);
 
         $this->variant = $this->getMockBuilder(VariantInterface::class)
             ->setMethods(['getIdentifier', 'run'])
-            ->getMock();
-
-        $this->manager = $manager = $this->getMockBuilder(ManagerInterface::class)
             ->getMock();
     }
 
     public function testEmptyManager()
     {
         // Arrange
-        $manager = new Manager(new Storage(new Runtime()));
-        $engine = new Engine($manager, new Dispatcher());
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
-        $result = $engine->start();
+        $result = $engine->test(new Subject(new RuntimeStorage()));
 
         // Assert
         $this->assertNull($result);
     }
 
-    public function testAddTest()
+    /**
+     * @test
+     */
+    public function add_tests()
     {
         // Arrange
-        $test1 = new Test('foo');
-        $test2 = new Test('bar');
+        $test1 = new Test('foo', [new SimpleVariant('v1')]);
+        $test2 = new Test('bar', [new SimpleVariant('v1')]);
 
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
-        $engine->addTest($test1, [], $this->alwaysParticipateFilter, $this->chooser);
-        $engine->addTest($test2, [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine->addTest($test1, $this->alwaysParticipateFilter, $this->chooser, []);
+        $engine->addTest($test2, $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Assert
         $this->assertSame($test1, $engine->getTest('foo'));
@@ -84,7 +80,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testGetTestNotFound()
     {
         // Arrange
-        $engine = new Engine($this->manager, new Dispatcher());
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
         $engine->getTest('foo');
@@ -96,318 +92,90 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testAlreadyExistsWithSameName()
     {
         // Arrange
-        $engine = new Engine($this->manager, new Dispatcher());
-        $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
+        $engine = new Engine(new SimpleAnalytics());
+        $engine->addTest(new Test('foo', [new SimpleVariant('v1')]), $this->alwaysParticipateFilter, $this->chooser, []);
 
         // Act
-        $engine->addTest(new Test('foo'), [], $this->alwaysParticipateFilter, $this->chooser);
-    }
-
-    public function testUserParticipatesVariant()
-    {
-        // Arrange
-        $this->manager->method('participates')
-            ->with('foo')
-            ->willReturn(true);
-
-        $this->manager->method('getParticipatingVariant')
-            ->with('foo')
-            ->willReturn('bar');
-
-        $this->variant
-            ->expects($this->once())
-            ->method('run');
-        $this->variant
-            ->method('getIdentifier')
-            ->willReturn('bar');
-
-        $test = new Test('foo');
-        $test->addVariant($this->variant);
-
-        $engine = new Engine($this->manager, new Dispatcher());
-        $engine->addTest($test, [], $this->alwaysParticipateFilter, new StaticChooser('bar'));
-
-        // Act
-        $result = $engine->start();
-
-        // Assert
-        $this->assertNull($result);
-    }
-
-    public function testUserDoesNotParticipateVariant()
-    {
-        // Arrange
-        $this->manager->method('participates')
-            ->with('foo')
-            ->willReturn(false);
-
-        $this->variant
-            ->expects($this->exactly(0))
-            ->method('run');
-        $this->variant
-            ->method('getIdentifier')
-            ->willReturn('notParticipated');
-
-        $test = new Test('foo');
-        $test->addVariant($this->variant);
-
-        $engine = new Engine($this->manager, new Dispatcher());
-        $engine->addTest(
-            $test,
-            [],
-            $this->alwaysParticipateFilter,
-            $this->chooser
-        );
-
-        // Act
-        $engine->start();
-
-        // Assert
-    }
-
-    public function testUserParticipatesNonExistingVariant()
-    {
-        // Arrange
-        $storage = new Storage(new Runtime());
-        $storage->set('foo', 'bar');
-
-        $manager = new Manager($storage);
-
-        $test = new Test('foo');
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            $test,
-            [],
-            $this->alwaysParticipateFilter,
-            $this->chooser
-        );
-
-        // Act
-        $engine->start();
-        $result = $manager->participates('foo', 'bar');
-
-        // Assert
-        $this->assertFalse($result);
-    }
-
-    public function testUserShouldNotParticipateWasStoredInStorage()
-    {
-        // Arrange
-        $storage = new Storage(new Runtime());
-        $storage->set('foo', null);
-        $manager = new Manager($storage);
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            new Test('foo'),
-            [],
-            $this->alwaysParticipateFilter,
-            $this->chooser
-        );
-
-        // Act
-        $engine->start();
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-        $this->assertNull($manager->getParticipatingVariant('foo'));
-    }
-
-    public function testUserShouldNotParticipate()
-    {
-        // Arrange
-        $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            new Test('foo'),
-            [],
-            new Percentage(0),
-            $this->chooser
-        );
-
-        // Act
-        $engine->start();
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-        $this->assertNull($manager->getParticipatingVariant('foo'));
-    }
-
-    public function testUserShouldNotParticipateWithExistingVariant()
-    {
-        // Arrange
-         $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
-
-        $test = new Test('foo');
-        $test->addVariant(new SimpleVariant('yolo'));
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            $test,
-            [],
-            new Percentage(0),
-            $this->chooser
-        );
-
-        // Act
-        $engine->start();
-        $result = $manager->participates('foo');
-
-        // Assert
-        $this->assertTrue($result);
-    }
-
-    public function testUserGetsNewParticipation()
-    {
-        // Arrange
-        $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
-
-        $test = new Test('t1');
-        $test->addVariant(new SimpleVariant('v1'));
-        $test->addVariant(new SimpleVariant('v2'));
-        $test->addVariant(new SimpleVariant('v3'));
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            $test,
-            [],
-            $this->alwaysParticipateFilter,
-            new StaticChooser('v1')
-        );
-
-        // Act
-        $engine->start();
-        $result = $manager->participates('t1');
-
-        // Assert
-        $this->assertTrue($result);
-    }
-
-    public function testNoVariantAvailableForTest()
-    {
-        // Arrange
-        $storage = new Storage(new Runtime());
-        $manager = new Manager($storage);
-        $test = new Test('t1');
-
-        $engine = new Engine($manager, new Dispatcher());
-        $engine->addTest(
-            $test,
-            [],
-            $this->alwaysParticipateFilter,
-            new StaticChooser('v1')
-        );
-        $engine->start();
-
-        // Act
-        $result = $manager->participates('t1');
-
-        // Assert
-        $this->assertTrue($result);
+        $engine->addTest(new Test('foo', [new SimpleVariant('v1')]), $this->alwaysParticipateFilter, $this->chooser, []);
     }
 
     /**
-     * Testing that Engine picks previous test runs values
+     * @test
      */
-    public function testPreviousRunConsistencyInStorage()
+    public function user_gets_new_participation()
     {
         // Arrange
-        $storage = new Storage(
-            new Runtime(
-                [
-                    'foo_test' => 'v1',
-                    'bar_test' => '_control'
-                ]
-            )
-        );
-        $manager = new Manager($storage);
-
-        $analyticsData = new Google();
-
-        $dispatcher = new Dispatcher;
-        $dispatcher->addSubscriber($analyticsData);
-
-        $filter = new Percentage(5);
-        $chooser = new RandomChooser();
-
-        $engine = new Engine($manager, $dispatcher, $filter, $chooser);
-
-        $test = new Test('foo_test', [], [Google::EXPERIMENT_ID => 'EXPID1']);
-        $test->addVariant(new SimpleVariant('_control'));
-        $test->addVariant(new SimpleVariant('v1'));
-        $test->addVariant(new SimpleVariant('v2'));
-
-        $test2 = new Test('bar_test', [], [Google::EXPERIMENT_ID => 'EXPID2']);
-        $test2->addVariant(new SimpleVariant('_control'));
-        $test2->addVariant(new SimpleVariant('v1'));
-
-        $engine->addTest($test);
-        $engine->addTest($test2);
-
-        $engine->start();
-
-        // Act
-        $testData = $analyticsData->getTestsData();
-
-        // Assert
-        $this->assertSame(
+        $test = new Test(
+            't1',
             [
-            'EXPID1' => 1,
-            'EXPID2' => 0
-            ],
-            $testData
+            new SimpleVariant('v1'),
+            new SimpleVariant('v2'),
+            new SimpleVariant('v3')
+            ]
         );
+
+        $engine = new Engine(new SimpleAnalytics());
+        $engine->addTest(
+            $test,
+            $this->alwaysParticipateFilter,
+            new IdentifierChooser('v1'),
+            []
+        );
+
+        $subject = new Subject(new RuntimeStorage());
+
+        // Act
+        $engine->test($subject);
+        $result = $subject->participates($engine->getTest('t1'));
+
+        // Assert
+        $this->assertTrue($result);
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @test
      */
-    public function testNoFilterThrowsException()
+    public function remembered_participation()
     {
-        // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            null, // This is the tested part
-            $this->getMock(ChooserInterface::class)
-        );
+        $variant = new SimpleVariant('v1');
+        $test = new Test('t1', [$variant]);
+        $subject = new Subject(new RuntimeStorage());
 
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $engine = new Engine(new SimpleAnalytics());
+        $engine->addTest($test, new Percentage(0), new RandomChooser());
 
-        // Act
-        $engine->addTest($test);
+        $subject->participate($test, $variant);
 
-        // Assert
+        $engine->test($subject);
+
+        $this->assertTrue($subject->participates($test));
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @test
      */
-    public function testNoChooserThrowsException()
+    public function subject_can_participate_in_a_test_even_if_the_test_has_no_variants()
     {
         // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
+        $test = new Test('t1', [new SimpleVariant('v1')]);
+
+        $engine = new Engine(new SimpleAnalytics());
+        $engine->addTest(
+            $test,
+            $this->alwaysParticipateFilter,
+            new RandomChooser(),
+            []
         );
 
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $subject = new Subject(new RuntimeStorage());
 
         // Act
-        $engine->addTest($test);
+        $engine->test($subject);
+
+        $result = $subject->participates($test);
 
         // Assert
+        $this->assertTrue($result);
     }
 
     /**
@@ -416,19 +184,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testLockEngine()
     {
         // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
-        );
+        $engine = new Engine(new SimpleAnalytics());
 
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $test = new Test('foo_test', [new SimpleVariant('_control')]);
 
         // Act
-        $engine->start();
-        $engine->addTest($test);
+        $engine->test($this->createMock(SubjectInterface::class));
+        $engine->addTest($test, $this->alwaysParticipateFilter, $this->chooser);
 
         // Assert
     }
@@ -439,20 +201,74 @@ class EngineTest extends \PHPUnit_Framework_TestCase
     public function testStartTwice()
     {
         // Arrange
-        $engine = new Engine(
-            $this->getMock(ManagerInterface::class),
-            $this->getMock(DispatcherInterface::class),
-            $this->getMock(FilterInterface::class),
-            null // This is the tested part
-        );
-
-        $test = new Test('foo_test');
-        $test->addVariant(new SimpleVariant('_control'));
+        $engine = new Engine(new SimpleAnalytics());
 
         // Act
-        $engine->start();
-        $engine->start();
+        $engine->test($this->createMock(SubjectInterface::class));
+        $engine->test($this->createMock(SubjectInterface::class));
 
         // Assert
+    }
+
+    /**
+     * @test
+     */
+    public function it_blocks_a_test_correctly()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+        $subject = new Subject(new RuntimeStorage());
+
+        $test = new Test('t1', [new SimpleVariant('v1')]);
+
+        $engine->addTest($test, new Percentage(0), new RandomChooser());
+
+        // Act
+        $engine->test($subject);
+
+        // Assert
+        $this->assertTrue($subject->participationIsBlocked($test));
+    }
+
+    /**
+     * @test
+     */
+    public function get_analytics()
+    {
+        // Arrange
+        $subject = new Subject(new RuntimeStorage());
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->test($subject);
+
+        // Assert
+        $this->assertInstanceOf(AnalyticsInterface::class, $engine->getAnalytics());
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function get_analytics_before_engine_was_started()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->getAnalytics();
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function adding_test_without_variant_throws_exeption()
+    {
+        // Arrange
+        $engine = new Engine(new SimpleAnalytics());
+
+        // Act
+        $engine->addTest(new Test('t1'), new Percentage(100), new RandomChooser());
     }
 }

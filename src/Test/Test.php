@@ -2,15 +2,16 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Test;
 
 use InvalidArgumentException;
 use PhpAb\Exception\DuplicateVariantException;
+use PhpAb\Variant\SimpleVariant;
 use PhpAb\Variant\VariantInterface;
 
 /**
@@ -44,9 +45,9 @@ class Test implements TestInterface
     /**
      * Initializes a new instance of this class.
      *
-     * @param string $identifier The identifier
-     * @param VariantInterface[] $variants The variants that this test has.
-     * @param array $options Case specific test options.
+     * @param string             $identifier The identifier
+     * @param VariantInterface[] $variants   The variants that this test has.
+     * @param array              $options    Case specific test options.
      */
     public function __construct($identifier, $variants = [], array $options = [])
     {
@@ -74,7 +75,7 @@ class Test implements TestInterface
      *
      * @param VariantInterface $variant The variant to add to this test.
      */
-    public function addVariant(VariantInterface $variant)
+    private function addVariant(VariantInterface $variant)
     {
         if (array_key_exists($variant->getIdentifier(), $this->variants)) {
             throw new DuplicateVariantException('A variant with this identifier has already been added.');
@@ -88,7 +89,7 @@ class Test implements TestInterface
      *
      * @param VariantInterface[] $variants The variants to set.
      */
-    public function setVariants($variants)
+    private function setVariants($variants)
     {
         $this->variants = [];
 

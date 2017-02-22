@@ -2,18 +2,18 @@
 /**
  * This file is part of phpab/phpab. (https://github.com/phpab/phpab)
  *
- * @link https://github.com/phpab/phpab for the canonical source repository
+ * @link      https://github.com/phpab/phpab for the canonical source repository
  * @copyright Copyright (c) 2015-2016 phpab. (https://github.com/phpab/)
- * @license https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
+ * @license   https://raw.githubusercontent.com/phpab/phpab/master/LICENSE.md MIT
  */
 
 namespace PhpAb\Test;
 
-use PhpAb\Participation\Filter\FilterInterface;
-use PhpAb\Variant\Chooser\ChooserInterface;
-use PHPUnit_Framework_TestCase;
+use PhpAb\Filter\FilterInterface;
+use PhpAb\Chooser\ChooserInterface;
+use PHPUnit\Framework\TestCase;
 
-class BagTest extends PHPUnit_Framework_TestCase
+class BagTest extends TestCase
 {
     private $test;
     private $participationFilter;
@@ -21,9 +21,9 @@ class BagTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->test = $this->getMock(TestInterface::class);
-        $this->participationFilter = $this->getMock(FilterInterface::class);
-        $this->variantChooser = $this->getMock(ChooserInterface::class);
+        $this->test = $this->createMock(TestInterface::class);
+        $this->participationFilter = $this->createMock(FilterInterface::class);
+        $this->variantChooser = $this->createMock(ChooserInterface::class);
     }
 
     public function testGetTest()
